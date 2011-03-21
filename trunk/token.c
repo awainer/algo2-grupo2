@@ -1,1 +1,1 @@
-
+/*Token no tiene funciones*/
