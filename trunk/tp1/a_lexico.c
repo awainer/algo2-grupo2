@@ -5,6 +5,11 @@
 
 
 int TLexico_Crear(TLexico* al){
+	/* Esto se tiene que inicializar en la funcion setAnalizadorSintactico */
+
+	al.sintactico = NULL;
+	al.error.codigo=10;
+	al.error.mensaje='';
     return 0;
 }
 
