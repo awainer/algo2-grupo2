@@ -4,9 +4,12 @@
 #include "a_sintactico.h"
 
 typedef struct tlexico{
-    int a;
-
-}TLexico;
+	TSintactico * sintactico;
+	struct error{
+		int codigo;
+		char mensaje[30];
+		}error;
+	}TLexico;
 
 /*Descripción: Inicializa una nueva variable de tipo TLexico
 Precondiciones: al apunta a una varible de tipo TLexico no creada previamente.

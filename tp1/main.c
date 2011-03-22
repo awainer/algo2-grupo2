@@ -2,14 +2,22 @@
 #include <stdio.h>
 
 #include "token.h"
-/*#include "a_sintactico.h"*/
-/*#include "a_lexico.h"*/
-
+#include "a_sintactico.h"
+#include "a_lexico.h"
+#include "parser.h"
 
 
 int main(int argc, char* argv[]){
-	printf("Arranco main");
+	FILE * archivo;
+	TLexico *  miLexico;
+	TSintactico * miSintactico;
+	TParser	* miParser;
 
-	/*scanf("&d");*/
+	TLexico_Crear(miLexico);
+	TSintactico_Crear(miSintactico);
+
+
+
+
 	return 0;
 }
