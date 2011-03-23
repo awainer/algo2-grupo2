@@ -2,9 +2,18 @@
 #define A_SINTACTICO_H_INCLUDED
 
 #include "token.h"
+#include "error.h"
 
 typedef struct tda_sintactico{
-    char a;
+	/* El ultimo error recibido, 0 es ok. */
+	TError error;
+	/*El ultimo token que recibi*/
+	Token	UltimoToken;
+	/*en el buffer voy a ir guardando las "palabras", para mostrarlas */
+	char	buffer[255];
+	/* En realidad no se que tipo de dato deberia usar aca, pero quiero guardar en que 'scope' estoy, para determinar
+	 que tokens son validos a cada momento */
+	int		scope;
 }TSintactico;
 
 

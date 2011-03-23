@@ -2,13 +2,12 @@
 #define A_LEXICO_H_INCLUDED
 
 #include "a_sintactico.h"
+#include "error.h"
 
 typedef struct tlexico{
 	TSintactico * sintactico;
-	struct error{
-		int codigo;
-		char mensaje[30];
-		}error;
+	TError error;
+	char set_caracteres[2][200];
 	}TLexico;
 
 /*Descripción: Inicializa una nueva variable de tipo TLexico
