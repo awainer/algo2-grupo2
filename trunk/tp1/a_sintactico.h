@@ -8,13 +8,7 @@ typedef struct tda_sintactico{
 	/* El ultimo error recibido, 0 es ok. */
 	int  error_codigo;
 	char error_mensaje[30];
-	/*El ultimo token que recibi*/
-	Token	UltimoToken;
-	/*en el buffer voy a ir guardando las "palabras", para mostrarlas */
-	char	buffer[255];
-	/* En realidad no se que tipo de dato deberia usar aca, pero quiero guardar en que 'scope' estoy, para determinar
-	 que tokens son validos a cada momento */
-	int		scope;
+	TipoToken tValidos[5];
 }TSintactico;
 
 
