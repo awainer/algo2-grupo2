@@ -17,7 +17,6 @@ typedef enum{
     TOKEN_TRUE,
     TOKEN_FALSE,
     TOKEN_NULL,
-    TOKEN_COMILLA,
 }TipoToken;
 
 typedef struct token{
