@@ -16,7 +16,12 @@ typedef enum{
     TOKEN_DOSPUNTOS,
     TOKEN_TRUE,
     TOKEN_FALSE,
+<<<<<<< .mine
+    TOKEN_NULL
+
+=======
     TOKEN_NULL,
+>>>>>>> .r14
 }TipoToken;
 
 typedef struct token{

@@ -8,14 +8,15 @@
 
 
 int main(int argc, char* argv[]){
-	FILE * archivo;
+    /*char    nombrearchivo[25]=argv[1];*/
+    char    nombrearchivo[25]="ejemplo.json";
 	TLexico *  miLexico;
 	TSintactico * miSintactico;
 	TParser	* miParser;
 
 	TLexico_Crear(miLexico);
 	TSintactico_Crear(miSintactico);
-	TParser_Crear(miSintactico,miLexico,archivo,miParser);
+	TParser_Crear(miSintactico,miLexico,nombrearchivo,miParser);
 
 
 

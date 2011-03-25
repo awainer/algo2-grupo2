@@ -18,7 +18,7 @@ typedef struct t_parser{
     TipoError ultimoError;
 }TParser;
 
-int TParser_Crear(TSintactico*  ts,TLexico * tl, FILE * archivo, TParser * parser);
+int TParser_Crear(TSintactico*  ts,TLexico * tl, char * archivo, TParser * parser);
 int getUltimoError(TParser * parser);
 int TParser_Parsear(TParser * parser);
 int TParser_Destruir(TParser * parser);
