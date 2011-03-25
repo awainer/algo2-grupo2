@@ -19,6 +19,9 @@ int TSintactico_PushToken(TSintactico* as, Token* token){
         if (as->tValidos[2] == token->tipo){
             printf("objeto\n\t");
             if (as->tValidos[])
+            //definir string//
+                if (as->tValidos[6] == token->tipo)
+                    printf(":  ");
 
 
 
