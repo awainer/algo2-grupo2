@@ -4,16 +4,22 @@
 #include "a_sintactico.h"
 #include "a_lexico.h"
 #include <stdlib.h>
+#include <stdio.h>
 
+typedef enum {
+    E_NONE,
+    E_LEXICO,
+    E_SINTACTICO
+}TipoError;
 
 typedef struct t_parser{
-	TSintactico as;
-	TLexico lex;
-	/*FILE*	arch;*/
+	TSintactico * as;
+	TLexico  * lex;
+    TipoError ultimoError;
 }TParser;
 
-/*int TParser_Crear(TSintactico*  ts,TLexico * tl,FILE * arch,TParser * parser);*/
-int TParser_Crear(TSintactico*  ts,TLexico * tl, TParser * parser);
+int TParser_Crear(TSintactico*  ts,TLexico * tl, FILE * archivo, TParser * parser);
+int getUltimoError(TParser * parser);
 int TParser_Parsear(TParser * parser);
 int TParser_Destruir(TParser * parser);
 #endif
