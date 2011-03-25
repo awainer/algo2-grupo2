@@ -6,7 +6,8 @@
 
 typedef struct tda_sintactico{
 	/* El ultimo error recibido, 0 es ok. */
-	TError error;
+	int  error_codigo;
+	char error_mensaje[30];
 	/*El ultimo token que recibi*/
 	Token	UltimoToken;
 	/*en el buffer voy a ir guardando las "palabras", para mostrarlas */
