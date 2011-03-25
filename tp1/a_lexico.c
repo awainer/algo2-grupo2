@@ -6,6 +6,7 @@
 
 int TLexico_Crear(TLexico* al){
     al->error_codigo=0;
+    al->buffer_idx=0;
     return 0;
 }
 
@@ -32,8 +33,6 @@ if ( (( c >= 'a' )&&( c <= 'z' ) ) || ( (c>='A') && (c<='Z') )){
             token.tipo=TOKEN_ARRAY_TERMINA;
         else if(c==',')
             token.tipo=TOKEN_COMA;
-        else if(c=='"')
-            token.tipo=TOKEN_COMILLA;
         else if(c==',')
             token.tipo=TOKEN_DOSPUNTOS;
         else{
