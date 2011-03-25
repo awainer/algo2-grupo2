@@ -15,7 +15,8 @@ int main(int argc, char* argv[]){
 
 	TLexico_Crear(miLexico);
 	TSintactico_Crear(miSintactico);
-
+	/*TParser_Crear(miSintactico,miLexico,archivo,miParser);*/
+	TParser_Crear(miSintactico,miLexico,miParser);
 
 
 
