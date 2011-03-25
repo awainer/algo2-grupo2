@@ -7,15 +7,36 @@
 
 int TSintactico_Crear(TSintactico* as){
     as->error_codigo=0;
-    as->tValidos[0]=TOKEN_OBJETO_EMPIEZA;
-    as->tValidos[1]=TOKEN_NULL;
+    as->tValidos[2]=TOKEN_OBJETO_EMPIEZA;
+    as->tValidos[10]=TOKEN_NULL;
     return 0;
     }
 
 int TSintactico_PushToken(TSintactico* as, Token* token){
     int i=0;
 
-    while(as->tValidos[i] != TOKEN_NULL){
+    while(as->tValidos[10] != token->tipo){
+        if (as->tValidos[2] == token->tipo){
+            printf("objeto\n\t");
+            if (as->tValidos[])
+
+
+
+
+
+
+
+
+        else
+        printf("error en {");
+
+
+
+
+        }
+
+
+
         /* logica de sintaxis*/
 
 

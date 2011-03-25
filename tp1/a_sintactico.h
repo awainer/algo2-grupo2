@@ -7,7 +7,7 @@ typedef struct tda_sintactico{
 	/* El ultimo error recibido, 0 es ok. */
 	int  error_codigo;
 	char error_mensaje[30];
-	TipoToken tValidos[5];
+	TipoToken tValidos[12];
 }TSintactico;
 
 
