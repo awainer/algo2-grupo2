@@ -2,7 +2,6 @@
 #define A_SINTACTICO_H_INCLUDED
 
 #include "token.h"
-#include "error.h"
 
 typedef struct tda_sintactico{
 	/* El ultimo error recibido, 0 es ok. */
