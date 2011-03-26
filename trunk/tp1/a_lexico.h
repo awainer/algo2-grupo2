@@ -7,9 +7,8 @@ typedef struct tlexico{
 	TSintactico * sintactico;
 	int  error_codigo;
 	char  error_mensaje[30];
-	char  buffer[MAX_DATO];
 	int   buffer_idx;
-
+	Token * token;
 	}TLexico;
 
 /*Descripción: Inicializa una nueva variable de tipo TLexico
