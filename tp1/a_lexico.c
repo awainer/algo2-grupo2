@@ -102,6 +102,8 @@ int TLexico_PushChar(TLexico* al, char c)
             al->token->tipo=TOKEN_ARRAY_TERMINA;
         else if(c==':')
             al->token->tipo=TOKEN_DOSPUNTOS;
+        else if( (c=='\n') || (c==' ') )
+            al->token->tipo=TOKEN_FALSE;            
         else
         {
             al->error_codigo=2;
