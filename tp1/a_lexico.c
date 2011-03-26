@@ -6,7 +6,9 @@
 
 int TLexico_Crear(TLexico* al){
     al->error_codigo=0;
-    al->buffer_idx=0;
+    al->buffer_idx=-1;
+    al->token->tipo=TOKEN_NULL;
+
     return 0;
 }
 
@@ -16,36 +18,77 @@ int TLexico_setAnalizadorSintactico(TLexico* al, TSintactico* as){
 }
 
 int TLexico_PushChar(TLexico* al, char c){
-    Token token;
+
     /* el hecho de que C no soporte rangos hace esta implementacion mas bien engorrosa*/
-if ( (( c >= 'a' )&&( c <= 'z' ) ) || ( (c>='A') && (c<='Z') )){
+/*if ( (( c >= 'a' )&&( c <= 'z' ) ) || ( (c>='A') && (c<='Z') )){
     token.tipo=TOKEN_STRING;
-	}	else if((c>='0') && (c<='9')) {
-        token.tipo=TOKEN_NUMERO;
+	}*/
+	/*token.tipo=TOKEN_FALSE;*/
+
+        if  (c=='"'){
+            if (al->buffer_idx==-1){
+                /*comienza un string*/
+                al->buffer_idx=0;
+                }
+
+                else{ /* estoy recibiendo una comilla pero el buffer ya tenia datos, asi que
+                  estoy terminando el string*/
+                    al->buffer_idx=-1; /*reinicio el index*/
+                    if (TSintactico_PushToken(al->sintactico,al->token)){
+                        return 0;
+                        }
+                    else{
+                    /*Analizador Sintactico me devolvio un error*/
+                        al->error_codigo=1;
+                        /*TODO cambiar esto por un strcpy
+                        al->error_mensaje="el analizador sintactico me dio error";*/
+                        return 2;
+                        }
         }
-        else if(c=='{')
-            token.tipo=TOKEN_OBJETO_EMPIEZA;
+
+if (al->buffer_idx > -1){
+        if ( (( c >= 'a' )&&( c <= 'z' ) ) || ( (c>='A') && (c<='Z') ))
+        {
+
+            al->token->dato[al->buffer_idx]=c;
+            al->buffer_idx++;
+        }
+
+        if((c>='0') && (c<='9')) {
+
+            al->token->tipo=TOKEN_NUMERO;
+            al->token->dato[al->buffer_idx]=c;
+            al->buffer_idx++;
+        }
+}
+
+        if(c=='{')
+            al->token->tipo=TOKEN_OBJETO_EMPIEZA;
         else if(c=='}')
-            token.tipo=TOKEN_OBJETO_TERMINA;
+            al->token->tipo=TOKEN_OBJETO_TERMINA;
         else if(c=='[')
-            token.tipo=TOKEN_ARRAY_EMPIEZA;
+            al->token->tipo=TOKEN_ARRAY_EMPIEZA;
         else if(c==']')
-            token.tipo=TOKEN_ARRAY_TERMINA;
+            al->token->tipo=TOKEN_ARRAY_TERMINA;
         else if(c==',')
-            token.tipo=TOKEN_COMA;
+            al->token->tipo=TOKEN_COMA;
         else if(c==',')
-            token.tipo=TOKEN_DOSPUNTOS;
+            al->token->tipo=TOKEN_DOSPUNTOS;
         else{
             al->error_codigo=1;
            /* al->error_mensaje="El caracter recibido no tiene un token asociado";*/
            strcpy(al->error_mensaje,"Caracter no valido");
            return 1;
         }
-    strcpy(token.dato,&c);
-    TSintactico_PushToken(al->sintactico,&token);
+    if(al->token->tipo==TOKEN_FALSE)
+        return 0;
+    else{
+        TSintactico_PushToken(al->sintactico,al->token);
+    }
+ }
 return 0;
-}
 
+}
 
 
 int TLexico_terminarFlujo(TLexico* al){
