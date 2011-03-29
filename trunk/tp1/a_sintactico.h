@@ -7,7 +7,8 @@ typedef struct tda_sintactico{
 	/* El ultimo error recibido, 0 es ok. */
 	int  error_codigo;
 	char error_mensaje[30];
-	TipoToken tValidos[11];
+	TipoToken tValidos[4];
+	int Tstring; /* indica que tipo de string es si clave o string o dentro de un array. igual esta mal voy a usar un vector pero despues lo hago */
 }TSintactico;
 
 
