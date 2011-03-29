@@ -19,7 +19,6 @@ int TLexico_setAnalizadorSintactico(TLexico* al, TSintactico* as)
     return 0;
 }
 
-
 int TLexico_PushChar(TLexico* al, char c)
 {
     /*Recibo comillas*/
@@ -34,7 +33,7 @@ int TLexico_PushChar(TLexico* al, char c)
         }
         else
         {
-            /* Si recibo una comilla con el indice distingo de -1,
+            /* Si recibo una comilla con el indice distinto de -1,
             tengo que terminar el string y resetear */
             al->buffer_idx=-1;
             al->token->tipo=TOKEN_NULL;
@@ -53,14 +52,30 @@ int TLexico_PushChar(TLexico* al, char c)
     /*Recibo letras */
     else if ( (( c >= 'a' )&&( c <= 'z' ) ) || ( (c>='A') && (c<='Z') ))
     {
+    	if ((al->buffer_idx!=-1) && (al->token->tipo!=TOKEN_STRING))
+    	{
+    		/*Si el indice del buffer no esta en -1 (hay data previa) y no estamos guardando un string
+    		 * entonces probablemente hayamos recibido una letra en medio de un numero*/
+    		al->error_codigo=1;
+    		strcpy(al->error_mensaje,"Recibi una letra pero no estaba dentro de un string");
+    		return al->error_codigo;
+    	}
+    	al->token->tipo=TOKEN_STRING;
         al->token->dato[al->buffer_idx]=c;
         al->buffer_idx++;
     }
     /*Recibo numeros*/
     else if((c>='0') && (c<='9'))
     {
-        /*Voy a asumir que no me van a mandar
-        fruta en el medio de un numero*/
+      	if ((al->buffer_idx!=-1) && (al->token->tipo!=TOKEN_NUMERO))
+        	{
+        		/*Si el indice del buffer no esta en -1 (hay data previa) y no estamos guardando un numero
+        		 * entonces probablemente hayamos recibido una numero en medio de un string o cualquier otra cosa*/
+        		al->error_codigo=1;
+        		strcpy(al->error_mensaje,"Recibi una numero pero no estaba dentro de una variable numerica");
+        		return al->error_codigo;
+        	}
+
       al->buffer_idx++;
       al->token->tipo=TOKEN_NUMERO;
       al->token->dato[al->buffer_idx]=c;
@@ -91,8 +106,8 @@ int TLexico_PushChar(TLexico* al, char c)
                 strcpy(al->error_mensaje,"El asintactico me devolvio error");
             }
         }
-        else  if(c=='{')
 
+        else  if(c=='{')
             al->token->tipo=TOKEN_OBJETO_EMPIEZA;
         else if(c=='}')
             al->token->tipo=TOKEN_OBJETO_TERMINA;
@@ -113,7 +128,12 @@ int TLexico_PushChar(TLexico* al, char c)
 
         /* Ahora mandamos tokens atomicos*/
         if (TSintactico_PushToken(al->sintactico,al->token))
+        {
+        	/* Reseteo el token */
+            al->buffer_idx=-1;
+            al->token->tipo=TOKEN_NULL;
             return 0;
+        }
         else
          {
            al->error_codigo=1;
@@ -131,6 +151,8 @@ return 4;
 
 int TLexico_terminarFlujo(TLexico* al)
 {
+	al->token->tipo=TOKEN_FALSE;
+	TSintactico_PushToken(al->sintactico,al->token)
     return 0;
 }
 
