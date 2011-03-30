@@ -50,7 +50,7 @@ int TSintactico_PushToken(TSintactico* as, Token* token){
         case TOKEN_OBJETO_EMPIEZA:   while (i<=1)
                                             if(as->tValidos[i] == token->tipo){
                                                 as->tValidos=[TOKEN_OBJETO_TERMINA,TOKEN_STRING,TOKEN_NULL];
-                                                printf("objeto\n\t");
+                                                printf("OBJETO\n\t");
                                                 // ¿Aca deberia imprimir el token ademas de escribir objeto?
                                             }
                                         else {
@@ -59,12 +59,15 @@ int TSintactico_PushToken(TSintactico* as, Token* token){
                                         printf(("error"));} // ver as->error_codigo
                                      break;
 
-        case TOKEN_OBJETO_TERMINA,
+        case TOKEN_OBJETO_TERMINA: as->tValidos=[TOKEN_NULL] ; // si termina el objeto ya no puede venir ningun otro
+                                   printf( "FIN OBJETO\n\t);
+                                   break; // aca imagino que deberia mandar algo a tsintactico_terminar_flujo
+
         case TOKEN_ARRAY_EMPIEZA,
         case TOKEN_ARRAY_TERMINA,
         case TOKEN_COMA:   while ( i <= 1 )
                                 if (as->tValidos[i] == token->tipo) {
-                                    as->tValidos = [TOKEN_STRING];
+                                    as->tValidos = [TOKEN_STRING,TOKEN_NUMERO];
                                     printf( " , " );
                                 }
                                 else {
