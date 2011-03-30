@@ -8,7 +8,7 @@ typedef struct tlexico{
 	int  error_codigo;
 	char  error_mensaje[30];
 	int   buffer_idx;
-	Token * token;
+	Token  token;
 	}TLexico;
 
 /*Descripción: Inicializa una nueva variable de tipo TLexico
