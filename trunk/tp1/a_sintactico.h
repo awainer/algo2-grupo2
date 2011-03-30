@@ -8,7 +8,7 @@ typedef struct tda_sintactico{
 	int  error_codigo;
 	char error_mensaje[30];
 	TipoToken tValidos[4];
-	int Tstring; /* indica que tipo de string es si clave o string o dentro de un array. igual esta mal voy a usar un vector pero despues lo hago */
+	TipoToken Vtoken[4]; /* indica en que situacion estoy con un flag en el token adecuado*/
 }TSintactico;
 
 
