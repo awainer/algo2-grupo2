@@ -9,7 +9,7 @@ int TSintactico_Crear(TSintactico* as){
     as->error_codigo=0;
     as->tValidos[0]=TOKEN_OBJETO_EMPIEZA;
     as->tValidos[1]=TOKEN_NULL;
-    as->Tstring=1;
+    as->Vtoken[TOKEN_STRING,TOKEN_NUMERO,TOKEN_ARRAY_EMPIEZA,TOKEN_COMA];
     return 0;
     }
 
@@ -18,7 +18,7 @@ int TSintactico_PushToken(TSintactico* as, Token* token){
     while(TOKEN_NULL != token->tipo){
         switch (token->tipo){
         case TOKEN_STRING:  while (i<=2)
-                                if((as->tValidos[i] == token->tipo) && (as->Tstring == 1)){
+                                if((as->tValidos[i] == token->tipo) && (as->Vtoken[TOKEN_STRING] == 1)){
                                     as->tValidos = [TOKEN_DOSPUNTOS,TOKEN_NULL];  //el token null habria que sacarlo porque al ser null termina y queda algo incorrecto sintacticamente.
                                     printf("clave");                               // en los tvalidos habria que agregar el token_coma
                                     as->Tstring = 2;
