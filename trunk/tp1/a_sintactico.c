@@ -7,11 +7,11 @@
 
 int TSintactico_Crear(TSintactico* as){
     as->error_codigo=0;
-    as->tValidos[0]=TOKEN_OBJETO_EMPIEZA;
+/*    as->tValidos[0]=TOKEN_OBJETO_EMPIEZA;
     as->tValidos[1]=TOKEN_NULL;
 /*    as->Vtoken=[TOKEN_STRING,TOKEN_NUMERO,TOKEN_ARRAY_EMPIEZA,TOKEN_COMA];*/
 
-    as->tValidos[0]=TOKEN_OBJETO_EMPIEZA;
+  /*  as->tValidos[0]=TOKEN_OBJETO_EMPIEZA;
     as->tValidos[1]=TOKEN_NULL;
    /* as->Vtoken[TOKEN_STRING,TOKEN_NUMERO,TOKEN_ARRAY_EMPIEZA,TOKEN_COMA];*/
 

@@ -12,14 +12,14 @@ int main(void)
 {
     TLexico  tl;
     TSintactico  ts;
-    char cadena[20];
+    char cadena[100];
     int i;
-    strcpy(cadena,":{\"nombre1234\":1234a}");
+    strcpy(cadena,":{\"nombre1234\":,1234,\"unarray\":[\"mingo\",\"anibal\"]}");
     TLexico_Crear(&tl);
     TSintactico_Crear(&ts);
     TLexico_setAnalizadorSintactico(&tl,&ts);
 
-    for(i=0; i<=strlen(cadena); i++)
+    for(i=0; i<strlen(cadena); i++)
     {
         printf("mando el caracter %c\n",cadena[i]);
         TLexico_PushChar(&tl,cadena[i]);
