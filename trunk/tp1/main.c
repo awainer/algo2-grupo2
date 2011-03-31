@@ -6,19 +6,31 @@
 #include "a_lexico.h"
 #include "parser.h"
 
+#include <string.h>
 
-int main(int argc, char* argv[]){
-    /*char    nombrearchivo[25]=argv[1];*/
-    char    nombrearchivo[25]="ejemplo.json";
-	TLexico *  miLexico;
-	TSintactico * miSintactico;
-	TParser	* miParser;
+int main(void)
+{
+    TLexico  tl;
+    TSintactico  ts;
+    char cadena[20];
+    int i;
+    strcpy(cadena,":{\"nombre1234\":1234a}");
+    TLexico_Crear(&tl);
+    TSintactico_Crear(&ts);
+    TLexico_setAnalizadorSintactico(&tl,&ts);
 
-	TLexico_Crear(miLexico);
-	TSintactico_Crear(miSintactico);
-	TParser_Crear(miSintactico,miLexico,nombrearchivo,miParser);
+    for(i=0; i<=strlen(cadena); i++)
+    {
+        printf("mando el caracter %c\n",cadena[i]);
+        TLexico_PushChar(&tl,cadena[i]);
+        if(tl.error_codigo!=0)
+        {
 
 
-
-	return 0;
+            printf(tl.error_mensaje);
+            break;
+        }
+    }
+    return 0;
 }
+

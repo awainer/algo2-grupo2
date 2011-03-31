@@ -52,7 +52,7 @@ int TParser_TerminarFlujo(TParser* p);
  Precondiciones: p esta inicializado. Ocurrió un error al procesar un flujo de caracteres.
  Postcondiciones: Se devuelve un código de error y un mensaje descriptivo del mismo.
  */
-int getUltimoError(TParser * parser){
+int getUltimoError(TParser * parser);
 
 /*int getUltimoError(TParser * p, int codigo, char* mensaje);*/
 

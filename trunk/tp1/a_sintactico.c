@@ -1,7 +1,7 @@
 
 #include "token.h"
 #include "a_sintactico.h"
-
+#include <stdio.h>
 
 
 
@@ -9,16 +9,20 @@ int TSintactico_Crear(TSintactico* as){
     as->error_codigo=0;
     as->tValidos[0]=TOKEN_OBJETO_EMPIEZA;
     as->tValidos[1]=TOKEN_NULL;
-    as->Vtoken=[TOKEN_STRING,TOKEN_NUMERO,TOKEN_ARRAY_EMPIEZA,TOKEN_COMA];
+/*    as->Vtoken=[TOKEN_STRING,TOKEN_NUMERO,TOKEN_ARRAY_EMPIEZA,TOKEN_COMA];*/
 
     as->tValidos[0]=TOKEN_OBJETO_EMPIEZA;
     as->tValidos[1]=TOKEN_NULL;
-    as->Vtoken[TOKEN_STRING,TOKEN_NUMERO,TOKEN_ARRAY_EMPIEZA,TOKEN_COMA];
+   /* as->Vtoken[TOKEN_STRING,TOKEN_NUMERO,TOKEN_ARRAY_EMPIEZA,TOKEN_COMA];*/
 
     return 0;
     }
 
 int TSintactico_PushToken(TSintactico* as, Token* token){
+
+	/* Este codigo es para debug, agregado por Ari*/
+	printf("Recibo un token de tipo %d y dato %s\n",token->tipo,token->dato);
+	return 0;
    /* int i=0;
     while(TOKEN_NULL != token->tipo){
         switch (token->tipo){
@@ -56,7 +60,7 @@ int TSintactico_PushToken(TSintactico* as, Token* token){
                                             if(as->tValidos[i] == token->tipo){
                                                 as->tValidos=[TOKEN_OBJETO_TERMINA,TOKEN_STRING,TOKEN_NULL];
                                                 printf("OBJETO\n\t");
-                                                // ¿Aca deberia imprimir el token ademas de escribir objeto?
+                                                // ï¿½Aca deberia imprimir el token ademas de escribir objeto?
                                             }
                                         else {
                                             i++;
@@ -96,9 +100,9 @@ int TSintactico_PushToken(TSintactico* as, Token* token){
         case TOKEN_FALSE,
 
 
-*/
 
-    return 0;
+
+    return 0;*/
     }
 
 
