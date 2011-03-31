@@ -86,7 +86,7 @@ if (al->token.tipo==TOKEN_NUMERO)
         tlexico_acumular_dato(al,c);
         return 0;
     }
-    if((c==' ' ) || (c=='\t')) /*Un espacio o tab termina un numero */
+    if((c==' ' ) || (c=='\t') || (c=='\n')) /*Un espacio o tab termina un numero */
     {
     return Tlexico_push_token(al,al->sintactico);
     }
@@ -176,6 +176,11 @@ else if(c==']')
     al->token.tipo=TOKEN_ARRAY_TERMINA;
 else if(c==':')
     al->token.tipo=TOKEN_DOSPUNTOS;
+else if(c==',')
+    al->token.tipo=TOKEN_COMA;
+else if ((c==' ') || (c=='\t') || (c=='\n'))
+        return 0;
+
 else
     {
     al->error_codigo=2;
