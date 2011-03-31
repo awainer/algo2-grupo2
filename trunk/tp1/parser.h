@@ -23,7 +23,9 @@ typedef struct t_parser{
  Precondiciones: p apunta a una variable de tipo TParser no creada previamente.
  Postcondiciones: Se inicializó la variable p.
  */
-int TParser_Crear(TParser * p, TSintactico * ts, TLexico * tl);
+/*int TParser_Crear(TParser * p, TSintactico * ts, TLexico * tl);*/
+int TParser_Crear(TSintactico*  ts,TLexico * tl,char * archivo, TParser * parser);
+
 
 /*
  Descripción: Coloca un nuevo carácter para ser analizado, mostrando por pantalla los mensajes
@@ -50,7 +52,9 @@ int TParser_TerminarFlujo(TParser* p);
  Precondiciones: p esta inicializado. Ocurrió un error al procesar un flujo de caracteres.
  Postcondiciones: Se devuelve un código de error y un mensaje descriptivo del mismo.
  */
-int getUltimoError(TParser * p, int codigo, char* mensaje);
+int getUltimoError(TParser * parser){
+
+/*int getUltimoError(TParser * p, int codigo, char* mensaje);*/
 
 /*
  Descripción:
