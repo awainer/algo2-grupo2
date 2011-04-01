@@ -9,8 +9,10 @@ typedef struct tda_sintactico{
 	char error_mensaje[30];
 	/*Estos son los tokens validos como clave */
     TipoToken tValidos[4]; /*indica los tokens validos que pueden venir. nose x q lo borraron*/
-	TipoToken Vtoken[4]; /* indica en que situacion estoy con un flag en el token adecuado*/
+	int Vtoken[4]; /* indica en que situacion estoy con un flag en el token adecuado*/
 }TSintactico;
+
+typedef enum {OBJETO,STRING,NUMERO,ARRAY,COMA}E_token; /*defino un tipo enumerado para saber en que condicion de esos tipos estoy*/
 
 
 

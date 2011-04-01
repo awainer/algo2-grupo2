@@ -7,11 +7,13 @@
 
 int TSintactico_Crear(TSintactico* as){
     as->error_codigo=0;
-/*    as->tValidos[0]=TOKEN_OBJETO_EMPIEZA;
+    as->tValidos[0]=TOKEN_OBJETO_EMPIEZA;
     as->tValidos[1]=TOKEN_NULL;
-/*    as->Vtoken=[TOKEN_STRING,TOKEN_NUMERO,TOKEN_ARRAY_EMPIEZA,TOKEN_COMA];*/
-
-
+    as->Vtoken[OBJETO]=0;
+    as->Vtoken[STRING]=0;
+    as->Vtoken[NUMERO]=0;
+    as->Vtoken[ARRAY]=0;
+    as->Vtoken[COMA]=0;
     return 0;
     }
 
@@ -20,14 +22,16 @@ int TSintactico_PushToken(TSintactico* as, Token* token){
 	/* Este codigo es para debug, agregado por Ari*/
 	printf("Recibo un token de tipo %d y dato %s\n",token->tipo,token->dato);
 	return 0;
+
+
+
 	/* int i=0;
     int entre=0;
-    as->Vtoken[6]=1;
     while(TOKEN_NULL != token->tipo){
         as->Vtoken[6]=0;
         switch (token->tipo){
-        case TOKEN_STRING:  while (i<=2) || entre!=1)
-                                if((as->tValidos[i] == token->tipo) && (as->Vtoken[0] == 1)){
+        case TOKEN_STRING:  while (i<=3) || entre!=1)
+                                if((as->tValidos[i] == token->tipo) && (as->Vtoken[STRING] == 1)){
                                     as->tValidos = [TOKEN_DOSPUNTOS,TOKEN_NULL];  //el token null habria que sacarlo porque al ser null termina y queda algo incorrecto sintacticamente.
                                     printf("clave");                               // en los tvalidos habria que agregar el token_coma
                                     entre=1;
@@ -60,10 +64,12 @@ int TSintactico_PushToken(TSintactico* as, Token* token){
 
 
 
-        case TOKEN_OBJETO_EMPIEZA:   while (i<=1) || (entre!=1){
+        case TOKEN_OBJETO_EMPIEZA:   while (i<=3) || (entre!=1){
                                             if(as->tValidos[i] == token->tipo){
                                                 as->tValidos=[TOKEN_OBJETO_TERMINA,TOKEN_STRING,TOKEN_NULL];
-                                                as->Vtoken[0]=1 lo q significa tipo string "clave"                                                 entre=1;
+                                                as->Vtoken[STRING]=1 lo q significa tipo string "clave"
+                                                as->Vtoken[OBJETO]++; incrementa en 1 cuando se abre un objeto
+                                                entre=1;
                                                 printf("OBJETO\n\t");
 
                                                 // ¿Aca deberia imprimir el token ademas de escribir objeto?
@@ -105,8 +111,8 @@ int TSintactico_PushToken(TSintactico* as, Token* token){
 
         case TOKEN_DOSPUNTOS:  while ( i <= 1 ) || entre!=1)
                                     if (as->tValidos[i] == token->tipo) {
-                                        as->tValidos = [TOKEN_STRING,TOKEN_NUMERO,TOKEN_ARRAY_EMPIEZA];  // no estoy seguro de que vaya el token_null,si va acordate de modificar el numero del while
-                                        as->Vtoken[0]=2;     /*lo q significa tipo de string "string"
+                                        as->tValidos = [TOKEN_STRING,TOKEN_NUMERO,TOKEN_ARRAY_EMPIEZA,TOKEN_OBJETO_EMPIEZA,];  // no estoy seguro de que vaya el token_null,si va acordate de modificar el numero del while
+                                        as->Vtoken[STRING]=2;     /*lo q significa tipo de string "string"
                                         entre=1;
                                         printf( " : " ) ;}
                                     else
