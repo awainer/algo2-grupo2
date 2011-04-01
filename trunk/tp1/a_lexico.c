@@ -36,6 +36,7 @@ if (TSintactico_PushToken(al->sintactico,&al->token)==0)
             {
                 al->error_codigo=1;
                 strcpy(al->error_mensaje,"El asintactico me devolvio error");
+                printf("Error sintactico");
                 return 1;
            }
 
@@ -91,10 +92,8 @@ if (al->token.tipo==TOKEN_NUMERO)
     {
     return Tlexico_push_token(al,al->sintactico);
     }
-
+    /*Todos estos son otros caracteres que delimitan un numero, para los que tengo que enviar dos tokens, esto habria que modularizarlo un poco */
     if(c==',')
-    /*Esto no esta muy bueno asi, pero no se me ocurre una forma mejor
-    porque cuando recibo una coma en medio de un numero, tengo que mandar 2 tokens */
     {
         if(Tlexico_push_token(al,al->sintactico)==0)
         {
@@ -103,14 +102,13 @@ if (al->token.tipo==TOKEN_NUMERO)
         }
         else
         {
-            al->error_codigo=1;
+            al->error_codigo=2;
             strcpy(al->error_mensaje,"El asintactico me devolvio error");
-            return 1;
+            printf("Error sintactico");
+            return al->error_codigo;
         }
     }
     else if(c==']')
-    /*Esto no esta muy bueno asi, pero no se me ocurre una forma mejor
-    porque cuando recibo una coma en medio de un numero, tengo que mandar 2 tokens */
     {
         if(Tlexico_push_token(al,al->sintactico)==0)
         {
@@ -119,14 +117,14 @@ if (al->token.tipo==TOKEN_NUMERO)
         }
         else
         {
-            al->error_codigo=1;
+            al->error_codigo=2;
             strcpy(al->error_mensaje,"El asintactico me devolvio error");
-            return 1;
+            printf("Error sintactico");
+            return al->error_codigo;
         }
     }
     else if(c=='}')
-    /*Esto no esta muy bueno asi, pero no se me ocurre una forma mejor
-    porque cuando recibo una coma en medio de un numero, tengo que mandar 2 tokens */
+
     {
         if(Tlexico_push_token(al,al->sintactico)==0)
         {
@@ -135,9 +133,10 @@ if (al->token.tipo==TOKEN_NUMERO)
         }
         else
         {
-            al->error_codigo=1;
+            al->error_codigo=2;
             strcpy(al->error_mensaje,"El asintactico me devolvio error");
-            return 1;
+            printf("Error sintactico");
+            return al->error_codigo;
         }
     }
 
@@ -145,7 +144,8 @@ if (al->token.tipo==TOKEN_NUMERO)
 
         al->error_codigo=1;
         strcpy(al->error_mensaje,"Caracter inesperado en medio de un numero");
-        return 1;
+        printf("Error lexico");
+        return al->error_codigo;
     }
 }
 
@@ -181,11 +181,12 @@ else if(c==':')
 else if(c==',')
     al->token.tipo=TOKEN_COMA;
 else if ((c==' ') || (c=='\t') || (c=='\n'))
+        /* Estos caracteres no tienen significado a nivel sintactico, asi que no paso nada*/
         return 0;
 
 else
     {
-    al->error_codigo=2;
+    al->error_codigo=1;
     strcpy(al->error_mensaje,"Caracter no valido");
     return al->error_codigo;
     }
@@ -205,6 +206,8 @@ int TLexico_terminarFlujo(TLexico* al)
 
 int TLexico_getUltimoError(TLexico* al, int  * codigo, char* mensaje)
 {
+    *codigo=al->error_codigo;
+    strcpy(mensaje,al->error_mensaje);
     return 0;
 }
 
