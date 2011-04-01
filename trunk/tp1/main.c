@@ -8,18 +8,28 @@
 
 #include <string.h>
 
-int main(void)
+int main(int argc, char * argv[])
 {
     TLexico  tl;
     TSintactico  ts;
-    char cadena[100];
+    TParser miParser;
+
+    TParser_Crear(&ts,&tl,argv[1],&miParser);
+    TParser_Parsear(&miParser);
+    TParser_Destruir(&miParser);
+
+
+/*    char cadena[20];
     int i;
     strcpy(cadena,":{\"nombre1234\":,1234,\"unarray\":[\"mingo\",\"anibal\"]}");
     TLexico_Crear(&tl);
     TSintactico_Crear(&ts);
     TLexico_setAnalizadorSintactico(&tl,&ts);
 
-    for(i=0; i<strlen(cadena); i++)
+
+
+ Codigo para probar TLexico
+    for(i=0; i<=strlen(cadena); i++)
     {
         printf("mando el caracter %c\n",cadena[i]);
         TLexico_PushChar(&tl,cadena[i]);
@@ -31,6 +41,7 @@ int main(void)
             break;
         }
     }
+*/
     return 0;
 }
 

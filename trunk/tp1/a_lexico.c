@@ -9,6 +9,7 @@ int TLexico_Crear(TLexico* al)
     al->error_codigo=0;
     al->buffer_idx=-1;
     al->token.tipo=TOKEN_NULL;
+    al->token.dato[0]=0;
 
     return 0;
 }
@@ -139,6 +140,7 @@ if (al->token.tipo==TOKEN_NUMERO)
             return 1;
         }
     }
+
     else{
 
         al->error_codigo=1;

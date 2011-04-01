@@ -16,12 +16,14 @@ typedef struct t_parser{
 	TSintactico * as;
 	TLexico  * lex;
     TipoError ultimoError;
+    FILE *  fh;
+    char   c;
 }TParser;
 
 /*
  Descripción: Inicializa una nueva variable de tipo TParser.
  Precondiciones: p apunta a una variable de tipo TParser no creada previamente.
- Postcondiciones: Se inicializó la variable p.
+ Postcondiciones: Se inicializó la variable p. Y se crean el lexico y el sintactico.
  */
 /*int TParser_Crear(TParser * p, TSintactico * ts, TLexico * tl);*/
 int TParser_Crear(TSintactico*  ts,TLexico * tl,char * archivo, TParser * parser);
