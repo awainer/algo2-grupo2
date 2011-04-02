@@ -1,4 +1,11 @@
-{
-"altura":168
-"nombre":"pirulo"
-"unarray":["hola","mundo"]}
+{"diccionario": {
+	"origen": "ES",
+	"destino": "EN",
+	"palabras": [
+		["gato","cat","felino"],
+		["hola","hello",null],
+		["sol","sun","febo"]
+	],
+	"activo": true
+	}
+}

@@ -10,7 +10,11 @@ int TLexico_Crear(TLexico* al)
     al->buffer_idx=-1;
     al->token.tipo=TOKEN_NULL;
     al->token.dato[0]=0;
-
+    strcpy(al->palabras_reservadas[0],"null");
+    strcpy(al->palabras_reservadas[1],"true");
+    strcpy(al->palabras_reservadas[2],"false");
+    /* indice para saber que palabra reservada estamos acumulando*/
+    al->palabra_idx=-1;
     return 0;
 }
 
@@ -28,6 +32,7 @@ if (TSintactico_PushToken(al->sintactico,&al->token)==0)
                 /* Reseteo el token*/
                 al->token.tipo=TOKEN_NULL;
                 al->buffer_idx=-1;
+                al->palabra_idx=-1;
                 al->token.dato[0]=0;
                 return 0;
             }
@@ -166,6 +171,67 @@ if (al->token.tipo==TOKEN_STRING)
     }
 }
 
+/*comienzos de palabras reservadas
+Afortunadamente no existen dos palabras reservadas con la misma inicial*/
+if(c=='n')
+{
+    al->token.tipo=TOKEN_NULL;
+    tlexico_acumular_dato(al,c);
+    al->palabra_idx=0;
+    return 0;
+}
+
+if(c=='t')
+{
+    al->token.tipo=TOKEN_TRUE;
+    tlexico_acumular_dato(al,c);
+    al->palabra_idx=1;
+    return 0;
+}
+
+if(c=='f')
+{
+    al->token.tipo=TOKEN_TRUE;
+    tlexico_acumular_dato(al,c);
+    al->palabra_idx=2;
+    return 0;
+}
+
+/* ahora estamos juntando una palabra reservada*/
+if(al->palabra_idx!=-1)
+{   /*La primera condicion chequea que el caracter coincida con el string de
+    la palabra reservada que continua
+    La segunda condicion chequea que no se exceda en cantidad de caracteres*/
+    if((c==al->palabras_reservadas[al->palabra_idx][al->buffer_idx+1]) &&
+       (al->buffer_idx < strlen(al->token.dato)))
+       {
+       tlexico_acumular_dato(al,c);
+       return 0;
+       }
+
+    else
+       {
+        al->error_codigo=1;
+        strcpy(al->error_mensaje,"Caracter no valido en medio de palabra reservada");
+        printf("error lexico\n");
+        return al->error_codigo;
+       }
+    if ((al->buffer_idx +1 )== strlen(al->token.dato))
+    {
+        /*entonces termine de acumular una palabra reservada*/
+        if(Tlexico_push_token(al,al->sintactico)==0)
+           return 0;
+        else
+          {
+            al->error_codigo=2;
+            strcpy(al->error_mensaje,"El asintactico me devolvio error");
+            printf("Error sintactico");
+            return al->error_codigo;
+          }
+
+    }
+}
+
 /*Estos son los tokens "atomicos" */
 
 if(c=='{')
@@ -180,7 +246,8 @@ else if(c==':')
     al->token.tipo=TOKEN_DOSPUNTOS;
 else if(c==',')
     al->token.tipo=TOKEN_COMA;
-else if ((c==' ') || (c=='\t') || (c=='\n'))
+else if ((c==' ') || (c=='\t') || (c=='\n') || (c==10) || (c==13))
+        /* 10=CL, 13=CF*/
         /* Estos caracteres no tienen significado a nivel sintactico, asi que no paso nada*/
         return 0;
 
@@ -188,6 +255,7 @@ else
     {
     al->error_codigo=1;
     strcpy(al->error_mensaje,"Caracter no valido");
+    printf("error lexico\n");
     return al->error_codigo;
     }
 return Tlexico_push_token(al,al->sintactico);
