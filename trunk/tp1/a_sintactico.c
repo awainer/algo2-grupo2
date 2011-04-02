@@ -26,6 +26,58 @@ int TSintactico_Crear(TSintactico* as){
 
     return 0;
     }
+
+int TSintacticoCasoValor(TSintactico * as,Token * token)
+
+{
+    switch (token->tipo)
+    {
+        case TOKEN_STRING:  as->estado_idx++;
+                            as->estado[as->estado_idx]=VALOR;
+                            TSintacticoImpimir(token);        /*agregar caso al switch para imprimir*/
+                            return 0;
+                            break;
+        case TOKEN_NUMERO:  as->estado_idx++;
+                            as->estado[as->estado_idx]=VALOR;
+                            TSintacticoImpimir(token);        /*agregar caso al switch para imprimir*/
+                            return 0;
+                            break;
+
+
+        case TOKEN_OBJETO_EMPIEZA:      as->estado_idx++;
+                                        as->estado[as->estado_idx]=OBJETO;
+                                        TSintacticoImpimir(token);        /*agregar caso al switch para imprimir*/
+                                        return 0;
+                                        break;
+
+        case TOKEN_ARRAY_EMPIEZA:   as->estado_idx++;
+                                    as->estado[as->estado_idx]=ARRAY;
+                                    TSintacticoImpimir(token);        /*agregar caso al switch para imprimir*/
+                                    return 0;
+                                    break;
+         case TOKEN_TRUE:           as->estado_idx++;
+                                    as->estado[as->estado_idx]=VALOR;
+                                    TSintacticoImpimir(token);        /*agregar caso al switch para imprimir*/
+                                    return 0;
+                                    break;
+          case TOKEN_FALSE:           as->estado_idx++;
+                                    as->estado[as->estado_idx]=VALOR;
+                                    TSintacticoImpimir(token);        /*agregar caso al switch para imprimir*/
+                                    return 0;
+                                    break;
+
+           case TOKEN_NULL:          as->estado_idx++;
+                                    as->estado[as->estado_idx]=VALOR;
+                                    TSintacticoImpimir(token);        /*agregar caso al switch para imprimir*/
+                                    return 0;
+                                    break;
+        default : { strcpy(as->error_mensaje,"se esperaba un valor");
+                as->error_codigo=1;
+                return as->error_codigo; }
+
+    }
+}
+
 void TSintacticoImpimir(Token * token)
 {
     switch(token->tipo)
@@ -104,13 +156,9 @@ if(as->estado[as->estado_idx]==CLAVE)
 }
 /* Si lo ultimo recibido fue un array, ahora tengo que recibir un valor*/
  if (as->estado[as->estado_idx]== ARRAY)
- {
-     if(token->tipo==TOKEN_DOSPUNTOS)
-     {
-      as->estado_idx++;
-      as->estado[as->estado_idx]=VALOR;
-      TSintacticoImpimir(token);        /*agregar caso al switch*/
-      return 0;
+ {  TSintacticoCasoValor(as,token)
+
+
      }
  }
 
