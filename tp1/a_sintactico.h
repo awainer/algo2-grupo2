@@ -8,7 +8,7 @@ typedef struct tda_sintactico{
 	int  error_codigo;
 	char error_mensaje[30];
 	/*Estos son los tokens validos como clave */
-    TipoToken tValidos[4]; /*indica los tokens validos que pueden venir. nose x q lo borraron*/
+    TipoToken tValidos[11]; /*indica los tokens validos que pueden venir. nose x q lo borraron*/
 	int Vtoken[4]; /* indica en que situacion estoy con un flag en el token adecuado*/
 }TSintactico;
 
