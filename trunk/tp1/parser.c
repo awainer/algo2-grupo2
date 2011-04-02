@@ -10,7 +10,10 @@ int TParser_Crear(TSintactico*  ts,TLexico * tl,char * archivo, TParser * parser
     parser->fh=fopen(archivo,"r");
 
     printf("El archivo es %s\n",archivo);
-
+    if(parser->fh==NULL)
+    {   printf("No puedo abrir el archivo %s",archivo);
+        exit(5);
+    }
     TLexico_Crear(parser->lex);
     TSintactico_Crear(parser->as);
     TLexico_setAnalizadorSintactico(parser->lex,parser->as);
@@ -21,12 +24,12 @@ int TParser_Parsear(TParser * parser){
     parser->c=getc(parser->fh);
     while((parser->c!=EOF) && (parser->ultimoError == E_NONE))
     {
-        printf("%c\n",parser->c);
+      /*  printf("%c\n",parser->c);*/
         parser->ultimoError=TLexico_PushChar(parser->lex,parser->c);
         parser->c=getc(parser->fh);
 
     }
-    printf("%s %d",parser->lex->error_mensaje,parser->c);
+    /*printf("%s %d",parser->lex->error_mensaje,parser->c);*/
     TParser_TerminarFlujo(parser);
     return 0;
 }
