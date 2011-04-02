@@ -191,7 +191,7 @@ if(c=='t')
 
 if(c=='f')
 {
-    al->token.tipo=TOKEN_TRUE;
+    al->token.tipo=TOKEN_FALSE;
     tlexico_acumular_dato(al,c);
     al->palabra_idx=2;
     return 0;
@@ -203,33 +203,37 @@ if(al->palabra_idx!=-1)
     la palabra reservada que continua
     La segunda condicion chequea que no se exceda en cantidad de caracteres*/
     if((c==al->palabras_reservadas[al->palabra_idx][al->buffer_idx+1]) &&
-       (al->buffer_idx < strlen(al->token.dato)))
+       (al->buffer_idx < strlen( al->palabras_reservadas[al->palabra_idx] )))
        {
        tlexico_acumular_dato(al,c);
-       return 0;
+       /* nos fijamos si termino la palabra */
+       if(strcmp(al->token.dato,al->palabras_reservadas[al->palabra_idx])==0)
+       {
+        /*entonces termine de acumular una palabra reservada*/
+            if(Tlexico_push_token(al,al->sintactico)==0)
+                return 0;
+            else
+            {
+                al->error_codigo=2;
+                strcpy(al->error_mensaje,"El asintactico me devolvio error");
+                printf("Error sintactico");
+                return al->error_codigo;
+            }
+
+        }
+
+        return 0;
+
        }
 
     else
-       {
+       { printf("%d",strlen(al->token.dato));
         al->error_codigo=1;
         strcpy(al->error_mensaje,"Caracter no valido en medio de palabra reservada");
         printf("error lexico\n");
         return al->error_codigo;
        }
-    if ((al->buffer_idx +1 )== strlen(al->token.dato))
-    {
-        /*entonces termine de acumular una palabra reservada*/
-        if(Tlexico_push_token(al,al->sintactico)==0)
-           return 0;
-        else
-          {
-            al->error_codigo=2;
-            strcpy(al->error_mensaje,"El asintactico me devolvio error");
-            printf("Error sintactico");
-            return al->error_codigo;
-          }
 
-    }
 }
 
 /*Estos son los tokens "atomicos" */
