@@ -21,11 +21,12 @@ int TParser_Parsear(TParser * parser){
     parser->c=getc(parser->fh);
     while((parser->c!=EOF) && (parser->ultimoError == E_NONE))
     {
-        /*printf("%c",parser->c);*/
+        printf("%c\n",parser->c);
         parser->ultimoError=TLexico_PushChar(parser->lex,parser->c);
         parser->c=getc(parser->fh);
 
     }
+    printf("%s %d",parser->lex->error_mensaje,parser->c);
     TParser_TerminarFlujo(parser);
     return 0;
 }

@@ -8,6 +8,8 @@ typedef struct tlexico{
 	int  error_codigo;
 	char  error_mensaje[30];
 	int   buffer_idx;
+	char  palabras_reservadas[3][20];
+	int   palabra_idx;
 	Token  token;
 	}TLexico;
 
