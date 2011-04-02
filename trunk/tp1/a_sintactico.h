@@ -7,7 +7,9 @@ typedef enum{
     OBJETO,
     CLAVE,
     VALOR,
-    ARRAY
+    ARRAY,
+    DOSP,
+    COMA
 }TipoEstado;
 
 typedef struct tda_sintactico{

@@ -44,15 +44,21 @@ int TSintactico_PushToken(TSintactico* as, Token* token){
 	if(as->estado[as->estado_idx]==NADA)
 	{
 	    /*Estos son los tokens validos como primeros tokens */
-	    if ((token->tipo==TOKEN_ARRAY_EMPIEZA) || (token->tipo==TOKEN_OBJETO_EMPIEZA))
+	    if (token->tipo==TOKEN_ARRAY_EMPIEZA)
          {
             as->estado_idx++;
-            as->estado[as->estado_idx]=TOKEN_ARRAY_EMPIEZA;
+            as->estado[as->estado_idx]=ARRAY;
             TSintacticoImpimir(token);
             return 0;
          }
-        else
-         {
+        else if (token->tipo==TOKEN_OBJETO_EMPIEZA)
+        {
+            as->estado_idx++;
+            as->estado[as->estado_idx]=OBJETO;
+            TSintacticoImpimir(token);
+            return 0;
+        }
+        else {
             strcpy(as->error_mensaje,"Recibi un token suelto");
             as->error_codigo=1;
             return as->error_codigo;
@@ -60,7 +66,7 @@ int TSintactico_PushToken(TSintactico* as, Token* token){
 
 	}
 
-if(as->estado[as->estado_idx]==NADA)
+if(as->estado[as->estado_idx]==OBJETO)
 {
     /*Estos son los tokens validos si lo ultimo que hize fue abrir un objeto */
     /* Faltaria ver los casos de elementos sueltos dentro de objetos*/
@@ -69,6 +75,7 @@ if(as->estado[as->estado_idx]==NADA)
            /*esto es una clave*/
            as->estado_idx++;
            as->estado[as->estado_idx]=CLAVE;
+           TSintacticoImpimir(token); /*llamar a otra funcion para imprimir tipo clave*/
            return 0;
        }
     else
@@ -84,10 +91,28 @@ if(as->estado[as->estado_idx]==CLAVE)
     if(token->tipo==TOKEN_DOSPUNTOS)
     {
       as->estado_idx++;
-      as->estado[as->estado_idx]=VALOR;
+      as->estado[as->estado_idx]=DOSP;
+      TSintacticoImpimir(token);        /*agregar caso al switch*/
       return 0;
     }
+    else
+    {
+        strcpy(as->error_mensaje,"Se esperaba dos puntos");
+        as->error_codigo=1;
+        return as->error_codigo;
+    }
 }
+/* Si lo ultimo recibido fue un array, ahora tengo que recibir un valor*/
+ if (as->estado[as->estado_idx]== ARRAY)
+ {
+     if(token->tipo==TOKEN_DOSPUNTOS)
+     {
+      as->estado_idx++;
+      as->estado[as->estado_idx]=VALOR;
+      TSintacticoImpimir(token);        /*agregar caso al switch*/
+      return 0;
+     }
+ }
 
 
 	return 0;
