@@ -7,7 +7,7 @@
 
 int TSintactico_Crear(TSintactico* as){
     as->error_codigo=0;
-    as->tValidos[0]=TOKEN_OBJETO_EMPIEZA;
+   /* as->tValidos[0]=TOKEN_OBJETO_EMPIEZA;
     as->tValidos[1]=TOKEN_ARRAY_EMPIEZA;
     as->tValidos[2]=-1;
     as->tValidos[3]=-1;
@@ -21,15 +21,75 @@ int TSintactico_Crear(TSintactico* as){
     as->Vtoken[STRING]=0;
     as->Vtoken[NUMERO]=0;
     as->Vtoken[ARRAY]=0;
-    as->Vtoken[COMA]=0;
-    int T=0;
+    as->Vtoken[COMA]=0;*/
+    as->estado[0]=NADA;
+
     return 0;
     }
-
+void TSintacticoImpimir(Token * token)
+{
+    switch(token->tipo)
+    {
+        case TOKEN_STRING : { printf("(String): \"%s\"" ,token->dato); }
+        case TOKEN_NUMERO : { printf("(Numero): \"%s\"" ,token->dato); }
+        case TOKEN_OBJETO_EMPIEZA : { printf("OBJETO\n"); }
+    /*FALTAN TOKENS! */
+    }
+}
 int TSintactico_PushToken(TSintactico* as, Token* token){
+	printf("Recibo un token de tipo %d y dato %s\n",token->tipo,token->dato);
 
 	 /*Este codigo es para debug, agregado por Ari*/
-	printf("Recibo un token de tipo %d y dato %s\n",token->tipo,token->dato);
+
+	if(as->estado[as->estado_idx]==NADA)
+	{
+	    /*Estos son los tokens validos como primeros tokens */
+	    if ((token->tipo==TOKEN_ARRAY_EMPIEZA) || (token->tipo==TOKEN_OBJETO_EMPIEZA))
+         {
+            as->estado_idx++;
+            as->estado[as->estado_idx]=TOKEN_ARRAY_EMPIEZA;
+            TSintacticoImpimir(token);
+            return 0;
+         }
+        else
+         {
+            strcpy(as->error_mensaje,"Recibi un token suelto");
+            as->error_codigo=1;
+            return as->error_codigo;
+         }
+
+	}
+
+if(as->estado[as->estado_idx]==NADA)
+{
+    /*Estos son los tokens validos si lo ultimo que hize fue abrir un objeto */
+    /* Faltaria ver los casos de elementos sueltos dentro de objetos*/
+    if(token->tipo==TOKEN_STRING)
+       {
+           /*esto es una clave*/
+           as->estado_idx++;
+           as->estado[as->estado_idx]=CLAVE;
+           return 0;
+       }
+    else
+       {
+          strcpy(as->error_mensaje,"Se esperaba una clave");
+          as->error_codigo=1;
+          return as->error_codigo;
+       }
+}
+/* Si lo ultimo recibido fue una clave, ahora tengo que recibir un dospuntos*/
+if(as->estado[as->estado_idx]==CLAVE)
+{
+    if(token->tipo==TOKEN_DOSPUNTOS)
+    {
+      as->estado_idx++;
+      as->estado[as->estado_idx]=VALOR;
+      return 0;
+    }
+}
+
+
 	return 0;
 
 

@@ -2,17 +2,28 @@
 #define A_SINTACTICO_H_INCLUDED
 
 #include "token.h"
+typedef enum{
+    NADA,
+    OBJETO,
+    CLAVE,
+    VALOR,
+    ARRAY
+}TipoEstado;
 
 typedef struct tda_sintactico{
 	/* El ultimo error recibido, 0 es ok. */
 	int  error_codigo;
 	char error_mensaje[30];
+	int  estado[50];
+	int  estado_idx;
+	/* comento esto para mostrar mi idea*/
 	/*Estos son los tokens validos como clave */
-    TipoToken tValidos[11]; /*indica los tokens validos que pueden venir. nose x q lo borraron*/
-	int Vtoken[4]; /* indica en que situacion estoy con un flag en el token adecuado*/
+   /* TipoToken tValidos[4]; /*indica los tokens validos que pueden venir. nose x q lo borraron*/
+	/*int Vtoken[4]; /* indica en que situacion estoy con un flag en el token adecuado*/
+
 }TSintactico;
 
-typedef enum {OBJETO,STRING,NUMERO,ARRAY,COMA}E_token; /*defino un tipo enumerado para saber en que condicion de esos tipos estoy*/
+/*typedef enum {OBJETO,STRING,NUMERO,ARRAY,COMA}E_token; /*defino un tipo enumerado para saber en que condicion de esos tipos estoy*/
 
 
 
