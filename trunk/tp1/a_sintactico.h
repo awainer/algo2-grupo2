@@ -60,9 +60,9 @@ mismo.
 int TSintactico_getUltimoError(TSintactico*  as, int *codigo, char* mensaje);
 
 /*
-Descripción:
-Precondiciones:
-Postcondiciones:
+Descripción: Devuelve lo correspondiente a cada token con el que se esté trabajando.
+Precondiciones: as y token inicializados.
+Postcondiciones: Devuelve por pantalla el código de cada token.
 */
 void TSintacticoImpimir(TSintactico * as, Token * token);
 
