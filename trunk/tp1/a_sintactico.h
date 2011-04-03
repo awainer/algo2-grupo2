@@ -18,14 +18,14 @@ typedef struct tda_sintactico{
 	char error_mensaje[30];
 	int  estado[50];
 	int  estado_idx;
-	/* comento esto para mostrar mi idea*/
-	/*Estos son los tokens validos como clave */
-   /* TipoToken tValidos[4]; /*indica los tokens validos que pueden venir. nose x q lo borraron*/
-	/*int Vtoken[4]; /* indica en que situacion estoy con un flag en el token adecuado*/
+	/* comento esto para mostrar mi idea
+	 Estos son los tokens validos como clave
+   TipoToken tValidos[4]; indica los tokens validos que pueden venir. nose x q lo borraron
+	int Vtoken[4];  indica en que situacion estoy con un flag en el token adecuado*/
 
 }TSintactico;
 
-/*typedef enum {OBJETO,STRING,NUMERO,ARRAY,COMA}E_token; /*defino un tipo enumerado para saber en que condicion de esos tipos estoy*/
+/*typedef enum {OBJETO,STRING,NUMERO,ARRAY,COMA}E_token; defino un tipo enumerado para saber en que condicion de esos tipos estoy*/
 
 
 
@@ -55,7 +55,15 @@ int TSintactico_terminarFlujo(TSintactico* as);
 Descripción: Devuelve una descripción mas detallada del ultimo error ocurrido.
 Precondiciones: as esta inicializado. Ocurrió un error al procesar un flujo de tokens.
 Postcondiciones: Se devuelve un código de error y en mensaje un mensaje descriptivo del
-mismo.*/
+mismo.
+*/
 int TSintactico_getUltimoError(TSintactico*  as, int *codigo, char* mensaje);
+
+/*
+Descripción:
+Precondiciones:
+Postcondiciones:
+*/
+void TSintacticoImpimir(TSintactico * as, Token * token);
 
 #endif
