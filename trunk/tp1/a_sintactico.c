@@ -101,7 +101,7 @@ void TSintacticoImpimir(TSintactico * as, Token * token)
 
         case TOKEN_FALSE : printf(" (boolean) : FALSE \n");
 
-        case TOKEN_NULL : (printf(" (Null) : "   " \n " );
+        case TOKEN_NULL : printf(" (Null) :    \n ");
 
         case TOKEN_ARRAY_TERMINA: printf( " FIN ARRAY \n " );
 
@@ -198,15 +198,23 @@ if(as->estado[as->estado_idx]==CLAVE)
         }
     else if ((token->tipo==TOKEN_OBJETO_TERMINA) && (as->estado[as->estado_idx-1]== OBJETO))
     {
-
-
+        as->estado_idx--;                                           /* si viene un objeto_cierra, y antes tenia un objeto, entonces vuelvo una posicion */
+        as->estado[as->estado_idx]= as->estado[as->estado_idx-1];   /* y en la posicion donde estoy parado meto el estado que tengo antes, este estado va a ser pisado por el prox token que venga*/
+        TSintacticoImpimir(as,token);                               /* con esto me desice del objeto_cierra y el prox token que venga a a pisar al estado objeto_empieza */
+        return 0;
     }
 
-                /*aca estoy trabajando domingo 3/4/11*/
+   /* else if (( token->tipo == TOKEN_ARRAY_TERMINA) && (as->estado[estado_idx-1] == ARRAY ))
+    {
+        as->estado_idx--;
+        as->estado[as->estado_idx]= as->estado[as-estado_idx-1];
+        TSintacticoImpimir(as,token);
+        return 0;  */
+    }
 
 
 
-
+    else
 
     {
         strcpy(as->error_mensaje,"Se esperaba una coma");
