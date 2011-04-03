@@ -34,41 +34,41 @@ int TSintacticoCasoValor(TSintactico * as,Token * token)
     {
         case TOKEN_STRING:  as->estado_idx++;
                             as->estado[as->estado_idx]=VALOR;
-                            TSintacticoImpimir(token);        /*agregar caso al switch para imprimir*/
+                            TSintacticoImpimir(as, token);        /*agregar caso al switch para imprimir*/
                             return 0;
                             break;
         case TOKEN_NUMERO:  as->estado_idx++;
                             as->estado[as->estado_idx]=VALOR;
-                            TSintacticoImpimir(token);        /*agregar caso al switch para imprimir*/
+                            TSintacticoImpimir(as,token);        /*agregar caso al switch para imprimir*/
                             return 0;
                             break;
 
 
         case TOKEN_OBJETO_EMPIEZA:      as->estado_idx++;
                                         as->estado[as->estado_idx]=OBJETO;
-                                        TSintacticoImpimir(token);        /*agregar caso al switch para imprimir*/
+                                        TSintacticoImpimir(as, token);        /*agregar caso al switch para imprimir*/
                                         return 0;
                                         break;
 
         case TOKEN_ARRAY_EMPIEZA:   as->estado_idx++;
                                     as->estado[as->estado_idx]=ARRAY;
-                                    TSintacticoImpimir(token);        /*agregar caso al switch para imprimir*/
+                                    TSintacticoImpimir(as, token);        /*agregar caso al switch para imprimir*/
                                     return 0;
                                     break;
          case TOKEN_TRUE:           as->estado_idx++;
                                     as->estado[as->estado_idx]=VALOR;
-                                    TSintacticoImpimir(token);        /*agregar caso al switch para imprimir*/
+                                    TSintacticoImpimir(as,token);        /*agregar caso al switch para imprimir*/
                                     return 0;
                                     break;
           case TOKEN_FALSE:           as->estado_idx++;
                                     as->estado[as->estado_idx]=VALOR;
-                                    TSintacticoImpimir(token);        /*agregar caso al switch para imprimir*/
+                                    TSintacticoImpimir(as,token);        /*agregar caso al switch para imprimir*/
                                     return 0;
                                     break;
 
            case TOKEN_NULL:          as->estado_idx++;
                                     as->estado[as->estado_idx]=VALOR;
-                                    TSintacticoImpimir(token);        /*agregar caso al switch para imprimir*/
+                                    TSintacticoImpimir(as,token);        /*agregar caso al switch para imprimir*/
                                     return 0;
                                     break;
         default : { strcpy(as->error_mensaje,"se esperaba un valor");
@@ -78,13 +78,13 @@ int TSintacticoCasoValor(TSintactico * as,Token * token)
     }
 }
 
-void TSintacticoImpimir(Token * token)
+void TSintacticoImpimir(TSintactico * as, Token * token)
 {
     switch(token->tipo)
     {
-        case TOKEN_STRING : { printf("(String): \"%s\"" ,token->dato); }
+        case TOKEN_STRING : { printf("(String): \"%s\"" ,token->dato); } /* poner un if para diferenciar clave de valor*/
         case TOKEN_NUMERO : { printf("(Numero): \"%s\"" ,token->dato); }
-        case TOKEN_OBJETO_EMPIEZA : { printf("OBJETO\n"); }
+        case TOKEN_OBJETO_EMPIEZA : { printf("OBJETO\n"); }                 /* poner un if para diferenciar objeto de (objeto):objeto y con arraytmb*/
     /*FALTAN TOKENS! */
     }
 }
@@ -100,14 +100,14 @@ int TSintactico_PushToken(TSintactico* as, Token* token){
          {
             as->estado_idx++;
             as->estado[as->estado_idx]=ARRAY;
-            TSintacticoImpimir(token);
+            TSintacticoImpimir(as,token);
             return 0;
          }
         else if (token->tipo==TOKEN_OBJETO_EMPIEZA)
         {
             as->estado_idx++;
             as->estado[as->estado_idx]=OBJETO;
-            TSintacticoImpimir(token);
+            TSintacticoImpimir(as,token);
             return 0;
         }
         else {
@@ -127,7 +127,7 @@ if(as->estado[as->estado_idx]==OBJETO)
            /*esto es una clave*/
            as->estado_idx++;
            as->estado[as->estado_idx]=CLAVE;
-           TSintacticoImpimir(token); /*llamar a otra funcion para imprimir tipo clave*/
+           TSintacticoImpimir(as, token); /*llamar a otra funcion para imprimir tipo clave*/
            return 0;
        }
     else
@@ -144,7 +144,7 @@ if(as->estado[as->estado_idx]==CLAVE)
     {
       as->estado_idx++;
       as->estado[as->estado_idx]=DOSP;
-      TSintacticoImpimir(token);        /*agregar caso al switch*/
+      TSintacticoImpimir(as,token);        /*agregar caso al switch*/
       return 0;
     }
     else
@@ -156,11 +156,32 @@ if(as->estado[as->estado_idx]==CLAVE)
 }
 /* Si lo ultimo recibido fue un array, ahora tengo que recibir un valor*/
  if (as->estado[as->estado_idx]== ARRAY)
- {  TSintacticoCasoValor(as,token)
-
-
-     }
+{
+     TSintacticoCasoValor(as,token);
+}
+ /*si lo ultimo recibido fue un valor, ahora tengo q recibir una coma*/
+ if (as->estado[as->estado_idx]== VALOR)
+ {
+     if(token->tipo==TOKEN_COMA)
+        {
+        as->estado_idx++;
+        as->estado[as->estado_idx]=COMA;
+        TSintacticoImpimir(as,token);        /*agregar caso al switch*/
+        return 0;
+        }
+    else
+    {
+        strcpy(as->error_mensaje,"Se esperaba una coma");
+        as->error_codigo=1;
+        return as->error_codigo;
+    }
  }
+ /*si lo ultimo recibido fue una coma, ahora tengo q recibir un valor*/
+ if (as->estado[as->estado_idx]== COMA)
+ {
+     TSintacticoCasoValor(as,token);
+ }
+
 
 
 	return 0;
