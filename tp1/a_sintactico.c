@@ -396,6 +396,16 @@ if(as->estado[as->estado_idx]==CLAVE)
 
 
 int TSintactico_terminarFlujo(TSintactico* as){
+	/*fclose(archivo);  *- Se cierra el documento .JSON con el que estabamos trabajando.
+					    - La variable archivo es un puntero a archivo (FALTA DECLARARLO).
+						*
+	if (as->error_codigo == 1)             * De haberse terminado el flujo en estado inconsistente, devuelve mensaje del error. *
+		printf("ERROR DE SINTAXIS");
+
+
+	int TSintactico_Crear(as);
+	 *Se reinició el TDA para procesar otro flujo. */
+
     return 0;
     }
 
