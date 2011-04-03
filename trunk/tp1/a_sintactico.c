@@ -75,19 +75,38 @@ void TSintacticoImpimir(TSintactico * as, Token * token)
                                 printf("CLAVE: \"%s\"" ,token->dato);
                             else
                                 printf("(String): \"%s\"" ,token->dato);
+
+
         case TOKEN_NUMERO :  printf("(Numero): \"%s\"" ,token->dato);
+
+
         case TOKEN_DOSPUNTOS: printf(" : ");
+
+
         case TOKEN_COMA: printf("\n");
 
         case TOKEN_OBJETO_EMPIEZA : if (as->estado[as->estado_idx-1]==NADA)
                                         printf("OBJETO\n");
                                     else
                                         printf("(Objeto): OBJETO \n");
+
+
         case TOKEN_ARRAY_EMPIEZA : if (as->estado[as->estado_idx-1]==NADA)
                                         printf("ARRAY\n");
                                     else
                                         printf("(Array): ARRAY \n");
-    /*FALTAN TOKENS! */
+
+
+        case TOKEN_TRUE :  printf(" (boolean): TRUE \n");
+
+        case TOKEN_FALSE : printf(" (boolean) : FALSE \n");
+
+        case TOKEN_NULL : (printf(" (Null) : "   " \n " );
+
+        case TOKEN_ARRAY_TERMINA: printf( " FIN ARRAY \n " );
+
+        case TOKEN_OBJETO_TERMINA: printf( " FIN OBJETO \n ");
+
     }
 }
 int TSintactico_PushToken(TSintactico* as, Token* token){
