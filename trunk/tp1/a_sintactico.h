@@ -25,7 +25,6 @@ typedef struct tda_sintactico{
 
 }TSintactico;
 
-/*typedef enum {OBJETO,STRING,NUMERO,ARRAY,COMA}E_token; defino un tipo enumerado para saber en que condicion de esos tipos estoy*/
 
 
 
