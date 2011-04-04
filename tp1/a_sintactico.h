@@ -63,6 +63,6 @@ Descripción: Devuelve lo correspondiente a cada token con el que se esté traba
 Precondiciones: as y token inicializados.
 Postcondiciones: Devuelve por pantalla el código del token que entre en la función.
 */
-void TSintacticoImpimir(TSintactico * as, Token * token);
+int TSintacticoImpimir(TSintactico * as, Token * token);
 
 #endif

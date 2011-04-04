@@ -14,6 +14,10 @@ int main(int argc, char * argv[])
     TSintactico  ts;
     TParser miParser;
 
+    /*setbuf(stdout, NULL);*/
+
+
+
     TParser_Crear(&ts,&tl,argv[1],&miParser);
     TParser_Parsear(&miParser);
     TParser_Destruir(&miParser);
