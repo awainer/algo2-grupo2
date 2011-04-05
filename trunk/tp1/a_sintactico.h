@@ -18,6 +18,7 @@ typedef struct tda_sintactico{
 	char error_mensaje[30];
 	int  estado[50];
 	int  estado_idx;
+	int  pos;
 	/* comento esto para mostrar mi idea
 	 Estos son los tokens validos como clave
    TipoToken tValidos[4]; indica los tokens validos que pueden venir. nose x q lo borraron
