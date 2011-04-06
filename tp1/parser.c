@@ -30,20 +30,21 @@ int TParser_Parsear(TParser * parser){
 
     }
     /*printf("%s %d",parser->lex->error_mensaje,parser->c);*/
-    TParser_TerminarFlujo(parser);
-    return 0;
+    return TParser_TerminarFlujo(parser);
+
 }
 
 
 int TParser_TerminarFlujo(TParser * p)
 {
-    return 0;
+    return TLexico_terminarFlujo(p->lex);
 }
 
 int TParser_getUltimoError(TParser* p, int * codigo, char  mensaje[50])
 {
 
     *codigo=p->lex->error_codigo;
+
     switch(*codigo)
     {
 
