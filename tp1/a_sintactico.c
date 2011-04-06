@@ -89,7 +89,14 @@ int TSintacticoImpimir(TSintactico * as, Token * token){
                             }
                             return 0;
 
-        case TOKEN_NUMERO :  printf("(Numero): %s\n" ,token->dato);
+        case TOKEN_NUMERO : if (as->estado[as->estado_idx-1]==ARRAY)
+                                {
+                                    for (i=0 ; i<as->tab ; i++)
+                                        printf("\t");
+                                    printf("(Numero): %s\n" ,token->dato);
+                                }
+                                else
+                                    printf("(Numero): %s\n" ,token->dato);
                             return 0;
 
         case TOKEN_DOSPUNTOS: printf(" : ");
@@ -104,8 +111,11 @@ int TSintacticoImpimir(TSintactico * as, Token * token){
                                     }
                                     else
                                     {
-                                        printf("(Objeto): OBJETO \n");
-                                        as->tab=as->tab+5;
+                                        if (as->estado[as->estado_idx-as->pos]==OBJETO)
+                                            {
+                                                printf("(Objeto): OBJETO \n");
+                                                as->tab=as->tab+5;
+                                            }
                                     }
                             return 0;
 
@@ -118,15 +128,16 @@ int TSintacticoImpimir(TSintactico * as, Token * token){
                                     {
                                         if (as->estado[as->estado_idx-1]==ARRAY)
                                         {
-                                            as->tab=as->tab+2;
+
                                             for (i=0 ; i<as->tab ; i++)
                                                 printf("\t");
                                             printf("(Array): ARRAY \n");
+                                            as->tab=as->tab+2;
 
                                         }
                                         else
                                         {
-                                            as->tab=as->tab+3;
+                                            as->tab=as->tab+5;
                                             printf("(Array): ARRAY \n");
 
                                         }
@@ -163,15 +174,42 @@ int TSintacticoImpimir(TSintactico * as, Token * token){
                                     printf(" (Null) :    \n ");
 
                             return 0;
-        case TOKEN_ARRAY_TERMINA:   as->tab=as->tab-2;
-                                    for (i=0 ; i<as->tab ; i++)
-                                        printf("\t");
-                                    printf( "\t\t FIN ARRAY \n " );
+        case TOKEN_ARRAY_TERMINA:   if (as->estado[as->estado_idx-1]==ARRAY)
+                                    {
+                                        as->tab=as->tab-2;
+                                        for (i=0 ; i<as->tab ; i++)
+                                            printf("\t");
+                                        printf( "FIN ARRAY \n " );
+                                    }
+                                    else
+                                    {
+                                        as->tab=as->tab-3;
+                                        for (i=0 ; i<as->tab ; i++)
+                                            printf("\t");
+                                        printf( "FIN ARRAY \n " );
+                                        as->tab=as->tab-2;
+                                    }
 
                                     return 0;
 
 
-        case TOKEN_OBJETO_TERMINA: printf( " FIN OBJETO \n ");
+        case TOKEN_OBJETO_TERMINA:  if (as->estado[as->estado_idx-1]==OBJETO)
+                                    {
+                                        as->tab=as->tab-3;
+                                        for (i=0 ; i<as->tab ; i++)
+                                            printf("\t");
+                                        printf( " FIN OBJETO \n ");
+                                        if (as->estado[as->estado_idx-2]==OBJETO)
+                                            as->tab=as->tab-2;
+                                    }
+                                    else
+                                    {
+                                        as->tab=as->tab-3;
+                                        for (i=0 ; i<as->tab ; i++)
+                                            printf("\t");
+                                        printf( " FIN OBJETO \n ");
+                                        as->tab=as->tab-3;
+                                    }
                             return 0;
         default : return 1;
     }
@@ -352,7 +390,7 @@ if(as->estado[as->estado_idx]==CLAVE)
          TSintacticoCasoValor(as,token);
      }
  }
-
+return 0;
 }
 
 
