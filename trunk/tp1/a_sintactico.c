@@ -390,28 +390,34 @@ if(as->estado[as->estado_idx]==CLAVE)
          TSintacticoCasoValor(as,token);
      }
  }
-return 0;
+return as->error_codigo;
 }
 
 
-int TSintactico_terminarFlujo(TSintactico* as){
-	/*fclose(archivo);  *- Se cierra el documento .JSON con el que estabamos trabajando.
-					    - La variable archivo es un puntero a archivo (FALTA DECLARARLO).
-						*
-	if (as->error_codigo == 1)             * De haberse terminado el flujo en estado inconsistente, devuelve mensaje del error. *
-		printf("ERROR DE SINTAXIS");
-	else if (as->error_codigo==NADA)
-            printf("TERMINE BIEN");
+int TSintactico_terminarFlujo(TSintactico* as)
+{
 
+	if (as->estado[as->estado_idx]==NADA)
+		{
+		    TSintactico_Crear(as);          /*Se reinició el TDA para procesar otro flujo. */
+		    return 0;
+		}
+	else
+	{
+	    strcpy(as->error_mensaje,"Fin de flujo antes de cerrar todos los scopes");  /* De haberse terminado el flujo en estado inconsistente, devuelve mensaje del error. */
+	    as->error_codigo=1;
+        return as->error_codigo;
+	}
 
-	int TSintactico_Crear(as);
-	 *Se reinició el TDA para procesar otro flujo. */
 
     return 0;
-    }
+}
 
 
 
 int TSintactico_getUltimoError(TSintactico*  as, int *codigo, char* mensaje){
+
+    *codigo=as->error_codigo;
+    strcpy(mensaje,as->error_mensaje);
     return 0;
     }
