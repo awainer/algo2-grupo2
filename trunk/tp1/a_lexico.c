@@ -41,7 +41,7 @@ if (TSintactico_PushToken(al->sintactico,&al->token)==0)
             {
                 al->error_codigo=1;
                 strcpy(al->error_mensaje,"El asintactico me devolvio error");
-                printf("Error sintactico");
+                /*printf("Error sintactico");*/
                 return 1;
            }
 
@@ -109,7 +109,7 @@ if (al->token.tipo==TOKEN_NUMERO)
         {
             al->error_codigo=2;
             strcpy(al->error_mensaje,"El asintactico me devolvio error");
-            printf("Error sintactico");
+            /*printf("Error sintactico");*/
             return al->error_codigo;
         }
     }
@@ -124,7 +124,7 @@ if (al->token.tipo==TOKEN_NUMERO)
         {
             al->error_codigo=2;
             strcpy(al->error_mensaje,"El asintactico me devolvio error");
-            printf("Error sintactico");
+            /*printf("Error sintactico");*/
             return al->error_codigo;
         }
     }
@@ -140,7 +140,7 @@ if (al->token.tipo==TOKEN_NUMERO)
         {
             al->error_codigo=2;
             strcpy(al->error_mensaje,"El asintactico me devolvio error");
-            printf("Error sintactico");
+            /*printf("Error sintactico");*/
             return al->error_codigo;
         }
     }
@@ -149,7 +149,7 @@ if (al->token.tipo==TOKEN_NUMERO)
 
         al->error_codigo=1;
         strcpy(al->error_mensaje,"Caracter inesperado en medio de un numero");
-        printf("Error lexico");
+        /*printf("Error lexico");*/
         return al->error_codigo;
     }
 }
@@ -216,7 +216,7 @@ if(al->palabra_idx!=-1)
             {
                 al->error_codigo=2;
                 strcpy(al->error_mensaje,"El asintactico me devolvio error");
-                printf("Error sintactico");
+                /*printf("Error sintactico");*/
                 return al->error_codigo;
             }
 
@@ -227,10 +227,10 @@ if(al->palabra_idx!=-1)
        }
 
     else
-       { printf("%d",strlen(al->token.dato));
+       {/* printf("%d",strlen(al->token.dato));*/
         al->error_codigo=1;
         strcpy(al->error_mensaje,"Caracter no valido en medio de palabra reservada");
-        printf("error lexico\n");
+        /*printf("error lexico\n");*/
         return al->error_codigo;
        }
 
@@ -259,7 +259,7 @@ else
     {
     al->error_codigo=1;
     strcpy(al->error_mensaje,"Caracter no valido");
-    printf("error lexico\n");
+    /*printf("error lexico\n");*/
     return al->error_codigo;
     }
 return Tlexico_push_token(al,al->sintactico);

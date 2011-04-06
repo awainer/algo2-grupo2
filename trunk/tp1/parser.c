@@ -40,7 +40,7 @@ int TParser_TerminarFlujo(TParser * p)
     return 0;
 }
 
-int TParser_getUltimoError(TParser* p, int * codigo, char* mensaje)
+int TParser_getUltimoError(TParser* p, int * codigo, char  mensaje[50])
 {
 
     *codigo=p->lex->error_codigo;
