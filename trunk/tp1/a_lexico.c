@@ -3,6 +3,7 @@
 #include "a_lexico.h"
 #include <string.h>
 #include <stdio.h>
+#include "parser.h"
 
 int TLexico_Crear(TLexico* al)
 {
@@ -39,7 +40,7 @@ if (TSintactico_PushToken(al->sintactico,&al->token)==0)
 
             else
             {
-                al->error_codigo=1;
+                al->error_codigo=E_SINTACTICO;
                 strcpy(al->error_mensaje,"El asintactico me devolvio error");
                 /*printf("Error sintactico");*/
                 return 1;
@@ -107,7 +108,7 @@ if (al->token.tipo==TOKEN_NUMERO)
         }
         else
         {
-            al->error_codigo=2;
+            al->error_codigo=E_SINTACTICO;
             strcpy(al->error_mensaje,"El asintactico me devolvio error");
             /*printf("Error sintactico");*/
             return al->error_codigo;
@@ -122,7 +123,7 @@ if (al->token.tipo==TOKEN_NUMERO)
         }
         else
         {
-            al->error_codigo=2;
+            al->error_codigo=E_SINTACTICO;
             strcpy(al->error_mensaje,"El asintactico me devolvio error");
             /*printf("Error sintactico");*/
             return al->error_codigo;
@@ -138,7 +139,7 @@ if (al->token.tipo==TOKEN_NUMERO)
         }
         else
         {
-            al->error_codigo=2;
+            al->error_codigo=E_SINTACTICO;
             strcpy(al->error_mensaje,"El asintactico me devolvio error");
             /*printf("Error sintactico");*/
             return al->error_codigo;
@@ -147,7 +148,7 @@ if (al->token.tipo==TOKEN_NUMERO)
 
     else{
 
-        al->error_codigo=1;
+        al->error_codigo=E_LEXICO;
         strcpy(al->error_mensaje,"Caracter inesperado en medio de un numero");
         /*printf("Error lexico");*/
         return al->error_codigo;
@@ -165,7 +166,7 @@ if (al->token.tipo==TOKEN_STRING)
     }
     else
     {
-      		al->error_codigo=1;
+      		al->error_codigo=E_LEXICO;
        		strcpy(al->error_mensaje,"Recibi un caracter no valido dentro de un string");
        		return al->error_codigo;
     }
@@ -214,7 +215,7 @@ if(al->palabra_idx!=-1)
                 return 0;
             else
             {
-                al->error_codigo=2;
+                al->error_codigo=E_SINTACTICO;
                 strcpy(al->error_mensaje,"El asintactico me devolvio error");
                 /*printf("Error sintactico");*/
                 return al->error_codigo;
@@ -228,7 +229,7 @@ if(al->palabra_idx!=-1)
 
     else
        {/* printf("%d",strlen(al->token.dato));*/
-        al->error_codigo=1;
+        al->error_codigo=E_LEXICO;
         strcpy(al->error_mensaje,"Caracter no valido en medio de palabra reservada");
         /*printf("error lexico\n");*/
         return al->error_codigo;
@@ -257,7 +258,7 @@ else if ((c==' ') || (c=='\t') || (c=='\n') || (c==10) || (c==13))
 
 else
     {
-    al->error_codigo=1;
+    al->error_codigo=E_LEXICO;
     strcpy(al->error_mensaje,"Caracter no valido");
     /*printf("error lexico\n");*/
     return al->error_codigo;
@@ -271,9 +272,26 @@ return Tlexico_push_token(al,al->sintactico);
 
 int TLexico_terminarFlujo(TLexico* al)
 {
-	al->token.tipo=TOKEN_FALSE;
-	TSintactico_PushToken(al->sintactico,&al->token);
+if(al->error_codigo==0)
+{
+
+
+    if(al->buffer_idx==-1)
+    {
+       /*En este caso, se termina el flujo ok a nivel lexico, vemos que pasa a nivel sintactico */
+       return TSintactico_terminarFlujo(al->sintactico);
+    }
+    else
+    {
+        strcpy(al->error_mensaje,"Fin de flujo antes de terminar el token");
+        al->error_codigo=E_LEXICO;
+        return al->error_codigo;
+    }
+
     return 0;
+}
+/* Si ya habia ocurrido un error, no quiero modificarlo.*/
+return al->error_codigo;
 }
 
 int TLexico_getUltimoError(TLexico* al, int  * codigo, char* mensaje)
