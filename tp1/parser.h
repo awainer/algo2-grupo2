@@ -54,7 +54,7 @@ int TParser_TerminarFlujo(TParser* p);
  Precondiciones: p esta inicializado. Ocurrió un error al procesar un flujo de caracteres.
  Postcondiciones: Se devuelve un código de error y un mensaje descriptivo del mismo.
  */
-int TParser_getUltimoError(TParser* p, int * codigo, char* mensaje);
+int TParser_getUltimoError(TParser* p, int * codigo, char mensaje[50]);
 
 /*int getUltimoError(TParser * p, int codigo, char* mensaje);*/
 
