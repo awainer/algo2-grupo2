@@ -279,7 +279,10 @@ if(al->error_codigo==0)
     if(al->buffer_idx==-1)
     {
        /*En este caso, se termina el flujo ok a nivel lexico, vemos que pasa a nivel sintactico */
-       return TSintactico_terminarFlujo(al->sintactico);
+       if(TSintactico_terminarFlujo(al->sintactico)==1)
+       {
+           return E_SINTACTICO;
+       }
     }
     else
     {

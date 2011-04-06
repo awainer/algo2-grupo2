@@ -102,8 +102,8 @@ int TSintacticoImpimir(TSintactico * as, Token * token){
         case TOKEN_DOSPUNTOS: printf(" : ");
                             return 0;
 
-        case TOKEN_COMA: printf("");
-                            return 0;
+        case TOKEN_COMA:    return 0;
+
         case TOKEN_OBJETO_EMPIEZA : if (as->estado[as->estado_idx-as->pos]==NADA)
                                     {
                                         printf("OBJETO\n");
@@ -348,6 +348,7 @@ if(as->estado[as->estado_idx]==CLAVE)
         TSintacticoCasoValor(as,token);
         return 0;
     }
+     return 0;
 }
 /*si lo ultimo recibido fue un dospuntos , ahora tengo q recibir un valor*/
  if (as->estado[as->estado_idx]== DOSP)
