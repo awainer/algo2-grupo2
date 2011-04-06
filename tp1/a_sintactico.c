@@ -257,20 +257,46 @@ if(as->estado[as->estado_idx-as->pos]==OBJETO)
 {
     /*Estos son los tokens validos si lo ultimo que hize fue abrir un objeto */
     if(token->tipo==TOKEN_STRING)
-       {
+    {
            /*esto es una clave*/
            as->estado[as->estado_idx]=CLAVE;
            as->pos=0;
            TSintacticoImpimir(as, token); /*llamar a otra funcion para imprimir tipo clave*/
 
            return 0;
-       }
+    }
+    else if (token->tipo==TOKEN_OBJETO_TERMINA)
+            {
+                TSintacticoImpimir(as,token);
+                as->estado_idx--;                                   /* si viene un objeto_cierra, y antes tenia un objeto, entonces vuelvo una posicion */
+                if (as->estado[as->estado_idx-1]== ARRAY)           /*si antes tenia un array entonces estaba en un valor*/
+                {
+                    as->estado[as->estado_idx]=VALOR;
+                    as->pos=0;
+
+                    return 0;
+                }
+                else if (as->estado[as->estado_idx-1]== OBJETO)         /*y sino estaba en un objeto osea que tmb estaba en un valor */
+                    {
+                        as->estado[as->estado_idx]=VALOR;
+                        as->pos=0;
+
+                        return 0;
+                    }
+                else    /*el estado anterior era NADA entonces todo lo q se abrio se cerro*/
+                {
+                    as->estado[as->estado_idx]=NADA;
+
+                    return 0;
+
+                }
+            }
     else
-       {
-          strcpy(as->error_mensaje,"Se esperaba una clave");
-          as->error_codigo=1;
-          return as->error_codigo;
-       }
+    {
+        strcpy(as->error_mensaje,"Se esperaba una clave o cierre de objeto");
+        as->error_codigo=1;
+        return as->error_codigo;
+    }
 }
 /* Si lo ultimo recibido fue una clave, ahora tengo que recibir un dospuntos*/
 if(as->estado[as->estado_idx]==CLAVE)
@@ -291,8 +317,37 @@ if(as->estado[as->estado_idx]==CLAVE)
 /* Si lo ultimo recibido fue un array, ahora tengo que recibir un valor*/
  if (as->estado[as->estado_idx-as->pos]== ARRAY)
 {
-     TSintacticoCasoValor(as,token);
-     return 0;
+    if ((token->tipo==TOKEN_ARRAY_TERMINA))
+    {
+        as->estado_idx--;
+        TSintacticoImpimir(as,token);
+        if (as->estado[as->estado_idx-1]== ARRAY)           /*si antes tenia un array entonces estaba en un valor*/
+        {
+            as->estado[as->estado_idx]=VALOR;
+            as->pos=0;
+
+            return 0;
+        }
+        else if (as->estado[as->estado_idx-1]== OBJETO)      /*y sino estaba en un objeto osea que tmb estaba en un valor */
+        {
+            as->estado[as->estado_idx]=VALOR;
+            as->pos=0;
+
+            return 0;
+        }
+        else    /*el estado anterior era NADA entonces todo lo q se abrio se cerro*/
+        {
+            as->estado[as->estado_idx]=NADA;
+
+            return 0;
+        }
+
+    }
+    else
+    {
+        TSintacticoCasoValor(as,token);
+        return 0;
+    }
 }
 /*si lo ultimo recibido fue un dospuntos , ahora tengo q recibir un valor*/
  if (as->estado[as->estado_idx]== DOSP)
