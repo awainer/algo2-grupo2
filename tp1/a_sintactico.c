@@ -12,6 +12,7 @@ int TSintactico_Crear(TSintactico* as){
     as->estado[0]=NADA;
     as->estado_idx=1;
     as->pos=1;
+    as->tab=0;
 
     return 0;
     }
@@ -64,43 +65,112 @@ int TSintacticoCasoValor(TSintactico * as,Token * token){
 }
 
 int TSintacticoImpimir(TSintactico * as, Token * token){
+    int i;
 
 	switch(token->tipo)
     {
         case TOKEN_STRING : if (as->estado[as->estado_idx]==CLAVE)
+                            {
+                                for (i=0 ; i<as->tab ; i++)
+                                    printf("\t");
+
                                 printf("CLAVE: \"%s\"" ,token->dato);
+                            }
                             else
-                                printf("(String): \"%s\"" ,token->dato);
+                            {
+                                if (as->estado[as->estado_idx-1]==ARRAY)
+                                {
+                                    for (i=0 ; i<as->tab ; i++)
+                                        printf("\t");
+                                    printf("(String): \"%s\"\n" ,token->dato);
+                                }
+                                else
+                                    printf("(String): \"%s\"\n" ,token->dato);
+                            }
                             return 0;
 
-        case TOKEN_NUMERO :  printf("(Numero): %s" ,token->dato);
+        case TOKEN_NUMERO :  printf("(Numero): %s\n" ,token->dato);
                             return 0;
 
         case TOKEN_DOSPUNTOS: printf(" : ");
                             return 0;
 
-        case TOKEN_COMA: printf("\n");
+        case TOKEN_COMA: printf("");
                             return 0;
-        case TOKEN_OBJETO_EMPIEZA : if (as->estado[as->estado_idx-1]==NADA)
+        case TOKEN_OBJETO_EMPIEZA : if (as->estado[as->estado_idx-as->pos]==NADA)
+                                    {
                                         printf("OBJETO\n");
+                                        as->tab++;
+                                    }
                                     else
+                                    {
                                         printf("(Objeto): OBJETO \n");
+                                        as->tab=as->tab+5;
+                                    }
                             return 0;
 
-        case TOKEN_ARRAY_EMPIEZA : if (as->estado[as->estado_idx-1]==NADA)
+        case TOKEN_ARRAY_EMPIEZA : if (as->estado[as->estado_idx-as->pos]==NADA)
+                                    {
                                         printf("ARRAY\n");
+                                        as->tab++;
+                                    }
                                     else
-                                        printf("(Array): ARRAY \n");
+                                    {
+                                        if (as->estado[as->estado_idx-1]==ARRAY)
+                                        {
+                                            as->tab=as->tab+2;
+                                            for (i=0 ; i<as->tab ; i++)
+                                                printf("\t");
+                                            printf("(Array): ARRAY \n");
+
+                                        }
+                                        else
+                                        {
+                                            as->tab=as->tab+3;
+                                            printf("(Array): ARRAY \n");
+
+                                        }
+                                    }
                                    return 0;
 
-        case TOKEN_TRUE :  printf(" (boolean): TRUE \n");
+        case TOKEN_TRUE :   if (as->estado[as->estado_idx-1]==ARRAY)
+                                {
+                                    for (i=0 ; i<as->tab ; i++)
+                                        printf("\t");
+                                    printf(" (boolean): TRUE \n");
+                                }
+                                else
+                                    printf(" (boolean): TRUE \n");
+
                             return 0;
-        case TOKEN_FALSE : printf(" (boolean) : FALSE \n");
+        case TOKEN_FALSE :  if (as->estado[as->estado_idx-1]==ARRAY)
+                                {
+                                    for (i=0 ; i<as->tab ; i++)
+                                        printf("\t");
+                                    printf(" (boolean) : FALSE \n");
+                                }
+                                else
+                                    printf(" (boolean) : FALSE \n");
+
                             return 0;
-        case TOKEN_NULL : printf(" (Null) :    \n ");
+        case TOKEN_NULL :  if (as->estado[as->estado_idx-1]==ARRAY)
+                                {
+                                    for (i=0 ; i<as->tab ; i++)
+                                        printf("\t");
+                                    printf(" (Null) :    \n ");
+                                }
+                                else
+                                    printf(" (Null) :    \n ");
+
                             return 0;
-        case TOKEN_ARRAY_TERMINA: printf( " FIN ARRAY \n " );
-                            return 0;
+        case TOKEN_ARRAY_TERMINA:   as->tab=as->tab-2;
+                                    for (i=0 ; i<as->tab ; i++)
+                                        printf("\t");
+                                    printf( "\t\t FIN ARRAY \n " );
+
+                                    return 0;
+
+
         case TOKEN_OBJETO_TERMINA: printf( " FIN OBJETO \n ");
                             return 0;
         default : return 1;
@@ -126,7 +196,7 @@ int TSintactico_PushToken(TSintactico* as, Token* token)
             as->estado[as->estado_idx]=ARRAY;
             TSintacticoImpimir(as,token);
             as->estado_idx++;
-            /*as->pos=0;*/
+
             return 0;
          }
         else if (token->tipo==TOKEN_OBJETO_EMPIEZA)
@@ -134,7 +204,7 @@ int TSintactico_PushToken(TSintactico* as, Token* token)
             as->estado[as->estado_idx]=OBJETO;
             TSintacticoImpimir(as,token);
             as->estado_idx++;
-            /*as->pos=0;*/
+
             return 0;
         }
         else {
@@ -283,11 +353,21 @@ if(as->estado[as->estado_idx]==CLAVE)
      }
  }
 
- return 0;
 }
 
 
 int TSintactico_terminarFlujo(TSintactico* as){
+	/*fclose(archivo);  *- Se cierra el documento .JSON con el que estabamos trabajando.
+					    - La variable archivo es un puntero a archivo (FALTA DECLARARLO).
+						*
+	if (as->error_codigo == 1)             * De haberse terminado el flujo en estado inconsistente, devuelve mensaje del error. *
+		printf("ERROR DE SINTAXIS");
+	else if (as->error_codigo==NADA)
+            printf("TERMINE BIEN");
+
+
+	int TSintactico_Crear(as);
+	 *Se reinició el TDA para procesar otro flujo. */
 
     return 0;
     }
