@@ -2,6 +2,7 @@
 
 #include "token.h"
 #include "a_sintactico.h"
+#include "parser.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -57,7 +58,7 @@ int TSintacticoCasoValor(TSintactico * as,Token * token){
                                     as->pos=0;
                                     return 0;
 		default : { strcpy(as->error_mensaje,"se esperaba un valor");
-                as->error_codigo=1;
+                as->error_codigo=E_SINTACTICO;
                 return as->error_codigo; }
 
     }
@@ -247,7 +248,7 @@ int TSintactico_PushToken(TSintactico* as, Token* token)
         }
         else {
             strcpy(as->error_mensaje,"Recibi un token suelto");
-            as->error_codigo=1;
+            as->error_codigo=E_SINTACTICO;
             return as->error_codigo;
          }
 
@@ -294,7 +295,7 @@ if(as->estado[as->estado_idx-as->pos]==OBJETO)
     else
     {
         strcpy(as->error_mensaje,"Se esperaba una clave o cierre de objeto");
-        as->error_codigo=1;
+        as->error_codigo=E_SINTACTICO;
         return as->error_codigo;
     }
 }
@@ -310,7 +311,7 @@ if(as->estado[as->estado_idx]==CLAVE)
     else
     {
         strcpy(as->error_mensaje,"Se esperaba dos puntos");
-        as->error_codigo=1;
+        as->error_codigo=E_SINTACTICO;
         return as->error_codigo;
     }
 }
@@ -417,7 +418,7 @@ if(as->estado[as->estado_idx]==CLAVE)
     else
     {
         strcpy(as->error_mensaje,"Se esperaba una coma, un fin de array o un fin de objeto");
-        as->error_codigo=1;
+        as->error_codigo=E_SINTACTICO;
         return as->error_codigo;
     }
  }
@@ -437,7 +438,7 @@ if(as->estado[as->estado_idx]==CLAVE)
         else
        {
           strcpy(as->error_mensaje,"Se esperaba una clave");
-          as->error_codigo=1;
+          as->error_codigo=E_SINTACTICO;
           return as->error_codigo;
        }
      }
@@ -461,7 +462,7 @@ int TSintactico_terminarFlujo(TSintactico* as)
 	else
 	{
 	    strcpy(as->error_mensaje,"Fin de flujo antes de cerrar todos los scopes");  /* De haberse terminado el flujo en estado inconsistente, devuelve mensaje del error. */
-	    as->error_codigo=1;
+	    as->error_codigo=E_SINTACTICO;
         return as->error_codigo;
 	}
 

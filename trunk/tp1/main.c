@@ -10,32 +10,51 @@
 
 int main(int argc, char * argv[])
 {
-    TLexico  tl;
-    TSintactico  ts;
+
     TParser miParser;
-    char   mensaje_error[50];
-    int    codigo_error;
+    FILE *  archivo;
+    char    c;
+    char    error_desc[50];
+    int     error=E_NONE;
 
+    archivo=fopen(argv[1],"r");
+    TParser_Crear(&miParser);
 
-
-
-    TParser_Crear(&ts,&tl,argv[1],&miParser);
-    TParser_Parsear(&miParser);
-
-    mensaje_error[0]=0; /* esto es para evitar el warning de que usamos la variable sin inicializar*/
-    /* */
-    TParser_getUltimoError(&miParser,&codigo_error,mensaje_error);
-    switch(codigo_error)
+    if(archivo==NULL)
     {
-        case E_LEXICO : printf("Error lexico: %s \n",mensaje_error);
-                        break;
-        case E_SINTACTICO : printf("Error sintactico: %s\n",mensaje_error);
-                            break;
+        printf("No puedo abrir el archivo\n");
+        return -1;
     }
 
-    TParser_Destruir(&miParser);
+    c=getc(archivo);
 
+    while( (c!=EOF) && (error==E_NONE) )
+    {
+        error=TParser_PushChar(&miParser,c);
+        c=getc(archivo);
+    }
 
+    if(error==E_NONE)
+    {
+        error=TParser_terminarFlujo(&miParser);
+    }
+
+    if(error!=E_NONE)
+    {
+        TParser_getUltimoError(&miParser,&error,error_desc);
+        switch(error)
+        {
+            case E_LEXICO : printf("ERROR LEXICO: %s",error_desc);
+                            break;
+            case E_SINTACTICO : printf("ERROR SINTACTICO: %s",error_desc);
+                            break;
+        }
+    fclose(archivo);
+    return 1;
+    }
+
+    fclose(archivo);
     return 0;
+
 }
 
