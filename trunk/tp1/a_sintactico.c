@@ -110,14 +110,20 @@ int TSintacticoImpimir(TSintactico * as, Token * token){
                                         printf("OBJETO\n");
                                         as->tab++;
                                     }
-                                    else
-                                    {
-                                        if (as->estado[as->estado_idx-as->pos]==OBJETO)
+                                    else if (as->estado[as->estado_idx-as->pos]==OBJETO)
                                             {
                                                 printf("(Objeto): OBJETO \n");
                                                 as->tab=as->tab+5;
                                             }
-                                    }
+                                        else if  (as->estado[as->estado_idx-as->pos]==ARRAY)
+                                            {
+                                                for (i=0 ; i<as->tab ; i++)
+                                                    printf("\t");
+                                                printf("(Objeto): OBJETO \n");
+                                                as->tab=as->tab+2;
+                                            }
+
+
                             return 0;
 
         case TOKEN_ARRAY_EMPIEZA : if (as->estado[as->estado_idx-as->pos]==NADA)
