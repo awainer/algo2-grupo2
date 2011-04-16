@@ -1,3 +1,4 @@
+
 /*Implementaciones del TDA TLexico*/
 
 #include "a_lexico.h"
@@ -158,8 +159,9 @@ if (al->token.tipo==TOKEN_NUMERO)
 /*Estamos juntando un string */
 if (al->token.tipo==TOKEN_STRING)
 {
+    /*if ( (( c >= 'a' )&&( c <= 'z' ) ) || ( (c>='A') && (c<='Z') ) || (c==' ') || (c =='\t') || ( (c>='0') && (c<='9')  )   )*/
+    if( ( c!='"') && (c!=0))
 
-    if ( (( c >= 'a' )&&( c <= 'z' ) ) || ( (c>='A') && (c<='Z') ) || (c==' ') || (c =='\t') || ( (c>='0') && (c<='9')  )   )
     {
         tlexico_acumular_dato(al,c);
         return 0;
