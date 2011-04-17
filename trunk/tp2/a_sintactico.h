@@ -3,14 +3,17 @@
 
 #include "token.h"
 typedef enum{
-    NADA,
-    OBJETO,
-    CLAVE,
-    VALOR,
-    ARRAY,
-    DOSP,
-    COMA
-}TipoEstado;
+    CB_COMIENZA_ARRAY,
+    CB_TERMINA_ARRAY,
+    CB_COMIENZA_OBJETO,
+    CB_TERMINA_OBJETO,
+    CB_CLAVE,
+    CB_TRUE,
+    CB_FALSE,
+    CB_NULL,
+    CB_NUMERO,
+    CB_STRING
+} evento;
 
 typedef struct tda_sintactico{
 	/* El ultimo error recibido, 0 es ok. */
@@ -61,10 +64,12 @@ mismo.
 int TSintactico_getUltimoError(TSintactico*  as, int *codigo, char* mensaje);
 
 /*
-Descripción: Devuelve lo correspondiente a cada token con el que se esté trabajando.
-Precondiciones: as y token inicializados.
-Postcondiciones: Devuelve por pantalla el código del token que entre en la función.
+Descripción: Forma de comunicarse con el exterior. Se establece ante la ocurrencie del evento "evento". De haber sido definida previamente se reemplaza
+por esta nueva.
+Precondiciones: ts ha sido creado.
+Postcondiciones: se establece la callback a llamar ante la ocurrencia del evento "evento". Si ya se había definido la callback se reemplaza por esta
+nueva.
 */
-int TSintacticoImpimir(TSintactico * as, Token * token);
+int TSintactico_setCallback (TSintactico *ts, int evento, void* tda_contexto, int(*callback)(const void*, int, const void*));
 
 #endif
