@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "constr_tweets.h"
 #include "token.h"
 #include "a_sintactico.h"
 #include "a_lexico.h"
