@@ -11,8 +11,7 @@ int Tconstructor_Crear(Tconstructor* tc); {
 
 C_Crear(&tc->pcola,2*sizeof(int*));
 tc->Ecorrecto=0;
-tc->diccionario->elementos = NULL ; /* no hay elementos*/
-tc->diccionario->cantidad = 0; /* esta vacio */
+tTDiccionaro_Crear(&tc);
 return 0;
 }
 
