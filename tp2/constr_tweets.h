@@ -3,6 +3,19 @@
 
 #include "a_sintactico.h"
 #include "cola.h"
+#include "dict.h"
+
+
+
+typedef struct {
+    int Ecorrecto; /*indicara internamente si el formato del tweet es correcto o no*/
+    TCola cola;     /*cola para acumular los tweets nose si esta bien asi o si deberia ser un puntero*/
+    Tdiccionario diccionario;
+
+
+
+
+}Tconstructor;
 
 /*
 Descripción: Crea constructor de tweets.

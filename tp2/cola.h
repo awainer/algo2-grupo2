@@ -36,7 +36,7 @@ Descripción: Vacía la Cola.
 Precondiciones: Cola creada.
 Postcondiciones: Cola vacía.
 */
-voic C_Vaciar(Tcola *pcola);
+void C_Vaciar(Tcola *pcola);
 
 /*
 Descripción: Avisa si la cola esta vacía.

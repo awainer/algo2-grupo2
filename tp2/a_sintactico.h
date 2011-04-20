@@ -3,6 +3,7 @@
 
 #include "token.h"
 typedef enum{
+    /*enumerado de callbacks*/
     CB_COMIENZA_ARRAY,
     CB_TERMINA_ARRAY,
     CB_COMIENZA_OBJETO,
@@ -14,6 +15,16 @@ typedef enum{
     CB_NUMERO,
     CB_STRING
 } evento;
+typedef enum{
+    /*enumerado para manejarnos dentro de la pseudopila para soportar los anidamientos*/
+    NADA,
+    OBJETO,
+    CLAVE,
+    VALOR,
+    ARRAY,
+    DOSP,
+    COMA
+}TipoEstado;
 
 typedef struct tda_sintactico{
 	/* El ultimo error recibido, 0 es ok. */
@@ -23,6 +34,7 @@ typedef struct tda_sintactico{
 	int  estado_idx;
 	int  pos;
 	int  tab;
+	int evento;
 	/* comento esto para mostrar mi idea
 	 Estos son los tokens validos como clave
    TipoToken tValidos[4]; indica los tokens validos que pueden venir. nose x q lo borraron
