@@ -1,13 +1,14 @@
 #ifndef DICT_H_
 #define DICT_H_
+#include "lista.h"
 
 typedef struct {
-	char *	k,v;
-}TPar;
+    char *k,*v;
+}Definicion;
 
 typedef struct {
-	TPar * elementos[];
-	int	 e_count;
+    TListaSimple elementos;
+    int          cantidad;
 }TDiccionario;
 
 /*pre: Ninguna
@@ -21,7 +22,7 @@ int Tdiccionario_Destruir(TDiccionario* td);
 /*pre: El diccionario ha sido creado
 post: Se coloca en el diccionario el equivalente a diccionario[clave] = valor. Si clave ya existia en el
 diccionario, su valor se reemplaza por el nuevo. Se coloca una copia del texto (no un puntero).*/
-Int TDiccionario_colocar(TDiccionario* td, char* clave, char* valor);
+int TDiccionario_colocar(TDiccionario* td, char* clave, char* valor);
 
 /*pre: El diccionario ha sido creado. Existe la entrada “clave” en el diccionario. Buffer tiene el
 tamaño suficiente para guardar el texto
