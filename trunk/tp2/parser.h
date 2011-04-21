@@ -45,7 +45,14 @@ Precondiciones: p esta inicializado. Ocurrió un error al procesar un flujo de c
 Postcondiciones: Se devuelve un código de error y un mensaje descriptivo del mismo.
 */
 
-
+/*
+Descripción: Forma de comunicarse con el exterior. Se establece ante la ocurrencie del evento "evento". De haber sido definida previamente se reemplaza
+por esta nueva.
+Precondiciones: ts ha sido creado.
+Postcondiciones: se establece la callback a llamar ante la ocurrencia del evento "evento". Si ya se había definido la callback se reemplaza por esta
+nueva.
+*/
+int TParser_setCallback (TSintactico *ts, int evento, void* tda_contexto, int(*callback)(const void*, int, const void*));
 
 #endif
 
