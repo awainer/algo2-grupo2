@@ -1,29 +1,35 @@
 #include "a_sintactico.h"
 #include "cola.h"
 #include "dict.h"
-
+#include <stdio.h>
 
 
 
 
 
 int Tconstructor_Crear(Tconstructor* tc); {
-
-C_Crear(&tc->pcola,2*sizeof(int*));
 tc->Ecorrecto=0;
-tTDiccionaro_Crear(&tc);
-return 0;
+tTDiccionaro_Crear(&tc -> pd);
+
+return NULL;
 }
 
-int Tconstructor_Destruir(TConstructor* tc);{
+int Tconstructor_Destruir(Tconstructor* tc);{
 
-
+return NULL;
 }
 
 
-int Tconstructor_setCola(TConstructor *tc, TCola* cola);
+int Tconstructor_setCola(Tconstructor *tc, TCola* cola){
+C_Crear(&cola,&cola->TamanioDato);
+
+return NULL;
+}
 
 
 
-int TConstructor_eventoOcurrido (TConstructor *tc, int evento, void* dato);
+int TConstructor_eventoOcurrido (Tconstructor *tc, int evento, void* dato){
+
+return NULL;
+}
 
