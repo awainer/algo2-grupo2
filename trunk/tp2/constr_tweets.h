@@ -30,21 +30,21 @@ Descripción: Libera los recursos asociados del constructor.
 Precondiciones: El Constructor ha sido creado.
 Postcondiciones: Se liberan recursos asociados.
 */
-int Tconstructor_Destruir(TConstructor* tc);
+int Tconstructor_Destruir(Tconstructor* tc);
 
 /*
 Descripción: Establece la Cola donde se colocarán los Tweets en formato TDiccionario.
 Precondiciones: el constructor ha sido creado.
 Postcondiciones: Se establece la estructura de cola donde se colocarán los tweets en formato TDiccionario.
 */
-int Tconstructor_setCola(TConstructor *tc, TCola* cola);
+int Tconstructor_setCola(Tconstructor *tc, TCola* cola);
 
 /*
 Descripción: se procesa el evento ocurrido.
 Precondiciones: El constructor ha sido creado y se le ha establecido una cola.
 Postcondiciones: se procesa el evento ocurrido.
 */
-int TConstructor_eventoOcurrido (TConstructor *tc, int evento, void* dato);
+int TConstructor_eventoOcurrido (Tconstructor *tc, int evento, void* dato);
 
 
 #endif // CONSTR_TWEETS_H_INCLUDED
