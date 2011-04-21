@@ -8,12 +8,9 @@
 
 
 typedef struct {
+    Tconstructor *tc; /* Puntero a estructura TConstructor. */
     int Ecorrecto; /*indicara internamente si el formato del tweet es correcto o no*/
-    TCola cola;     /*cola para acumular los tweets nose si esta bien asi o si deberia ser un puntero*/
-    Tdiccionario diccionario;
-
-
-
+    TDiccionario *pd; /* Puntero a estructura TDiccionario */
 
 }Tconstructor;
 

@@ -30,6 +30,11 @@ post: se guarda en buffer una copia del texto en el diccionario bajo la clave. E
 buffer = diccionario[clave]*/
 int TDiccionario_obtener(TDiccionario* td, char* clave, char* buffer);
 
+/*pre: el diccionario ha sido creado
+post: devuelve el tamaño del texto asociado con la clave a fin de poder reservar un buffer donde
+quepa el texto y obtenerlo con Tdiccionario_obtener. Si la clave no esta en el diccionario devuelve
+0.
+*/
 int TDiccionario_sizeDato(TDiccionario* td, char* clave);
 
 #endif /* DICT_H_ */

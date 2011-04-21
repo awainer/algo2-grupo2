@@ -484,3 +484,8 @@ int TSintactico_getUltimoError(TSintactico*  as, int *codigo, char* mensaje){
     strcpy(mensaje,as->error_mensaje);
     return 0;
     }
+
+int TSintactico_setCallback (TSintactico *ts, int evento, void* tda_contexto, int(*callback)(const void*, int, const void*)){
+
+return NULL;
+}
