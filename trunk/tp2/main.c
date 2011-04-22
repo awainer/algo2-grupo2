@@ -1,60 +1,63 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
-#include "constr_tweets.h"
 #include "token.h"
 #include "a_sintactico.h"
 #include "a_lexico.h"
 #include "parser.h"
-
-#include <string.h>
+#include "dict.h"
 
 int main(int argc, char * argv[])
 {
 
-    TParser miParser;
+  /*   TParser miParser;
     FILE *  archivo;
-    char    c;
+   char    c;
     char    error_desc[50];
-    int     error=E_NONE;
+    int     error=E_NONE;*/
 
-    archivo=fopen(argv[1],"r");
+
+    TDiccionario miDiccionario;
+    char * buffer;
+    int sizeDato;
+
+    TDiccionaro_Crear(&miDiccionario);
+    TDiccionario_colocar(&miDiccionario,"hola","1234567");
+    TDiccionario_colocar(&miDiccionario,"como","estas");
+    TDiccionario_colocar(&miDiccionario,"hola","mundoooooooooooooooooooooooo"); /*podemos pisar el valor de algo */
+    TDiccionario_colocar(&miDiccionario,"color","verde fosforescente");
+
+
+
+
+    /*Asi es como se lee del diccionario */
+    sizeDato=TDiccionario_sizeDato(&miDiccionario,"hola");
+    if(sizeDato>0)
+    {
+    buffer=(char *)malloc(sizeDato);
+    TDiccionario_obtener(&miDiccionario,"hola",buffer);
+    printf("%s\n",buffer);
+    free(buffer);
+    }
+
+
+
+    Tdiccionario_Destruir(&miDiccionario);
+
+
+    /*archivo=fopen(argv[1],"r");
     TParser_Crear(&miParser);
-
-    if(archivo==NULL)
+   if(archivo==NULL)
     {
         printf("No puedo abrir el archivo\n");
         return -1;
     }
 
-    c=getc(archivo);
 
-    while( (c!=EOF) && (error==E_NONE) )
-    {
-        error=TParser_PushChar(&miParser,c);
-        c=getc(archivo);
-    }
 
-    if(error==E_NONE)
-    {
-        error=TParser_terminarFlujo(&miParser);
-    }
 
-    if(error!=E_NONE)
-    {
-        TParser_getUltimoError(&miParser,&error,error_desc);
-        switch(error)
-        {
-            case E_LEXICO : printf("ERROR LEXICO: %s",error_desc);
-                            break;
-            case E_SINTACTICO : printf("ERROR SINTACTICO: %s",error_desc);
-                            break;
-        }
-    fclose(archivo);
-    return 1;
-    }
-
-    fclose(archivo);
+    fclose(archivo);*/
     return 0;
 
 }
