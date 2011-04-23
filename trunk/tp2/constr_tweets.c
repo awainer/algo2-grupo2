@@ -9,28 +9,90 @@
 
 
 int Tconstructor_Crear(Tconstructor* tc) {
-/*tc->Ecorrecto=0;
-TDiccionaro_Crear(&tc -> pd);
-*/
-return 0;
+    TDiccionaro_Crear(&tc->Buffer);
+    tc->estado=FUERA;
+    return 0;
 }
 
 int Tconstructor_Destruir(Tconstructor* tc){
-
-return 0;
+    Tdiccionario_Destruir(&tc->Buffer);
+    return 0;
 }
 
 
 int Tconstructor_setCola(Tconstructor *tc, TCola* cola){
-/*C_Crear(&cola,&cola->TamanioDato);*/
-
-return 0;
+    tc->colaDestino=cola;
+    return 0;
 }
 
 
 
-int TConstructor_eventoOcurrido (Tconstructor *tc, int evento, void* dato){
+void Tconstructor_eventoComienzaArray(Tconstructor* tc, void* dato){
 
-return 0;
+return ;
 }
 
+void Tconstructor_eventoTerminaArray (Tconstructor* tc, void* dato) {
+
+return ;
+}
+
+void Tconstructor_eventoComienzaObjeto(Tconstructor* tc, void* dato){
+
+switch tc->estado
+{
+    case AFUERA : tc->estado=TWEET;
+                  break;
+    case TWEET  : tc->estado=USER;
+                  break;
+}
+
+return ;
+}
+
+
+void Tconstructor_eventoTerminaObjeto(Tconstructor* tc, void* dato) {
+
+switch tc->estado
+{
+    case USER   : tc->estado=TWEET;
+                  break;
+    case TWEET  : tc->estado=AFUERA;
+                  C_Agregar(tc->colaDestino,tc->Buffer);
+
+                  break;
+
+}
+return;
+}
+
+
+void Tconstructor_eventoClave(Tconstructor* tc, void* dato) {
+
+return ;
+}
+
+
+void Tconstructor_eventoNumero(Tconstructor* tc, void* dato) {
+
+return ;
+}
+
+
+void Tconstructor_eventoString(Tconstructor* tc, void* dato) {
+return ;
+}
+
+void Tconstructor_eventoNull(Tconstructor* tc, void* dato) {
+return ;
+}
+
+void Tconstructor_eventoTrue(Tconstructor* tc, void* dato) {
+
+return ;
+}
+
+void Tconstructor_eventoFalse(Tconstructor* tc, void* dato) {
+
+return ;
+}
