@@ -1,6 +1,6 @@
 #ifndef A_SINTACTICO_H_INCLUDED
 #define A_SINTACTICO_H_INCLUDED
-
+#include "Pila.h"
 #include "token.h"
 typedef enum{
     /*enumerado de callbacks*/
@@ -35,10 +35,14 @@ typedef struct tda_sintactico{
 	int  pos;
 	int  tab;
 	int evento;
+	TPila pP;
+	TipoEstado EleAux;  /*auxiliar para guardar el estado actual de la pila*/
 	/* comento esto para mostrar mi idea
 	 Estos son los tokens validos como clave
    TipoToken tValidos[4]; indica los tokens validos que pueden venir. nose x q lo borraron
 	int Vtoken[4];  indica en que situacion estoy con un flag en el token adecuado*/
+
+
 
 }TSintactico;
 
@@ -84,4 +88,7 @@ nueva.
 */
 int TSintactico_setCallback (TSintactico *ts, int evento, void* tda_contexto, int(*callback)(const void*, int, const void*));
 
+
+
+int TSintacticoImpimir(TSintactico * as, Token * token);
 #endif
