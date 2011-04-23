@@ -88,17 +88,18 @@ int TDiccionario_colocar(TDiccionario* td, char* clave, char* valor)
 {
     Definicion def,aux;
 
-    def.k=(char *)malloc(strlen(clave));
+    def.k=(char *)malloc(strlen(clave)+1);
     if (def.k==NULL)
     {
         return OOM_ERROR;
     }
 
-    def.v=(char *)malloc(strlen(valor));
+    def.v=(char *)malloc(strlen(valor)+1);
 
     if (def.v==NULL)
     {
         free(def.k);
+        /*free(def.v);*/
         return OOM_ERROR;
     }
 
