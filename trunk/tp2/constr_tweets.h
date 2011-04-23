@@ -7,8 +7,8 @@
 
 
 
-typedef struct {
-    Tconstructor *tc; /* Puntero a estructura TConstructor. */
+typedef struct _t_constructor{
+
     int Ecorrecto; /*indicara internamente si el formato del tweet es correcto o no*/
     TDiccionario *pd; /* Puntero a estructura TDiccionario */
 
@@ -44,4 +44,4 @@ Postcondiciones: se procesa el evento ocurrido.
 int TConstructor_eventoOcurrido (Tconstructor *tc, int evento, void* dato);
 
 
-#endif // CONSTR_TWEETS_H_INCLUDED
+#endif
