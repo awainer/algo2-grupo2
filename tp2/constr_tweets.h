@@ -5,13 +5,16 @@
 #include "cola.h"
 #include "dict.h"
 
-
+typedef enum estadosTweet{
+    FUERA,
+    TWEET,
+    USER
+}estadosTweet;
 
 typedef struct _t_constructor{
-
-    int Ecorrecto; /*indicara internamente si el formato del tweet es correcto o no*/
-    TDiccionario *pd; /* Puntero a estructura TDiccionario */
-
+    TDiccionario Buffer;
+    TCola * colaDestino;
+    int  estado;
 }Tconstructor;
 
 /*
@@ -41,7 +44,27 @@ Descripción: se procesa el evento ocurrido.
 Precondiciones: El constructor ha sido creado y se le ha establecido una cola.
 Postcondiciones: se procesa el evento ocurrido.
 */
-int TConstructor_eventoOcurrido (Tconstructor *tc, int evento, void* dato);
+
+void Tconstructor_eventoComienzaArray(Tconstructor* tc, void* dato);
+
+void Tconstructor_eventoTerminaArray(Tconstructor* tc, void* dato);
+
+void Tconstructor_eventoComienzaObjeto(Tconstructor* tc, void* dato);
+
+void Tconstructor_eventoTerminaObjeto(Tconstructor* tc, void* dato);
+
+void Tconstructor_eventoClave(Tconstructor* tc, void* dato);
+
+void Tconstructor_eventoNumero(Tconstructor* tc, void* dato);
+
+void Tconstructor_eventoString(Tconstructor* tc, void* dato);
+
+void Tconstructor_eventoNull(Tconstructor* tc, void* dato);
+
+void Tconstructor_eventoTrue(Tconstructor* tc, void* dato);
+
+void Tconstructor_eventoFalse(Tconstructor* tc, void* dato);
+
 
 
 #endif
