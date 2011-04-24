@@ -18,23 +18,7 @@ int TDiccionaro_Crear(TDiccionario* td)
 
 
 
-/*pre: El diccionario ha sido creado
-post: Se liberaron los recursos asociados al diccionario*/
 
-int Tdiccionario_Destruir(TDiccionario* td)
-{
-        Definicion auxdef;
-
-        while(!L_Vacia(td->elementos))
-        {
-        L_Mover_Cte(&td->elementos,L_Primero);
-        L_Elem_Cte(td->elementos,&auxdef);
-        free(auxdef.k);
-        free(auxdef.v);
-        L_Borrar_Cte(&td->elementos);
-       }
-    return 0;
-}
 
 
 /*
@@ -81,6 +65,9 @@ int diccionario_existeValor(TDiccionario* td,char * clave,Definicion * aux)
         return ERR_NA;
 }
 
+
+
+
 /*pre: El diccionario ha sido creado
 post: Se coloca en el diccionario el equivalente a diccionario[clave] = valor. Si clave ya existia en el
 diccionario, su valor se reemplaza por el nuevo. Se coloca una copia del texto (no un puntero).*/
@@ -110,6 +97,9 @@ int TDiccionario_colocar(TDiccionario* td, char* clave, char* valor)
     {
     /*Si mi diccionario ya tiene una entrada para esta clave, la borro antes de insertar la nueva*/
     /*Creo que seria un poco mas rapido solo hacer free del valor y copiarlo, pero seria mucho mas desprolijo */
+        L_Elem_Cte(td->elementos,&aux);
+        free(aux.k);
+        free(aux.v);
         L_Borrar_Cte(&td->elementos);
     }
 
@@ -119,6 +109,26 @@ int TDiccionario_colocar(TDiccionario* td, char* clave, char* valor)
 
 
 }
+
+
+/*pre: El diccionario ha sido creado
+post: Se liberaron los recursos asociados al diccionario*/
+
+int Tdiccionario_Destruir(TDiccionario* td)
+{
+        Definicion auxdef;
+
+        while(!L_Vacia(td->elementos))
+        {
+        L_Mover_Cte(&td->elementos,L_Primero);
+        L_Elem_Cte(td->elementos,&auxdef);
+        free(auxdef.k);
+        free(auxdef.v);
+        L_Borrar_Cte(&td->elementos);
+       }
+    return 0;
+}
+
 
 /*pre: El diccionario ha sido creado. Existe la entrada “clave” en el diccionario. Buffer tiene el
 tamaño suficiente para guardar el texto
@@ -143,7 +153,7 @@ int  TDiccionario_sizeDato(TDiccionario* td, char* clave)
     Definicion aux;
     if(diccionario_existeValor(td,clave,&aux)==0)
     {
-        return strlen(aux.v);
+        return strlen(aux.v)+1;
     }
     else
         return 0;

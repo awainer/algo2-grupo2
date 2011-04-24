@@ -8,7 +8,6 @@ typedef struct {
 
 typedef struct {
     TListaSimple elementos;
-    int          cantidad;
 }TDiccionario;
 
 /*pre: Ninguna

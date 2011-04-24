@@ -10,7 +10,7 @@
 
 int Tconstructor_Crear(Tconstructor* tc) {
     TDiccionaro_Crear(&tc->Buffer);
-    tc->estado=FUERA;
+    tc->estado=AFUERA;
     return 0;
 }
 
@@ -39,7 +39,7 @@ return ;
 
 void Tconstructor_eventoComienzaObjeto(Tconstructor* tc, void* dato){
 
-switch tc->estado
+switch (tc->estado)
 {
     case AFUERA : tc->estado=TWEET;
                   break;
@@ -53,12 +53,12 @@ return ;
 
 void Tconstructor_eventoTerminaObjeto(Tconstructor* tc, void* dato) {
 
-switch tc->estado
+switch (tc->estado)
 {
     case USER   : tc->estado=TWEET;
                   break;
     case TWEET  : tc->estado=AFUERA;
-                  C_Agregar(tc->colaDestino,tc->Buffer);
+                  C_Agregar(tc->colaDestino,(void*)&tc->Buffer);
 
                   break;
 
