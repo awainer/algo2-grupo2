@@ -6,7 +6,7 @@
 #include "dict.h"
 
 typedef enum estadosTweet{
-    FUERA,
+    AFUERA,
     TWEET,
     USER
 }estadosTweet;

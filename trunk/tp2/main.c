@@ -17,7 +17,6 @@ int main(int argc, char * argv[])
     char    error_desc[50];
     int     error=E_NONE;*/
 
-
     TDiccionario miDiccionario;
     char * buffer;
     int sizeDato;

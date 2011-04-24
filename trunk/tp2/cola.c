@@ -1,4 +1,4 @@
-#include "Cola.h"
+#include "cola.h"
 
 /*C_CREAR
 Pre: C no fue creada.
