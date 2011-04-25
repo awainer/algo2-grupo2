@@ -2,6 +2,7 @@
 /*Implementaciones del TDA TLexico*/
 
 #include "a_lexico.h"
+#include "a_sintactico.h"
 #include <string.h>
 #include <stdio.h>
 #include "parser.h"

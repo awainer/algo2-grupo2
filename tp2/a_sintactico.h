@@ -2,7 +2,9 @@
 #define A_SINTACTICO_H_INCLUDED
 #include "Pila.h"
 #include "token.h"
-typedef enum{
+#include "constr_tweets.h"
+typedef enum
+{
     /*enumerado de callbacks*/
     CB_COMIENZA_ARRAY,
     CB_TERMINA_ARRAY,
@@ -15,7 +17,8 @@ typedef enum{
     CB_NUMERO,
     CB_STRING
 } evento;
-typedef enum{
+typedef enum
+{
     /*enumerado para manejarnos dentro de la pseudopila para soportar los anidamientos*/
     NADA,
     OBJETO,
@@ -24,27 +27,27 @@ typedef enum{
     ARRAY,
     DOSP,
     COMA
-}TipoEstado;
+} TipoEstado;
 
-typedef struct tda_sintactico{
-	/* El ultimo error recibido, 0 es ok. */
-	int  error_codigo;
-	char error_mensaje[30];
-	int  estado[50];
-	int  estado_idx;
-	int  pos;
-	int  tab;
-	int evento;
-	TPila pP;
-	TipoEstado EleAux;  /*auxiliar para guardar el estado actual de la pila*/
-	/* comento esto para mostrar mi idea
-	 Estos son los tokens validos como clave
-   TipoToken tValidos[4]; indica los tokens validos que pueden venir. nose x q lo borraron
-	int Vtoken[4];  indica en que situacion estoy con un flag en el token adecuado*/
+typedef struct tda_sintactico
+{
+    /* El ultimo error recibido, 0 es ok. */
+    int  error_codigo;
+    char error_mensaje[30];
+    int  estado[50];
+    int  estado_idx;
+    int  pos;
+    int  tab;
+    int evento;
+    /*evento * callbacks[10];*/
+    void (*callbacks[10]) (Tconstructor * tc, void * dato);
+    Tconstructor * constructor;
+    /* comento esto para mostrar mi idea
+     Estos son los tokens validos como clave
+       TipoToken tValidos[4]; indica los tokens validos que pueden venir. nose x q lo borraron
+    int Vtoken[4];  indica en que situacion estoy con un flag en el token adecuado*/
 
-
-
-}TSintactico;
+} TSintactico;
 
 
 
@@ -91,4 +94,6 @@ int TSintactico_setCallback (TSintactico *ts, int evento, void* tda_contexto, in
 
 
 int TSintacticoImpimir(TSintactico * as, Token * token);
+
+/*int Tsintactico_setCallback(TSintactico *ts, int evento, void* tda_contexto, void(*callback)(const void*, const void*));*/
 #endif

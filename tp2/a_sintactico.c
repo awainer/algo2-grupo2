@@ -8,12 +8,29 @@
 #include "Pila.h"
 #define TamanioDato sizeof(int)
 
+int Tsintactico_setCallback(TSintactico *ts, int evento, void* tda_contexto, void(*callback)( Tconstructor *,  void*) )
+{
+   ts->callbacks[evento]=callback;
+   return 0;
+}
+
 int TSintactico_Crear(TSintactico* as){
     as->error_codigo=0;
     as->estado[0]=NADA;
     as->estado_idx=1;
     as->pos=1;
     as->tab=0;
+    /*Seteo la callback para cada evento */
+    Tsintactico_setCallback(as,CB_COMIENZA_ARRAY,as->constructor,Tconstructor_eventoComienzaArray);
+    Tsintactico_setCallback(as,CB_TERMINA_ARRAY,as->constructor,Tconstructor_eventoTerminaArray);
+    Tsintactico_setCallback(as,CB_COMIENZA_OBJETO,as->constructor,Tconstructor_eventoComienzaObjeto);
+    Tsintactico_setCallback(as,CB_TERMINA_OBJETO,as->constructor,Tconstructor_eventoTerminaObjeto);
+    Tsintactico_setCallback(as,CB_CLAVE,as->constructor,Tconstructor_eventoClave);
+    Tsintactico_setCallback(as,CB_TRUE,as->constructor,Tconstructor_eventoTrue);
+    Tsintactico_setCallback(as,CB_FALSE,as->constructor,Tconstructor_eventoFalse);
+    Tsintactico_setCallback(as,CB_NULL,as->constructor,Tconstructor_eventoNull);
+    Tsintactico_setCallback(as,CB_NUMERO,as->constructor,Tconstructor_eventoNumero);
+    Tsintactico_setCallback(as,CB_STRING,as->constructor,Tconstructor_eventoString);
 
     return 0;
     }

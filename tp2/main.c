@@ -34,7 +34,7 @@ int main(int argc, char * argv[])
     sizeDato=TDiccionario_sizeDato(&miDiccionario,"hola");
     if(sizeDato>0)
     {
-    buffer=(char *)malloc(sizeDato);
+    buffer=(char *)malloc(sizeDato+1);
     TDiccionario_obtener(&miDiccionario,"hola",buffer);
     printf("%s\n",buffer);
     free(buffer);
