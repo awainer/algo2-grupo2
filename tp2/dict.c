@@ -158,3 +158,23 @@ int  TDiccionario_sizeDato(TDiccionario* td, char* clave)
     else
         return 0;
 }
+
+int compstr(const void *s1, const void *s2)
+{
+    char * aux1, * aux2;
+    int i=0;
+    /*Hago esto para no tener que estar todo el tiempo casteando,
+    esta funcion tiene que recibir const void* para poder usarla en qsort*/
+    aux1=(char*)s1;
+    aux2=(char*)s2;
+    if (!strcmp(aux1,aux2))
+    {
+        return 1;
+    }
+    while ((aux1[i]==aux2[i]) && (aux1[i]!=0 ) && (aux1[i]!=0 ) )
+        i++;
+    if (aux1[i] > aux2[i])
+        return 0;
+    else
+        return -1;
+}
