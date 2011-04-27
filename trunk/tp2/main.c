@@ -20,6 +20,7 @@ int main(int argc, char * argv[])
     TDiccionario miDiccionario;
     char * buffer;
     int sizeDato;
+    int borrame;
 
     TDiccionaro_Crear(&miDiccionario);
     TDiccionario_colocar(&miDiccionario,"hola","1234567");
@@ -28,7 +29,10 @@ int main(int argc, char * argv[])
     TDiccionario_colocar(&miDiccionario,"color","verde fosforescente");
 
 
-
+    borrame=compstr("hola","mundo");
+    borrame=compstr("mundo","hola");
+    borrame=compstr("ana","beto");
+    borrame=compstr("ana","anana");
 
     /*Asi es como se lee del diccionario */
     sizeDato=TDiccionario_sizeDato(&miDiccionario,"hola");
