@@ -34,11 +34,11 @@ typedef struct tda_sintactico
     /* El ultimo error recibido, 0 es ok. */
     int  error_codigo;
     char error_mensaje[30];
-    int  estado[50];
-    int  estado_idx;
-    int  pos;
-    int  tab;
-    int evento;
+    /*una variable donde guardare los estados q no irian en la pila(clave valor etc)*/
+    int  estado;
+    /*guardo los estados antes de ponerlos en la pila(objeto array)*/
+    int estpila;
+    TPila   pP;
     /*evento * callbacks[10];*/
     void (*callbacks[10]) (Tconstructor * tc, void * dato);
     Tconstructor * constructor;
