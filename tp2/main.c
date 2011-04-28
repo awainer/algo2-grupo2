@@ -21,12 +21,20 @@ int main(int argc, char * argv[])
     char * buffer;
     int sizeDato;
     int borrame;
+    TCola colaTweets;
+    Tconstructor miConstructor;
 
-    TDiccionaro_Crear(&miDiccionario);
+    /*Inicializo el constructor con su cola*/
+    Tconstructor_Crear(&miConstructor);
+    C_Crear(&colaTweets,sizeof(TDiccionario));
+    Tconstructor_setCola(&miConstructor,&colaTweets);
+
+
+    /*TDiccionaro_Crear(&miDiccionario);
     TDiccionario_colocar(&miDiccionario,"hola","1234567");
     TDiccionario_colocar(&miDiccionario,"como","estas");
     TDiccionario_colocar(&miDiccionario,"hola","mundoooooooooooooooooooooooo"); /*podemos pisar el valor de algo */
-    TDiccionario_colocar(&miDiccionario,"color","verde fosforescente");
+/*    TDiccionario_colocar(&miDiccionario,"color","verde fosforescente");
 
 
     borrame=compstr("hola","mundo");
@@ -35,18 +43,18 @@ int main(int argc, char * argv[])
     borrame=compstr("ana","anana");
 
     /*Asi es como se lee del diccionario */
-    sizeDato=TDiccionario_sizeDato(&miDiccionario,"hola");
+  /*  sizeDato=TDiccionario_sizeDato(&miDiccionario,"como");
     if(sizeDato>0)
     {
     buffer=(char *)malloc(sizeDato+1);
-    TDiccionario_obtener(&miDiccionario,"hola",buffer);
+    TDiccionario_obtener(&miDiccionario,"como",buffer);
     printf("%s\n",buffer);
     free(buffer);
     }
+*/
 
 
-
-    Tdiccionario_Destruir(&miDiccionario);
+    /*Tdiccionario_Destruir(&miDiccionario);*/
 
 
     /*archivo=fopen(argv[1],"r");
