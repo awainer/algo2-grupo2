@@ -8,7 +8,8 @@
 typedef enum estadosTweet{
     AFUERA,
     TWEET,
-    USER
+    USER,
+    SIN_INICIAR
 }estadosTweet;
 
 typedef struct _t_constructor{
@@ -47,25 +48,25 @@ Precondiciones: El constructor ha sido creado y se le ha establecido una cola.
 Postcondiciones: se procesa el evento ocurrido.
 */
 
-void Tconstructor_eventoComienzaArray(Tconstructor* tc, void* dato);
+int Tconstructor_eventoComienzaArray(Tconstructor* tc, void* dato);
 
-void Tconstructor_eventoTerminaArray(Tconstructor* tc, void* dato);
+int Tconstructor_eventoTerminaArray(Tconstructor* tc, void* dato);
 
-void Tconstructor_eventoComienzaObjeto(Tconstructor* tc, void* dato);
+int Tconstructor_eventoComienzaObjeto(Tconstructor* tc, void* dato);
 
-void Tconstructor_eventoTerminaObjeto(Tconstructor* tc, void* dato);
+int Tconstructor_eventoTerminaObjeto(Tconstructor* tc, void* dato);
 
-void Tconstructor_eventoClave(Tconstructor* tc, void* dato);
+int Tconstructor_eventoClave(Tconstructor* tc, void* dato);
 
-void Tconstructor_eventoNumero(Tconstructor* tc, void* dato);
+int Tconstructor_eventoNumero(Tconstructor* tc, void* dato);
 
-void Tconstructor_eventoString(Tconstructor* tc, void* dato);
+int Tconstructor_eventoString(Tconstructor* tc, void* dato);
 
-void Tconstructor_eventoNull(Tconstructor* tc, void* dato);
+int Tconstructor_eventoNull(Tconstructor* tc, void* dato);
 
-void Tconstructor_eventoTrue(Tconstructor* tc, void* dato);
+int Tconstructor_eventoTrue(Tconstructor* tc, void* dato);
 
-void Tconstructor_eventoFalse(Tconstructor* tc, void* dato);
+int Tconstructor_eventoFalse(Tconstructor* tc, void* dato);
 
 
 

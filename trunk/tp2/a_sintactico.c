@@ -8,7 +8,7 @@
 #include "Pila.h"
 #define TamanioDato sizeof(int)
 
-int Tsintactico_setCallback(TSintactico *ts, int evento, void* tda_contexto, void(*callback)( Tconstructor *,  void*) )
+int Tsintactico_setCallback(TSintactico *ts, int evento, void* tda_contexto, int(*callback)( Tconstructor *,  void*) )
 {
    ts->callbacks[evento]=callback;
    return 0;
