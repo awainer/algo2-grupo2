@@ -12,7 +12,9 @@ typedef enum estadosTweet{
 }estadosTweet;
 
 typedef struct _t_constructor{
-    TDiccionario Buffer;
+    TDiccionario * buffer_dict;
+    char * buff_k;
+    char * buff_v;
     TCola * colaDestino;
     int  estado;
 }Tconstructor;

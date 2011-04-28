@@ -36,8 +36,9 @@ quepa el texto y obtenerlo con Tdiccionario_obtener. Si la clave no esta en el d
 */
 int TDiccionario_sizeDato(TDiccionario* td, char* clave);
 
-
+/*TODO: probablemente habria que migrar estas funciones a algun otro lado*/
 int compstr(const void *s1, const void *s2);
+void itoa(int n, char s[]);
 
 
 
