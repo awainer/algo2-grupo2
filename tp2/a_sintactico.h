@@ -40,7 +40,7 @@ typedef struct tda_sintactico
     int estpila;
     TPila   pP;
     /*evento * callbacks[10];*/
-    void (*callbacks[10]) (Tconstructor * tc, void * dato);
+    int (*callbacks[10]) (Tconstructor * tc, void * dato);
     Tconstructor * constructor;
     /* comento esto para mostrar mi idea
      Estos son los tokens validos como clave
