@@ -8,6 +8,9 @@
 #define OOM 5
 #define  SIN_INICIALIZAR 6
 
+/***Pendientes: ***/
+/* convertir los numeros a string para guardarlos en un valor de diccionario */
+/* chequear en todas las callbacks que el tweet este inicializado != SIN_INICIAR, chequeo semantico*/
 
 
 int Tconstructor_Crear(Tconstructor* tc) {
@@ -97,7 +100,23 @@ return 0;
 
 
 int Tconstructor_eventoClave(Tconstructor* tc, void* dato) {
+
+
+
+    if(tc->estado==TWEET)
+    {
+
     tc->buff_k=(char *)malloc(strlen(dato)+1);
+    }
+    else if (tc->estado==USER)
+    { /*Las claves dentro del objeto user pasan a ser user_clave */
+    tc->buff_v=(char *)malloc(strlen(dato)+strlen("user_")+1);
+    tc->buff_v[0]=0; /*aca inicializo el string buffer, le pongo el user_ y el dato */
+    strcat(tc->buff_v,"user_");
+    strcat(tc->buff_v,dato);
+    Tconstructor_push_par(tc);
+    }
+
     if (tc->buff_k==NULL)
     {
         Tdiccionario_Destruir(tc->buffer_dict);
@@ -127,9 +146,9 @@ int Tconstructor_eventoNumero(Tconstructor* tc, void* dato) {
 
 
 int Tconstructor_eventoString(Tconstructor* tc, void* dato) {
-
-    if(tc->estado==TWEET)
-    {
+    /* Comento algunas cosas porque en realidad lo que hay que modificar cuando estamos en user es el valor,no la clave, sino va a ser imposible buscar*/
+    /*if(tc->estado==TWEET)
+    {*/
     tc->buff_v=(char *)malloc(strlen(dato)+1);
     if (tc->buff_v==NULL)
         return OOM;
@@ -137,23 +156,6 @@ int Tconstructor_eventoString(Tconstructor* tc, void* dato) {
     strcpy(tc->buff_v,dato);
     Tconstructor_push_par(tc);
     return 0;
-    } else if (tc->estado==USER)
-    {
-        tc->buff_v=(char *)malloc(strlen(dato)+strlen("user_")+1);
-
-        if (tc->buff_v==NULL)
-        {   Tdiccionario_Destruir(tc->buffer_dict);
-            free(tc->buffer_dict);
-            free(tc->buff_v);
-            return OOM;
-        }
-
-        tc->buff_v[0]=0;
-        strcat(tc->buff_v,"user_");
-        strcat(tc->buff_v,dato);
-        Tconstructor_push_par(tc);
-    }
-return 0;
 }
 
 int Tconstructor_eventoNull(Tconstructor* tc, void* dato) {
