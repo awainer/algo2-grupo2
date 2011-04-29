@@ -7,7 +7,8 @@
 #include "a_lexico.h"
 #include "parser.h"
 #include "dict.h"
-
+#include "var_array.h"
+#include "constr_tweets.h"
 int main(int argc, char * argv[])
 {
 
@@ -24,10 +25,30 @@ int main(int argc, char * argv[])
     TCola colaTweets;
     Tconstructor miConstructor;
 
+    int i; /*aca empiezan las variables del array, por las dudas las separo*/
+    int elem;
+    funccmp fcomp;
+    V_Array a;
+    Tconstructor Mtc;
+
     /*Inicializo el constructor con su cola*/
     Tconstructor_Crear(&miConstructor);
     C_Crear(&colaTweets,sizeof(TDiccionario));
     Tconstructor_setCola(&miConstructor,&colaTweets);
+
+
+
+    /*
+    VA_create(&a, sizeof(int));
+
+    while ( !C_Vacia(&Mtc->colaDestino)) { /*mientas haya datos en la cola,los saco y meto en el array
+        C_Sacar(&Mtc->colaDestino,&Mtc->buffer_dict); /*me esta tirando un error con los "->"
+        VA_add(&a, &Mtc->buffer_dict);
+    else
+        VA_sort(&a, fcomp);
+    }
+
+    */
 
 
     /*TDiccionaro_Crear(&miDiccionario);
