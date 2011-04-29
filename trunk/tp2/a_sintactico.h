@@ -91,9 +91,11 @@ nueva.
 */
 int TSintactico_setCallback (TSintactico *ts, int evento, void* tda_contexto, int(*callback)(const void*, int, const void*));
 
+/*Descripción: Libera los recursos asociados del analizador sintactico.
+Precondiciones: El analizador sintactico ha sido creado.
+Postcondiciones: Se liberan recursos asociados.*/
 
-
-int TSintacticoImpimir(TSintactico * as, Token * token);
+int Tsintactico_Destruir(TSintactico *as );
 
 /*int Tsintactico_setCallback(TSintactico *ts, int evento, void* tda_contexto, void(*callback)(const void*, const void*));*/
 #endif

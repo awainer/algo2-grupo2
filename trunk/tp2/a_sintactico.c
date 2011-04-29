@@ -33,32 +33,36 @@ int TSintactico_Crear(TSintactico* as){
     }
 
 int TSintacticoCasoValor(TSintactico * as,Token * token){
-
+char nada[2];
     switch (token->tipo){
 		case TOKEN_STRING:  as->estado=VALOR;
+                            as->callbacks[CB_STRING](as->constructor,(void*)token->dato );
                             return 0;
 		case TOKEN_NUMERO:  as->estado=VALOR;
+                            as->callbacks[CB_NUMERO](as->constructor,(void*)token->dato );
                             return 0;
 
 
 		case TOKEN_OBJETO_EMPIEZA:  as->estpila=OBJETO;
                                     as->estado=OBJETO;
                                     P_Poner(&as->pP, (void*)&as->estpila);
+                                    as->callbacks[CB_COMIENZA_OBJETO](as->constructor , (void*)nada);
                                     return 0;
 
 		case TOKEN_ARRAY_EMPIEZA:   as->estpila=ARRAY;
                                     as->estado=ARRAY;
                                     P_Poner(&as->pP, (void*)&as->estpila);
+                                    as->callbacks[CB_COMIENZA_ARRAY](as->constructor,(void*)nada );
                                     return 0;
 		case TOKEN_TRUE:            as->estado=VALOR;
-
+                                    as->callbacks[CB_TRUE](as->constructor, (void*)nada);
                                     return 0;
 		case TOKEN_FALSE:           as->estado=VALOR;
-
+                                    as->callbacks[CB_FALSE](as->constructor, (void*)nada );
                                     return 0;
 
 		case TOKEN_NULL:            as->estado=VALOR;
-
+                                    as->callbacks[CB_NULL](as->constructor, (void*)nada );
                                     return 0;
 		default : { strcpy(as->error_mensaje,"se esperaba un valor");
                 as->error_codigo=E_SINTACTICO;
@@ -68,15 +72,14 @@ int TSintacticoCasoValor(TSintactico * as,Token * token){
     return 0;
 }
 
-int TSintacticoImpimir(TSintactico * as, Token * token){
-    return 0;
-}
+
 
 int TSintactico_PushToken(TSintactico* as, Token* token)
 {
 /*	printf("Recibo un token de tipo %d y dato %s\n",token->tipo,token->dato);*/
 
 /*si la pila esta vacia se ejecuta este if*/
+char nada[2];
 if (P_Vacia(as->pP))
 {
     if (token->tipo==TOKEN_ARRAY_EMPIEZA)
@@ -84,6 +87,7 @@ if (P_Vacia(as->pP))
         as->estpila=ARRAY;
         as->estado=ARRAY;
         P_Poner(&as->pP, (void*)&as->estpila);
+        as->callbacks[CB_COMIENZA_ARRAY](as->constructor, (void*)nada);
         return 0;
     }
     else if (token->tipo==TOKEN_OBJETO_EMPIEZA)
@@ -91,6 +95,7 @@ if (P_Vacia(as->pP))
         as->estpila=OBJETO;
         as->estado=OBJETO;
         P_Poner(&as->pP, (void*)&as->estpila);
+        as->callbacks[CB_COMIENZA_OBJETO](as->constructor, (void*)nada);
         return 0;
 
     }
@@ -99,6 +104,7 @@ if (P_Vacia(as->pP))
 
         strcpy(as->error_mensaje,"Recibi un token suelto");
         as->error_codigo=E_SINTACTICO;
+        Tsintactico_Destruir(as);
         return as->error_codigo;
     }
 }
@@ -113,11 +119,13 @@ else
             if (token->tipo==TOKEN_STRING)
             {
                 as->estado=CLAVE;
+                as->callbacks[CB_STRING](as->constructor,(void*)token->dato );
                 return 0;
             }
             else if (token->tipo==TOKEN_OBJETO_TERMINA)
             {
                 P_Sacar(&as->pP, (void*)&as->estpila);
+                as->callbacks[CB_TERMINA_OBJETO](as->constructor, (void*)nada );
                 if(P_Vacia(as->pP))        /*si la pila esta vacia termino el flujo*/
                     return 0;
                 else
@@ -140,6 +148,7 @@ else
             {
                 strcpy(as->error_mensaje,"se esperaba clave o obj termina");
                 as->error_codigo=E_SINTACTICO;
+                Tsintactico_Destruir(as);
                 return as->error_codigo;
             }
 
@@ -155,6 +164,7 @@ else
             {
                 strcpy(as->error_mensaje,"se esperaba un dospuntos");
                 as->error_codigo=E_SINTACTICO;
+                Tsintactico_Destruir(as);
                 return as->error_codigo;
             }
         }
@@ -173,6 +183,7 @@ else
             else if (token->tipo==TOKEN_OBJETO_TERMINA)
             {
                 P_Sacar(&as->pP, (void*)&as->estpila);
+                as->callbacks[CB_TERMINA_OBJETO](as->constructor , (void*)nada);
                 if(P_Vacia(as->pP))        /*si la pila esta vacia termino el flujo*/
                     return 0;
                 else
@@ -196,6 +207,7 @@ else
             {
                 strcpy(as->error_mensaje,"se esperaba una coma, un fin de obj o fin de array");
                 as->error_codigo=E_SINTACTICO;
+                Tsintactico_Destruir(as);
                 return as->error_codigo;
             }
 
@@ -206,12 +218,14 @@ else
             if (token->tipo==TOKEN_STRING)
             {
                 as->estado=CLAVE;
+                as->callbacks[CB_STRING](as->constructor,(void*)token->dato );
                 return 0;
             }
             else
             {
                 strcpy(as->error_mensaje,"se esperaba una clave");
                 as->error_codigo=E_SINTACTICO;
+                Tsintactico_Destruir(as);
                 return as->error_codigo;
             }
         }
@@ -223,6 +237,7 @@ else
             if (token->tipo==TOKEN_ARRAY_TERMINA)
             {
                 P_Sacar(&as->pP, (void*)&as->estpila);
+                as->callbacks[CB_TERMINA_ARRAY](as->constructor , (void*)nada);
                 if(P_Vacia(as->pP))        /*si la pila esta vacia termino el flujo*/
                     return 0;
                 else
@@ -257,6 +272,7 @@ else
             else if (token->tipo==TOKEN_ARRAY_TERMINA)
             {
                 P_Sacar(&as->pP, (void*)&as->estpila);
+                as->callbacks[CB_TERMINA_ARRAY](as->constructor, (void*)nada);
                 if(P_Vacia(as->pP))        /*si la pila esta vacia termino el flujo*/
                     return 0;
                 else
@@ -279,6 +295,7 @@ else
             {
                 strcpy(as->error_mensaje,"se esperaba una coma o un fin de array");
                 as->error_codigo=E_SINTACTICO;
+                Tsintactico_Destruir(as);
                 return as->error_codigo;
             }
         }
@@ -291,6 +308,7 @@ else
             {
                 strcpy(as->error_mensaje,"se esperaba una valor");
                 as->error_codigo=E_SINTACTICO;
+                Tsintactico_Destruir(as);
                 return as->error_codigo;
             }
     }
@@ -331,7 +349,12 @@ int TSintactico_getUltimoError(TSintactico*  as, int *codigo, char* mensaje){
     }
 
 
+int Tsintactico_Destruir(TSintactico* as){
 
+P_Vaciar(&as->pP);
+
+return 0;
+}
 
 
 
