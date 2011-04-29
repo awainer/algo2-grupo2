@@ -18,12 +18,13 @@ int main(int argc, char * argv[])
     char    error_desc[50];
     int     error=E_NONE;*/
 
-    TDiccionario miDiccionario;
+    TDiccionario * miDiccionario=NULL;
     char * buffer;
     int sizeDato;
     int borrame;
     TCola colaTweets;
     Tconstructor miConstructor;
+
 
     int i; /*aca empiezan las variables del array, por las dudas las separo*/
     int elem;
@@ -36,8 +37,12 @@ int main(int argc, char * argv[])
     C_Crear(&colaTweets,sizeof(TDiccionario));
     Tconstructor_setCola(&miConstructor,&colaTweets);
 
+    while ( !C_Vacia(colaTweets)) { /*mientas haya datos en la cola,los saco y meto en el array*/
+        C_Sacar(&colaTweets,&miDiccionario); /*me esta tirando un error con los "->"*/
+        Tdiccionario_Destruir(miDiccionario);
+        free(miDiccionario);
 
-
+    }
     /*
     VA_create(&a, sizeof(int));
 

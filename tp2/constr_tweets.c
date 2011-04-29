@@ -15,8 +15,7 @@
 
 int Tconstructor_Crear(Tconstructor* tc) {
     tc->estado=SIN_INICIAR;
-    tc->buffer_dict=(TDiccionario *)malloc(sizeof(TDiccionario));
-    TDiccionaro_Crear(tc->buffer_dict);
+
 
     return 0;
 }
@@ -54,8 +53,9 @@ int Tconstructor_eventoTerminaArray (Tconstructor* tc, void* dato) {
     return 0;
     }
     else
+        {
         return SIN_INICIALIZAR;
-
+        }
 
 }
 
@@ -64,6 +64,9 @@ int Tconstructor_eventoComienzaObjeto(Tconstructor* tc, void* dato){
 switch (tc->estado)
 {
     case AFUERA : tc->estado=TWEET;
+                  tc->buffer_dict=(TDiccionario *)malloc(sizeof(TDiccionario));
+                  TDiccionaro_Crear(tc->buffer_dict);
+
                   break;
     case TWEET  : tc->estado=USER;
                   break;
