@@ -29,7 +29,7 @@ int main(int argc, char * argv[])
     int elem;
     funccmp fcomp;
     V_Array a;
-    Tconstructor Mtc;
+
 
     /*Inicializo el constructor con su cola*/
     Tconstructor_Crear(&miConstructor);
@@ -41,9 +41,9 @@ int main(int argc, char * argv[])
     /*
     VA_create(&a, sizeof(int));
 
-    while ( !C_Vacia(&Mtc->colaDestino)) { /*mientas haya datos en la cola,los saco y meto en el array
-        C_Sacar(&Mtc->colaDestino,&Mtc->buffer_dict); /*me esta tirando un error con los "->"
-        VA_add(&a, &Mtc->buffer_dict);
+    while ( !C_Vacia(&miConstructor.colaDestino)) { /*mientas haya datos en la cola,los saco y meto en el array
+        C_Sacar(&miConstructor.colaDestino,&miConstructor.buffer_dict); /*me esta tirando un error con los "->"
+        VA_add(&a, &miConstructor.buffer_dict);
     else
         VA_sort(&a, fcomp);
     }
