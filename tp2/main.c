@@ -75,24 +75,27 @@ int main(int argc, char * argv[])
     fclose(archivo);
 
 
-/*mientas haya datos en la cola,los saco y meto en el array*/
-/*    while ( !C_Vacia(colaTweets)) {
+/*mientas haya datos en la cola,los saco y meto en el array
+    while ( !C_Vacia(colaTweets)) {
         C_Sacar(&colaTweets,&miDiccionario);
         Tdiccionario_Destruir(miDiccionario);
         free(miDiccionario);
 
-    }
-    /*
-    VA_create(&a, sizeof(int));
+    } */
 
-    while ( !C_Vacia(&miConstructor.colaDestino)) { /*mientas haya datos en la cola,los saco y meto en el array
-        C_Sacar(&miConstructor.colaDestino,&miConstructor.buffer_dict); /*me esta tirando un error con los "->"
-        VA_add(&a, &miConstructor.buffer_dict);
+  /*  VA_create(&a, sizeof(int));
+
+    while ( !C_Vacia(colaTweets)) {
+        C_Sacar(&colaTweets,&miDiccionario);
+
+         Tdiccionario_Destruir(&miDiccionario);
+        free(&miDiccionario);
+        VA_add(&a, &miDiccionario);
     else
         VA_sort(&a, fcomp);
     }
 
-    */
+
 
 
 
