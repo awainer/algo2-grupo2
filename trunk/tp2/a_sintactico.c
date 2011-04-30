@@ -8,24 +8,21 @@
 #include "Pila.h"
 #define TamanioDato sizeof(int)
 
-int Tsintactico_setCallback(TSintactico *ts, int evento, void* tda_contexto, int(*callback)( Tconstructor *,  void*) )
+int Tsintactico_setCallback(TSintactico *ts, int evento, void* tda_contexto, int(*callback)( const void  *,const  void*) )
 {
-   ts->callbacks[evento]=callback;
+   ts->arrayCallbacks[evento].cb=callback;
+   ts->arrayCallbacks[evento].contexto=tda_contexto;
    return 0;
 }
 
-int TSintactico_setConstructor(TSintactico * ts, Tconstructor * tc)
-{
-    ts->constructor=tc;
-    return 0;
-}
+
 
 int TSintactico_Crear(TSintactico* as){
     as->error_codigo=0;
     P_Crear(&as->pP, sizeof(TipoEstado));
 
     /*Seteo la callback para cada evento */
-    Tsintactico_setCallback(as,CB_COMIENZA_ARRAY,as->constructor,Tconstructor_eventoComienzaArray);
+    /*Tsintactico_setCallback(as,CB_COMIENZA_ARRAY,as->constructor,Tconstructor_eventoComienzaArray);
     Tsintactico_setCallback(as,CB_TERMINA_ARRAY,as->constructor,Tconstructor_eventoTerminaArray);
     Tsintactico_setCallback(as,CB_COMIENZA_OBJETO,as->constructor,Tconstructor_eventoComienzaObjeto);
     Tsintactico_setCallback(as,CB_TERMINA_OBJETO,as->constructor,Tconstructor_eventoTerminaObjeto);
@@ -34,7 +31,7 @@ int TSintactico_Crear(TSintactico* as){
     Tsintactico_setCallback(as,CB_FALSE,as->constructor,Tconstructor_eventoFalse);
     Tsintactico_setCallback(as,CB_NULL,as->constructor,Tconstructor_eventoNull);
     Tsintactico_setCallback(as,CB_NUMERO,as->constructor,Tconstructor_eventoNumero);
-    Tsintactico_setCallback(as,CB_STRING,as->constructor,Tconstructor_eventoString);
+    Tsintactico_setCallback(as,CB_STRING,as->constructor,Tconstructor_eventoString);*/
 
     return 0;
     }
@@ -43,33 +40,33 @@ int TSintacticoCasoValor(TSintactico * as,Token * token){
 char nada[2];
     switch (token->tipo){
 		case TOKEN_STRING:  as->estado=VALOR;
-                            as->callbacks[CB_STRING](as->constructor,(void*)token->dato );
+                            as->arrayCallbacks[CB_STRING].cb(as->arrayCallbacks[CB_STRING].contexto,(void*)token->dato );
                             return 0;
 		case TOKEN_NUMERO:  as->estado=VALOR;
-                            as->callbacks[CB_NUMERO](as->constructor,(void*)token->dato );
+                            as->arrayCallbacks[CB_NUMERO].cb(as->arrayCallbacks[CB_NUMERO].contexto,(void*)token->dato );
                             return 0;
 
 
 		case TOKEN_OBJETO_EMPIEZA:  as->estpila=OBJETO;
                                     as->estado=OBJETO;
                                     P_Poner(&as->pP, (void*)&as->estpila);
-                                    as->callbacks[CB_COMIENZA_OBJETO](as->constructor , (void*)nada);
+                                    as->arrayCallbacks[CB_COMIENZA_OBJETO].cb(as->arrayCallbacks[CB_COMIENZA_OBJETO].contexto, (void*)nada);
                                     return 0;
 
 		case TOKEN_ARRAY_EMPIEZA:   as->estpila=ARRAY;
                                     as->estado=ARRAY;
                                     P_Poner(&as->pP, (void*)&as->estpila);
-                                    as->callbacks[CB_COMIENZA_ARRAY](as->constructor,(void*)nada );
+                                    as->arrayCallbacks[CB_COMIENZA_ARRAY].cb(as->arrayCallbacks[CB_COMIENZA_ARRAY].contexto,(void*)nada );
                                     return 0;
 		case TOKEN_TRUE:            as->estado=VALOR;
-                                    as->callbacks[CB_TRUE](as->constructor, (void*)nada);
+                                    as->arrayCallbacks[CB_TRUE].cb(as->arrayCallbacks[CB_TRUE].contexto, (void*)nada);
                                     return 0;
 		case TOKEN_FALSE:           as->estado=VALOR;
-                                    as->callbacks[CB_FALSE](as->constructor, (void*)nada );
+                                    as->arrayCallbacks[CB_FALSE].cb(as->arrayCallbacks[CB_FALSE].contexto, (void*)nada );
                                     return 0;
 
 		case TOKEN_NULL:            as->estado=VALOR;
-                                    as->callbacks[CB_NULL](as->constructor, (void*)nada );
+                                    as->arrayCallbacks[CB_NULL].cb(as->arrayCallbacks[CB_NULL].contexto, (void*)nada );
                                     return 0;
 		default : { strcpy(as->error_mensaje,"se esperaba un valor");
                 as->error_codigo=E_SINTACTICO;
@@ -94,7 +91,7 @@ if (P_Vacia(as->pP))
         as->estpila=ARRAY;
         as->estado=ARRAY;
         P_Poner(&as->pP, (void*)&as->estpila);
-        as->callbacks[CB_COMIENZA_ARRAY](as->constructor, (void*)nada);
+        as->arrayCallbacks[CB_COMIENZA_ARRAY].cb(as->arrayCallbacks[CB_COMIENZA_ARRAY].contexto, (void*)nada);
         return 0;
     }
     else if (token->tipo==TOKEN_OBJETO_EMPIEZA)
@@ -102,7 +99,7 @@ if (P_Vacia(as->pP))
         as->estpila=OBJETO;
         as->estado=OBJETO;
         P_Poner(&as->pP, (void*)&as->estpila);
-        as->callbacks[CB_COMIENZA_OBJETO](as->constructor, (void*)nada);
+        as->arrayCallbacks[CB_COMIENZA_OBJETO].cb(as->arrayCallbacks[CB_COMIENZA_OBJETO].contexto, (void*)nada);
         return 0;
 
     }
@@ -126,13 +123,13 @@ else
             if (token->tipo==TOKEN_STRING)
             {
                 as->estado=CLAVE;
-                as->callbacks[CB_STRING](as->constructor,(void*)token->dato );
+                as->arrayCallbacks[CB_STRING].cb(as->arrayCallbacks[CB_STRING].contexto,(void*)token->dato );
                 return 0;
             }
             else if (token->tipo==TOKEN_OBJETO_TERMINA)
             {
                 P_Sacar(&as->pP, (void*)&as->estpila);
-                as->callbacks[CB_TERMINA_OBJETO](as->constructor, (void*)nada );
+                as->arrayCallbacks[CB_TERMINA_OBJETO].cb(as->arrayCallbacks[CB_TERMINA_OBJETO].contexto, (void*)nada );
                 if(P_Vacia(as->pP))        /*si la pila esta vacia termino el flujo*/
                     return 0;
                 else
@@ -190,7 +187,7 @@ else
             else if (token->tipo==TOKEN_OBJETO_TERMINA)
             {
                 P_Sacar(&as->pP, (void*)&as->estpila);
-                as->callbacks[CB_TERMINA_OBJETO](as->constructor , (void*)nada);
+                as->arrayCallbacks[CB_TERMINA_OBJETO].cb(as->arrayCallbacks[CB_TERMINA_OBJETO].contexto , (void*)nada);
                 if(P_Vacia(as->pP))        /*si la pila esta vacia termino el flujo*/
                     return 0;
                 else
@@ -225,7 +222,7 @@ else
             if (token->tipo==TOKEN_STRING)
             {
                 as->estado=CLAVE;
-                as->callbacks[CB_STRING](as->constructor,(void*)token->dato );
+                as->arrayCallbacks[CB_STRING].cb(as->arrayCallbacks[CB_STRING].contexto,(void*)token->dato );
                 return 0;
             }
             else
@@ -244,7 +241,7 @@ else
             if (token->tipo==TOKEN_ARRAY_TERMINA)
             {
                 P_Sacar(&as->pP, (void*)&as->estpila);
-                as->callbacks[CB_TERMINA_ARRAY](as->constructor , (void*)nada);
+                as->arrayCallbacks[CB_TERMINA_ARRAY].cb(as->arrayCallbacks[CB_TERMINA_ARRAY].contexto , (void*)nada);
                 if(P_Vacia(as->pP))        /*si la pila esta vacia termino el flujo*/
                     return 0;
                 else
@@ -279,7 +276,7 @@ else
             else if (token->tipo==TOKEN_ARRAY_TERMINA)
             {
                 P_Sacar(&as->pP, (void*)&as->estpila);
-                as->callbacks[CB_TERMINA_ARRAY](as->constructor, (void*)nada);
+                as->arrayCallbacks[CB_TERMINA_ARRAY].cb(as->arrayCallbacks[CB_TERMINA_ARRAY].contexto, (void*)nada);
                 if(P_Vacia(as->pP))        /*si la pila esta vacia termino el flujo*/
                     return 0;
                 else

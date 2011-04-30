@@ -6,6 +6,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
+
+
+
+
+
+
+
+
 typedef enum {
     E_NONE,
     E_LEXICO,
@@ -52,7 +61,9 @@ Precondiciones: ts ha sido creado.
 Postcondiciones: se establece la callback a llamar ante la ocurrencia del evento "evento". Si ya se había definido la callback se reemplaza por esta
 nueva.
 */
-int TParser_setCallback (TSintactico *ts, int evento, void* tda_contexto, int(*callback)(const void*, int, const void*));
+/*int TParser_setCallback (TSintactico *ts, int evento, void* tda_contexto, int(*callback)(const void*, int, const void*));*/
+int TParser_setCallback (TParser *p, int evento, void* tda_contexto, int(*callback)(const void*, const void*));
+
 
 #endif
 
