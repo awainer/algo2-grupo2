@@ -75,13 +75,13 @@ int main(int argc, char * argv[])
     fclose(archivo);
 
 
-/*
+
 
     VA_create(&a, sizeof(int));
 
     while ( !C_Vacia(colaTweets)) {
         C_Sacar(&colaTweets,&miDiccionario);
-        sizeDato=TDiccionario_sizeDato(&miDiccionario,"user_screen_name"); /* creo que es user_dato
+        sizeDato=TDiccionario_sizeDato(&miDiccionario,"user_screen_name"); /* creo que es user_dato */
         if( sizeDato>0 ) {
         buffer=(char*)malloc(sizeDato);
         TDiccionario_obtener(&miDiccionario,"user_screen_name",buffer);
@@ -93,17 +93,17 @@ int main(int argc, char * argv[])
     }
 
        if (!C_Vacia(colaTweets)){
-        VA_sort(&a, fcomp); /* revisar como funciona este fcomp
+        VA_sort(&a, fcomp); /* revisar como funciona este fcomp */
         }
 
 
-/* a partir de aca el array deberia estar con datos y ordenado
+/* a partir de aca el array deberia estar con datos y ordenado */
 int cant_elem_VArray = VA_count (a), recorredor_VArray = 0, contador_tweets_usuario;
 char* elemento_actual, elemento_anterior;
 
 while ( recorredor_VArray < cant_elem_VArray ){
 
-	VA_get_i(&a,&recorredor_VArray,&elemento_actual);
+	VA_get_i(a,recorredor_VArray,&elemento_actual);
 	if (recorredor_VArray == 0)
 		if (!(elemento_actual == elemento_anterior)){
 			elemento_anterior = elemento_actual;
@@ -121,7 +121,6 @@ while ( recorredor_VArray < cant_elem_VArray ){
 	recorredor_VArray++;
 }
 }
-*/
 
 
     /*Tdiccionario_Destruir(&miDiccionario);*/
