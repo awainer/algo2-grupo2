@@ -104,15 +104,14 @@ char* elemento_actual, elemento_anterior;
 while ( recorredor_VArray < cant_elem_VArray ){
 
 	VA_get_i(a,recorredor_VArray,&elemento_actual);
-	if (recorredor_VArray == 0)
-		if (!(elemento_actual == elemento_anterior)){
-			elemento_anterior = elemento_actual;
+	if (recorredor_VArray == 0){
+            strcpy(&elemento_actual, &elemento_anterior);
 			contador_tweets_usuario = 1;
 		}
 	else if (recorredor_VArray > 0){
-		if (!(elemento_actual == elemento_anterior)){
+		if (!(strcmp(&elemento_actual, &elemento_anterior) == 0)){
 			printf("%s : %d\n", &elemento_anterior, &contador_tweets_usuario);
-			elemento_anterior = elemento_actual;
+			strcpy(&elemento_actual, &elemento_anterior);
 			contador_tweets_usuario = 1;
         }
 		else
