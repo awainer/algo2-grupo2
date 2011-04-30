@@ -97,5 +97,7 @@ Postcondiciones: Se liberan recursos asociados.*/
 
 int Tsintactico_Destruir(TSintactico *as );
 
+int TSintactico_setConstructor(TSintactico * ts, Tconstructor * tc);
+
 /*int Tsintactico_setCallback(TSintactico *ts, int evento, void* tda_contexto, void(*callback)(const void*, const void*));*/
 #endif

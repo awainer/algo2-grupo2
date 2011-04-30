@@ -14,9 +14,16 @@ int Tsintactico_setCallback(TSintactico *ts, int evento, void* tda_contexto, int
    return 0;
 }
 
+int TSintactico_setConstructor(TSintactico * ts, Tconstructor * tc)
+{
+    ts->constructor=tc;
+    return 0;
+}
+
 int TSintactico_Crear(TSintactico* as){
     as->error_codigo=0;
     P_Crear(&as->pP, sizeof(TipoEstado));
+
     /*Seteo la callback para cada evento */
     Tsintactico_setCallback(as,CB_COMIENZA_ARRAY,as->constructor,Tconstructor_eventoComienzaArray);
     Tsintactico_setCallback(as,CB_TERMINA_ARRAY,as->constructor,Tconstructor_eventoTerminaArray);
