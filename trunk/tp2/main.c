@@ -75,29 +75,53 @@ int main(int argc, char * argv[])
     fclose(archivo);
 
 
-
 /*
+
     VA_create(&a, sizeof(int));
 
     while ( !C_Vacia(colaTweets)) {
         C_Sacar(&colaTweets,&miDiccionario);
-        sizeDato=TDiccionario_sizeDato(&miDiccionario,"user"); /* creo que es user_dato
+        sizeDato=TDiccionario_sizeDato(&miDiccionario,"user_screen_name"); /* creo que es user_dato
         if( sizeDato>0 ) {
         buffer=(char*)malloc(sizeDato);
-        TDiccionario_obtener(&miDiccionario,"user",buffer);
+        TDiccionario_obtener(&miDiccionario,"user_screen_name",buffer);
         free(buffer);
         }
-        VA_add(&a,buffer )
+        VA_add(&a,buffer );
         Tdiccionario_Destruir(&miDiccionario);
         free(&miDiccionario);
-
-    else
-        VA_sort(&a, fcomp);
     }
 
+       if (!C_Vacia(colaTweets)){
+        VA_sort(&a, fcomp); /* revisar como funciona este fcomp
+        }
 
 
+/* a partir de aca el array deberia estar con datos y ordenado
+int cant_elem_VArray = VA_count (a), recorredor_VArray = 0, contador_tweets_usuario;
+char* elemento_actual, elemento_anterior;
 
+while ( recorredor_VArray < cant_elem_VArray ){
+
+	VA_get_i(&a,&recorredor_VArray,&elemento_actual);
+	if (recorredor_VArray == 0)
+		if (!(elemento_actual == elemento_anterior)){
+			elemento_anterior = elemento_actual;
+			contador_tweets_usuario = 1;
+		}
+	else if (recorredor_VArray > 0){
+		if (!(elemento_actual == elemento_anterior)){
+			printf("%s : %d\n", &elemento_anterior, &contador_tweets_usuario);
+			elemento_anterior = elemento_actual;
+			contador_tweets_usuario = 1;
+        }
+		else
+		contador_tweets_usuario++;
+
+	recorredor_VArray++;
+}
+}
+*/
 
 
     /*Tdiccionario_Destruir(&miDiccionario);*/
