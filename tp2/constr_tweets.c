@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #define OOM 5
-#define  SIN_INICIALIZAR 6
+#define  ERROR_CONTEXTO 6
 
 /***Pendientes: ***/
 /* convertir los numeros a string para guardarlos en un valor de diccionario */
@@ -15,8 +15,6 @@
 
 int Tconstructor_Crear(Tconstructor* tc) {
     tc->estado=SIN_INICIAR;
-
-
     return 0;
 }
 
@@ -42,7 +40,7 @@ if (tc->estado==SIN_INICIAR)
     return 0;
 }
 else
-    return SIN_INICIALIZAR;
+    return ERROR_CONTEXTO;
 
 }
 
@@ -54,7 +52,7 @@ int Tconstructor_eventoTerminaArray (Tconstructor* tc, void* dato) {
     }
     else
         {
-        return SIN_INICIALIZAR;
+        return ERROR_CONTEXTO;
         }
 
 }
@@ -70,6 +68,7 @@ switch (tc->estado)
                   break;
     case TWEET  : tc->estado=USER;
                   break;
+    case SIN_INICIAR : return ERROR_CONTEXTO;
 }
 
 return 0;
@@ -84,6 +83,12 @@ int Tconstructor_push_par(Tconstructor* tc)
 }
 
 int Tconstructor_eventoTerminaObjeto(Tconstructor* tc, void* dato) {
+
+if(tc->estado==SIN_INICIAR)
+{
+    return ERROR_CONTEXTO;
+}
+
 
 switch (tc->estado)
 {
@@ -103,8 +108,10 @@ return 0;
 
 
 int Tconstructor_eventoClave(Tconstructor* tc, void* dato) {
-
-
+if(tc->estado==SIN_INICIAR)
+{
+    return ERROR_CONTEXTO;
+}
 
     if(tc->estado==TWEET)
     {
@@ -133,25 +140,28 @@ int Tconstructor_eventoClave(Tconstructor* tc, void* dato) {
 
 
 int Tconstructor_eventoNumero(Tconstructor* tc, void* dato) {
-    /******TODO: aca tenemos que convertir numeros a string*******/
-    tc->buff_v=(char *)malloc(5);
+if(tc->estado==SIN_INICIAR)
+{
+    return ERROR_CONTEXTO;
+}
+    tc->buff_v=(char *)malloc(20); /*Esto es arbitrario, habria que cambiarlo 20 caracteres es el numero mas grande que se puede escribir con 64bits*/
     if (tc->buff_v==NULL)
     {   Tdiccionario_Destruir(tc->buffer_dict);
         free(tc->buffer_dict);
         free(tc->buff_v);
         return OOM;
     }
-
-    strcpy(tc->buff_v,"numb");
+    sprintf(tc->buff_v,"%d",dato);
     Tconstructor_push_par(tc);
     return 0;
 }
 
 
 int Tconstructor_eventoString(Tconstructor* tc, void* dato) {
-    /* Comento algunas cosas porque en realidad lo que hay que modificar cuando estamos en user es el valor,no la clave, sino va a ser imposible buscar*/
-    /*if(tc->estado==TWEET)
-    {*/
+if(tc->estado==SIN_INICIAR)
+{
+    return ERROR_CONTEXTO;
+}
     tc->buff_v=(char *)malloc(strlen(dato)+1);
     if (tc->buff_v==NULL)
         return OOM;
@@ -162,6 +172,10 @@ int Tconstructor_eventoString(Tconstructor* tc, void* dato) {
 }
 
 int Tconstructor_eventoNull(Tconstructor* tc, void* dato) {
+if(tc->estado==SIN_INICIAR)
+{
+    return ERROR_CONTEXTO;
+}
     tc->buff_v=(char *)malloc(5);
         if (tc->buff_v==NULL)
         {   Tdiccionario_Destruir(tc->buffer_dict);
@@ -175,6 +189,10 @@ int Tconstructor_eventoNull(Tconstructor* tc, void* dato) {
 }
 
 int Tconstructor_eventoTrue(Tconstructor* tc, void* dato) {
+if(tc->estado==SIN_INICIAR)
+{
+    return ERROR_CONTEXTO;
+}
     tc->buff_v=(char *)malloc(6);
         if (tc->buff_v==NULL)
         {   Tdiccionario_Destruir(tc->buffer_dict);
@@ -189,6 +207,10 @@ int Tconstructor_eventoTrue(Tconstructor* tc, void* dato) {
 }
 
 int Tconstructor_eventoFalse(Tconstructor* tc, void* dato) {
+if(tc->estado==SIN_INICIAR)
+{
+    return ERROR_CONTEXTO;
+}
     tc->buff_v=(char *)malloc(6);
          if (tc->buff_v==NULL)
         {   Tdiccionario_Destruir(tc->buffer_dict);
