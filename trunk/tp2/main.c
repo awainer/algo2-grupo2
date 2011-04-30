@@ -110,7 +110,7 @@ while ( recorredor_VArray < cant_elem_VArray ){
 		}
 	else if (recorredor_VArray > 0){
 		if (!(strcmp(&elemento_actual, &elemento_anterior) == 0)){
-			printf("%s : %d\n", &elemento_anterior, &contador_tweets_usuario);
+			printf("%s : %d\n", elemento_anterior, &contador_tweets_usuario);
 			strcpy(&elemento_actual, &elemento_anterior);
 			contador_tweets_usuario = 1;
         }
