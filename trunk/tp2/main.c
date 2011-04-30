@@ -75,22 +75,22 @@ int main(int argc, char * argv[])
     fclose(archivo);
 
 
-/*mientas haya datos en la cola,los saco y meto en el array
-    while ( !C_Vacia(colaTweets)) {
-        C_Sacar(&colaTweets,&miDiccionario);
-        Tdiccionario_Destruir(miDiccionario);
-        free(miDiccionario);
 
-    } */
-
-  /*  VA_create(&a, sizeof(int));
+/*
+    VA_create(&a, sizeof(int));
 
     while ( !C_Vacia(colaTweets)) {
         C_Sacar(&colaTweets,&miDiccionario);
-
-         Tdiccionario_Destruir(&miDiccionario);
+        sizeDato=TDiccionario_sizeDato(&miDiccionario,"user"); /* creo que es user_dato
+        if( sizeDato>0 ) {
+        buffer=(char*)malloc(sizeDato);
+        TDiccionario_obtener(&miDiccionario,"user",buffer);
+        free(buffer);
+        }
+        VA_add(&a,buffer )
+        Tdiccionario_Destruir(&miDiccionario);
         free(&miDiccionario);
-        VA_add(&a, &miDiccionario);
+
     else
         VA_sort(&a, fcomp);
     }
