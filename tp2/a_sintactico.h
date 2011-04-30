@@ -29,6 +29,11 @@ typedef enum
     COMA
 } TipoEstado;
 
+typedef struct _tcallback{
+         void* contexto;
+         int (*cb) (const void * tc, const void  * dato);
+} tcallback;
+
 typedef struct tda_sintactico
 {
     /* El ultimo error recibido, 0 es ok. */
@@ -39,9 +44,11 @@ typedef struct tda_sintactico
     /*guardo los estados antes de ponerlos en la pila(objeto array)*/
     int estpila;
     TPila   pP;
+
+    tcallback arrayCallbacks[10];
     /*evento * callbacks[10];*/
-    int (*callbacks[10]) (Tconstructor * tc, void * dato);
-    Tconstructor * constructor;
+    /*int (*callbacks[10]) (Tconstructor * tc, void * dato);
+    Tconstructor * constructor;*/
     /* comento esto para mostrar mi idea
      Estos son los tokens validos como clave
        TipoToken tValidos[4]; indica los tokens validos que pueden venir. nose x q lo borraron
@@ -97,7 +104,6 @@ Postcondiciones: Se liberan recursos asociados.*/
 
 int Tsintactico_Destruir(TSintactico *as );
 
-int TSintactico_setConstructor(TSintactico * ts, Tconstructor * tc);
 
 /*int Tsintactico_setCallback(TSintactico *ts, int evento, void* tda_contexto, void(*callback)(const void*, const void*));*/
 #endif

@@ -38,3 +38,12 @@ int TParser_getUltimoError(TParser* p, int * codigo, char* mensaje)
         return 0;
     }
 }
+
+int TParser_setCallback (TParser *p, int evento, void* tda_contexto, int(*callback)(const void*, const void*))
+{
+    /*ts->arrayCallbacks[evento].cb=callback;
+    ts->arrayCallbacks[evento].contexto=tda_contexto;*/
+   Tsintactico_setCallback(p->as,CB_COMIENZA_ARRAY,tda_contexto,callback);
+
+    return 0;
+}

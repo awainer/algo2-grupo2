@@ -37,6 +37,7 @@ int main(int argc, char * argv[])
     C_Crear(&colaTweets,sizeof(TDiccionario));
     Tconstructor_setCola(&miConstructor,&colaTweets);
     TParser_Crear(&miParser);
+    TParser_setCallback(&miParser,CB_COMIENZA_ARRAY,&miConstructor,Tconstructor_eventoComienzaArray);
 
     archivo=fopen(argv[1],"r");
 
