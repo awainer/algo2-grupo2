@@ -30,7 +30,7 @@ int diccionario_existeValor(TDiccionario* td,char * clave,Definicion * aux)
 {
     int seguir;
 
-
+        /*chequeo de Diccionario/lista vacia*/
         if(L_Vacia(td->elementos))
     {
           aux=NULL;
@@ -104,7 +104,7 @@ int TDiccionario_colocar(TDiccionario* td, char* clave, char* valor)
     }
 
     strcpy(def.k,clave);
-    strcpy(def.v,valor);
+    strcpy(def.v,valor); /***TODO revisar este return***/
     return L_Insertar_Cte(&td->elementos, L_Siguiente, (void *)&def);
 
 

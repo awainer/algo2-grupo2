@@ -13,15 +13,19 @@
 /* chequear en todas las callbacks que el tweet este inicializado != SIN_INICIAR, chequeo semantico*/
 
 
-int Tconstructor_Crear(Tconstructor* tc) {
-    tc->estado=SIN_INICIAR;
+int Tconstructor_Crear(void* tc) {
+    Tconstructor * aux;
+    aux = (Tconstructor*)tc;
+    aux->estado=SIN_INICIAR;
     return 0;
 }
 
-int Tconstructor_Destruir(Tconstructor* tc){
-    free(tc->buffer_dict);
-    free(tc->buff_v);
-    free(tc->buff_k);
+int Tconstructor_Destruir(void* tc){
+    Tconstructor * aux;
+    aux = (Tconstructor*)tc;
+    free(aux->buffer_dict);
+    free(aux->buff_v);
+    free(aux->buff_k);
     return 0;
 }
 
@@ -33,10 +37,13 @@ int Tconstructor_setCola(Tconstructor *tc, TCola* cola){
 
 
 
-int Tconstructor_eventoComienzaArray(Tconstructor* tc, void* dato){
-if (tc->estado==SIN_INICIAR)
+int Tconstructor_eventoComienzaArray(void* tc, void* dato){
+Tconstructor * aux;
+aux = (Tconstructor*)tc;
+
+if (aux->estado==SIN_INICIAR)
 {
-    tc->estado=AFUERA;
+    aux->estado=AFUERA;
     return 0;
 }
 else
@@ -44,10 +51,13 @@ else
 
 }
 
-int Tconstructor_eventoTerminaArray (Tconstructor* tc, void* dato) {
-    if(tc->estado==AFUERA)
+int Tconstructor_eventoTerminaArray (void* tc, void* dato) {
+Tconstructor * aux;
+aux = (Tconstructor*)tc;
+
+    if(aux->estado==AFUERA)
     {
-    tc->estado=SIN_INICIAR;
+    aux->estado=SIN_INICIAR;
     return 0;
     }
     else
@@ -57,17 +67,18 @@ int Tconstructor_eventoTerminaArray (Tconstructor* tc, void* dato) {
 
 }
 
-int Tconstructor_eventoComienzaObjeto(Tconstructor* tc, void* dato){
-
-switch (tc->estado)
+int Tconstructor_eventoComienzaObjeto(void* tc, void* dato){
+Tconstructor * aux;
+aux = (Tconstructor*)tc;
+switch (aux->estado)
 {
-    case AFUERA : tc->estado=TWEET;
-                  tc->buffer_dict=(TDiccionario *)malloc(sizeof(TDiccionario));
-                  TDiccionaro_Crear(tc->buffer_dict);
+    case AFUERA : aux->estado=TWEET;
+                  aux->buffer_dict=(TDiccionario *)malloc(sizeof(TDiccionario));
+                  TDiccionaro_Crear(aux->buffer_dict);
 
                   break;
-    case TWEET  : tc->estado=USER;
-                  break;
+    /*case TWEET  : aux->estado=USER;
+                  break;*/
     case SIN_INICIAR : return ERROR_CONTEXTO;
 }
 
@@ -76,30 +87,33 @@ return 0;
 
 int Tconstructor_push_par(Tconstructor* tc)
 {/* Pasa el par k/v del buffer al buffer diccionario*/
+    /*Tconstructor * aux;
+    aux = (Tconstructor*)tc;*/
     TDiccionario_colocar(tc->buffer_dict,tc->buff_k,tc->buff_v);
     free(tc->buff_k);
     free(tc->buff_v);
     return 0;
 }
 
-int Tconstructor_eventoTerminaObjeto(Tconstructor* tc, void* dato) {
-
-if(tc->estado==SIN_INICIAR)
+int Tconstructor_eventoTerminaObjeto(void* tc, void* dato) {
+Tconstructor * aux;
+aux = (Tconstructor*)tc;
+if(aux->estado==SIN_INICIAR)
 {
     return ERROR_CONTEXTO;
 }
 
 
-switch (tc->estado)
+switch (aux->estado)
 {
-    case USER   : tc->estado=TWEET;
+    case USER   : aux->estado=TWEET;
                   break;
-    case TWEET  : tc->estado=AFUERA; /* cuando termina un tweet coloco en la cola y creo un nuevo dict*/
-                  C_Agregar(tc->colaDestino,tc->buffer_dict);
-                  tc->buffer_dict=(TDiccionario *)malloc(sizeof(TDiccionario));
-                  if (tc->buffer_dict==NULL)
+    case TWEET  : aux->estado=AFUERA; /* cuando termina un tweet coloco en la cola y creo un nuevo dict*/
+                  C_Agregar(aux->colaDestino,aux->buffer_dict);
+                  aux->buffer_dict=(TDiccionario *)malloc(sizeof(TDiccionario));
+                  if (aux->buffer_dict==NULL)
                     return OOM;
-                  TDiccionaro_Crear(tc->buffer_dict);
+                  TDiccionaro_Crear(aux->buffer_dict);
                   break;
 
 }
@@ -107,118 +121,145 @@ return 0;
 }
 
 
-int Tconstructor_eventoClave(Tconstructor* tc, void* dato) {
-if(tc->estado==SIN_INICIAR)
+int Tconstructor_eventoClave(void* tc, void* dato) {
+Tconstructor * aux;
+aux = (Tconstructor*)tc;
+
+if(aux->estado==SIN_INICIAR)
 {
     return ERROR_CONTEXTO;
 }
-
-    if(tc->estado==TWEET)
+    if(!strcmp((char*)dato,"user"))
     {
-
-    tc->buff_k=(char *)malloc(strlen(dato)+1);
+        aux->estado=USER;
+        return 0;
     }
-    else if (tc->estado==USER)
+
+
+    if(aux->estado==TWEET)
+    {
+        aux->buff_k=(char *)malloc(strlen(dato)+1);
+    }
+    else if (aux->estado==USER)
     { /*Las claves dentro del objeto user pasan a ser user_clave */
-    tc->buff_v=(char *)malloc(strlen(dato)+strlen("user_")+1);
-    tc->buff_v[0]=0; /*aca inicializo el string buffer, le pongo el user_ y el dato */
-    strcat(tc->buff_v,"user_");
-    strcat(tc->buff_v,dato);
-    Tconstructor_push_par(tc);
+        aux->buff_k=(char *)malloc(strlen(dato)+strlen("user_")+2);
+        aux->buff_k[0]=0; /*aca inicializo el string buffer, le pongo el user_ y el dato */
+        strcat(aux->buff_k,"user_");
+        strcat(aux->buff_k,dato);
+        /*Tconstructor_push_par(aux);*/
     }
 
-    if (tc->buff_k==NULL)
+    if (aux->buff_k==NULL)
     {
-        Tdiccionario_Destruir(tc->buffer_dict);
-        free(tc->buffer_dict);
+        Tdiccionario_Destruir(aux->buffer_dict);
+        free(aux->buffer_dict);
         return OOM;
     }
 
-    strcpy(tc->buff_k,dato);
+    /*strcpy(aux->buff_k,dato);*/
     return 0;
 }
 
 
-int Tconstructor_eventoNumero(Tconstructor* tc, void* dato) {
-if(tc->estado==SIN_INICIAR)
+int Tconstructor_eventoNumero(void* tc, void* dato) {
+Tconstructor * aux;
+aux = (Tconstructor*)tc;
+
+if(aux->estado==SIN_INICIAR)
 {
     return ERROR_CONTEXTO;
 }
-    tc->buff_v=(char *)malloc(20); /*Esto es arbitrario, habria que cambiarlo 20 caracteres es el numero mas grande que se puede escribir con 64bits*/
-    if (tc->buff_v==NULL)
-    {   Tdiccionario_Destruir(tc->buffer_dict);
-        free(tc->buffer_dict);
-        free(tc->buff_v);
+    aux->buff_v=(char *)malloc(20); /*Esto es arbitrario, habria que cambiarlo 20 caracteres es el numero mas grande que se puede escribir con 64bits*/
+    if (aux->buff_v==NULL)
+    {   Tdiccionario_Destruir(aux->buffer_dict);
+        free(aux->buffer_dict);
+        free(aux->buff_v);
         return OOM;
     }
-    sprintf(tc->buff_v,"%d",dato);
-    Tconstructor_push_par(tc);
+    /*sprintf(aux->buff_v,"%d",dato);*/
+    strcpy(aux->buff_k,dato);
+    Tconstructor_push_par(aux);
     return 0;
 }
 
 
-int Tconstructor_eventoString(Tconstructor* tc, void* dato) {
-if(tc->estado==SIN_INICIAR)
+int Tconstructor_eventoString(void* tc, void* dato) {
+Tconstructor * aux;
+char * aux_dato ;
+
+aux = (Tconstructor*)tc;
+aux_dato=(char*)dato;
+
+if(aux->estado==SIN_INICIAR)
 {
     return ERROR_CONTEXTO;
 }
-    tc->buff_v=(char *)malloc(strlen(dato)+1);
-    if (tc->buff_v==NULL)
+    aux->buff_v=(char *)malloc(strlen(aux_dato)+1);
+    if (aux->buff_v==NULL)
         return OOM;
 
-    strcpy(tc->buff_v,dato);
-    Tconstructor_push_par(tc);
+    strcpy(aux->buff_v,aux_dato); /***TODO agregar check para el estado USER ***/
+    Tconstructor_push_par(aux);
     return 0;
 }
 
-int Tconstructor_eventoNull(Tconstructor* tc, void* dato) {
-if(tc->estado==SIN_INICIAR)
+int Tconstructor_eventoNull(void* tc, void* dato) {
+Tconstructor * aux;
+aux = (Tconstructor*)tc;
+
+if(aux->estado==SIN_INICIAR)
 {
     return ERROR_CONTEXTO;
 }
-    tc->buff_v=(char *)malloc(5);
-        if (tc->buff_v==NULL)
-        {   Tdiccionario_Destruir(tc->buffer_dict);
-            free(tc->buffer_dict);
-            free(tc->buff_v);
+    aux->buff_v=(char *)malloc(5);
+        if (aux->buff_v==NULL)
+        {   Tdiccionario_Destruir(aux->buffer_dict);
+            free(aux->buffer_dict);
+            free(aux->buff_v);
             return OOM;
         }
-    strcpy(tc->buff_v,"Null");
-    Tconstructor_push_par(tc);
+    strcpy(aux->buff_v,"Null");
+    Tconstructor_push_par(aux);
     return 0;
 }
 
-int Tconstructor_eventoTrue(Tconstructor* tc, void* dato) {
-if(tc->estado==SIN_INICIAR)
+int Tconstructor_eventoTrue(void* tc, void* dato) {
+Tconstructor * aux;
+aux = (Tconstructor*)tc;
+
+if(aux->estado==SIN_INICIAR)
 {
     return ERROR_CONTEXTO;
 }
-    tc->buff_v=(char *)malloc(6);
-        if (tc->buff_v==NULL)
-        {   Tdiccionario_Destruir(tc->buffer_dict);
-            free(tc->buffer_dict);
-            free(tc->buff_v);
+    aux->buff_v=(char *)malloc(6);
+        if (aux->buff_v==NULL)
+        {   Tdiccionario_Destruir(aux->buffer_dict);
+            free(aux->buffer_dict);
+            free(aux->buff_v);
             return OOM;
         }
-    strcpy(tc->buff_v,"True");
+    strcpy(aux->buff_v,"True");
     Tconstructor_push_par(tc);
     return 0;
 
 }
 
-int Tconstructor_eventoFalse(Tconstructor* tc, void* dato) {
-if(tc->estado==SIN_INICIAR)
+int Tconstructor_eventoFalse(void* tc, void* dato) {
+Tconstructor * aux;
+aux = (Tconstructor*)tc;
+
+if(aux->estado==SIN_INICIAR)
 {
     return ERROR_CONTEXTO;
 }
-    tc->buff_v=(char *)malloc(6);
-         if (tc->buff_v==NULL)
-        {   Tdiccionario_Destruir(tc->buffer_dict);
-            free(tc->buffer_dict);
-            free(tc->buff_v);
+    aux->buff_v=(char *)malloc(6);
+         if (aux->buff_v==NULL)
+        {   Tdiccionario_Destruir(aux->buffer_dict);
+            free(aux->buffer_dict);
+            free(aux->buff_v);
             return OOM;
         }
-    strcpy(tc->buff_v,"False");
-    Tconstructor_push_par(tc);
+    strcpy(aux->buff_v,"False");
+    Tconstructor_push_par(aux);
     return 0;
 }

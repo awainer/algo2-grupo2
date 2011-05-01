@@ -26,14 +26,14 @@ Precondición: ninguna
 Postcondición: el constructor de tweets ha sido creado.
 */
 
-int Tconstructor_Crear(Tconstructor* tc);
+int Tconstructor_Crear(void* tc);
 
 /*
 Descripción: Libera los recursos asociados del constructor.
 Precondiciones: El Constructor ha sido creado.
 Postcondiciones: Se liberan recursos asociados.
 */
-int Tconstructor_Destruir(Tconstructor* tc);
+int Tconstructor_Destruir(void* tc);
 
 /*
 Descripción: Establece la Cola donde se colocarán los Tweets en formato TDiccionario.
@@ -48,25 +48,25 @@ Precondiciones: El constructor ha sido creado y se le ha establecido una cola.
 Postcondiciones: se procesa el evento ocurrido.
 */
 
-int Tconstructor_eventoComienzaArray(Tconstructor* tc, void* dato);
+int Tconstructor_eventoComienzaArray(void * tc, void* dato);
 
-int Tconstructor_eventoTerminaArray(Tconstructor* tc, void* dato);
+int Tconstructor_eventoTerminaArray(void* tc, void* dato);
 
-int Tconstructor_eventoComienzaObjeto(Tconstructor* tc, void* dato);
+int Tconstructor_eventoComienzaObjeto(void* tc, void* dato);
 
-int Tconstructor_eventoTerminaObjeto(Tconstructor* tc, void* dato);
+int Tconstructor_eventoTerminaObjeto(void* tc, void* dato);
 
-int Tconstructor_eventoClave(Tconstructor* tc, void* dato);
+int Tconstructor_eventoClave(void* tc, void* dato);
 
-int Tconstructor_eventoNumero(Tconstructor* tc, void* dato);
+int Tconstructor_eventoNumero(void* tc, void* dato);
 
-int Tconstructor_eventoString(Tconstructor* tc, void* dato);
+int Tconstructor_eventoString(void* tc, void* dato);
 
-int Tconstructor_eventoNull(Tconstructor* tc, void* dato);
+int Tconstructor_eventoNull(void* tc, void* dato);
 
-int Tconstructor_eventoTrue(Tconstructor* tc, void* dato);
+int Tconstructor_eventoTrue(void* tc, void* dato);
 
-int Tconstructor_eventoFalse(Tconstructor* tc, void* dato);
+int Tconstructor_eventoFalse(void* tc, void* dato);
 
 
 

@@ -62,7 +62,7 @@ Postcondiciones: se establece la callback a llamar ante la ocurrencia del evento
 nueva.
 */
 /*int TParser_setCallback (TSintactico *ts, int evento, void* tda_contexto, int(*callback)(const void*, int, const void*));*/
-int TParser_setCallback (TParser *p, int evento, void* tda_contexto, int(*callback)(const void*, const void*));
+int TParser_setCallback (TParser *p, int evento, void* tda_contexto, int(*callback)( void*,  void*));
 
 
 #endif

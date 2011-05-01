@@ -9,6 +9,7 @@
 #include "dict.h"
 #include "var_array.h"
 #include "constr_tweets.h"
+
 int main(int argc, char * argv[])
 {
 
@@ -21,8 +22,8 @@ int main(int argc, char * argv[])
     TDiccionario * miDiccionario=NULL;
     TCola colaTweets;
     Tconstructor miConstructor;
-    V_Array a;
-    funccmp fcomp;
+/*    V_Array a;
+    funccmp fcomp;*/
     TParser miParser;
     FILE *  archivo;
     char    c;
@@ -37,7 +38,17 @@ int main(int argc, char * argv[])
     C_Crear(&colaTweets,sizeof(TDiccionario));
     Tconstructor_setCola(&miConstructor,&colaTweets);
     TParser_Crear(&miParser);
+
     TParser_setCallback(&miParser,CB_COMIENZA_ARRAY,&miConstructor,Tconstructor_eventoComienzaArray);
+    TParser_setCallback(&miParser,CB_TERMINA_ARRAY,&miConstructor,Tconstructor_eventoTerminaArray);
+    TParser_setCallback(&miParser,CB_COMIENZA_OBJETO,&miConstructor,Tconstructor_eventoComienzaObjeto);
+    TParser_setCallback(&miParser,CB_TERMINA_OBJETO,&miConstructor,Tconstructor_eventoTerminaObjeto);
+    TParser_setCallback(&miParser,CB_CLAVE,&miConstructor,Tconstructor_eventoClave);
+    TParser_setCallback(&miParser,CB_TRUE,&miConstructor,Tconstructor_eventoTrue);
+    TParser_setCallback(&miParser,CB_FALSE,&miConstructor,Tconstructor_eventoFalse);
+    TParser_setCallback(&miParser,CB_NULL,&miConstructor,Tconstructor_eventoNull);
+    TParser_setCallback(&miParser,CB_NUMERO,&miConstructor,Tconstructor_eventoNumero);
+    TParser_setCallback(&miParser,CB_STRING,&miConstructor,Tconstructor_eventoString);
 
     archivo=fopen(argv[1],"r");
 
@@ -50,16 +61,29 @@ int main(int argc, char * argv[])
  c=getc(archivo);
 
     while( (c!=EOF) && (error==E_NONE) )
-    {   printf("%c",c);
+    {  /* printf("%c\n",c);*/
         error=TParser_PushChar(&miParser,c);
         c=getc(archivo);
     }
 
-    while ( !C_Vacia(colaTweets)) {
-        C_Sacar(&colaTweets,&miDiccionario);
 
+
+/*Esto es una prueba, escribe los screen_name de las cosas que va desencolando */
+    while ( !C_Vacia(colaTweets)) {
+        miDiccionario=(TDiccionario*)malloc(sizeof(TDiccionario));
+        TDiccionaro_Crear(miDiccionario);
+        C_Sacar(&colaTweets,miDiccionario);
+        sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
+        printf("%d\n",sizeDato);
+        buffer=(char *)malloc(sizeDato);
+        TDiccionario_obtener(miDiccionario,"user_screen_name",buffer);
+        printf("%s\n",buffer);
+        Tdiccionario_Destruir(miDiccionario);
+        free(miDiccionario);
+        free(buffer);
+    }
     /*esto es un test para ver que estoy sacando de la cola*/
-    sizeDato=TDiccionario_sizeDato(miDiccionario,"id_str");
+    /*sizeDato=TDiccionario_sizeDato(miDiccionario,"id_str");
     if(sizeDato>0)
     {
     buffer=(char *)malloc(sizeDato+1);
@@ -69,7 +93,7 @@ int main(int argc, char * argv[])
     Tdiccionario_Destruir(miDiccionario);
     }
     /*fin test*/
-    }
+    /*}*/
 
 
     fclose(archivo);
@@ -77,28 +101,28 @@ int main(int argc, char * argv[])
 
 
 
-    VA_create(&a, sizeof(int));
+/*    VA_create(&a, sizeof(int));*/
 
-    while ( !C_Vacia(colaTweets)) {
+    /*while ( !C_Vacia(colaTweets)) {
         C_Sacar(&colaTweets,&miDiccionario);
-        sizeDato=TDiccionario_sizeDato(&miDiccionario,"user_screen_name"); /* creo que es user_dato */
-        if( sizeDato>0 ) {
+        sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name"); /* creo que es user_dato */
+        /*if( sizeDato>0 ) {
         buffer=(char*)malloc(sizeDato);
-        TDiccionario_obtener(&miDiccionario,"user_screen_name",buffer);
+        TDiccionario_obtener(miDiccionario,"user_screen_name",buffer);
         free(buffer);
-        }
-        VA_add(&a,buffer );
-        Tdiccionario_Destruir(&miDiccionario);
-        free(&miDiccionario);
-    }
+        }*/
+   /*     VA_add(&a,buffer );*/
+       /* Tdiccionario_Destruir(miDiccionario);
+        free(miDiccionario);
+    }*/
 
-       if (!C_Vacia(colaTweets)){
+     /*  if (!C_Vacia(colaTweets)){
         VA_sort(&a, fcomp); /* revisar como funciona este fcomp */
-        }
+       /* }*/
 
 
 /* a partir de aca el array deberia estar con datos y ordenado */
-int cant_elem_VArray = VA_count (a), recorredor_VArray = 0, contador_tweets_usuario;
+/*int cant_elem_VArray = VA_count (a), recorredor_VArray = 0, contador_tweets_usuario;
 char* elemento_actual, elemento_anterior;
 
 while ( recorredor_VArray < cant_elem_VArray ){
