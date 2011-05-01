@@ -22,8 +22,9 @@ int main(int argc, char * argv[])
     TDiccionario * miDiccionario=NULL;
     TCola colaTweets;
     Tconstructor miConstructor;
-/*    V_Array a;
-    funccmp fcomp;*/
+    V_Array a;
+    V_Array *pVArray;
+    funccmp fcomp;
     TParser miParser;
     FILE *  archivo;
     char    c;
@@ -101,28 +102,28 @@ int main(int argc, char * argv[])
 
 
 
-/*    VA_create(&a, sizeof(int));*/
+   VA_create(&a, sizeof(int));
 
-    /*while ( !C_Vacia(colaTweets)) {
+    while ( !C_Vacia(colaTweets)) {
         C_Sacar(&colaTweets,&miDiccionario);
-        sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name"); /* creo que es user_dato */
-        /*if( sizeDato>0 ) {
+        sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name"); /*creo que es user_dato */
+        if( sizeDato>0 ) {
         buffer=(char*)malloc(sizeDato);
         TDiccionario_obtener(miDiccionario,"user_screen_name",buffer);
         free(buffer);
-        }*/
-   /*     VA_add(&a,buffer );*/
-       /* Tdiccionario_Destruir(miDiccionario);
+        }
+        VA_add(&pVArray,buffer );
+       Tdiccionario_Destruir(miDiccionario);
         free(miDiccionario);
-    }*/
+    }
 
-     /*  if (!C_Vacia(colaTweets)){
-        VA_sort(&a, fcomp); /* revisar como funciona este fcomp */
-       /* }*/
+      if (!C_Vacia(colaTweets)){
+        VA_sort(&pVArray, fcomp); /* revisar como funciona este fcomp */
+        }
 
 
 /* a partir de aca el array deberia estar con datos y ordenado */
-/*int cant_elem_VArray = VA_count (a), recorredor_VArray = 0, contador_tweets_usuario;
+int cant_elem_VArray = VA_count (a), recorredor_VArray = 0, contador_tweets_usuario;
 char* elemento_actual, elemento_anterior;
 
 while ( recorredor_VArray < cant_elem_VArray ){
