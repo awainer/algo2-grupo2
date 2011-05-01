@@ -28,4 +28,11 @@ void VA_destroy(V_Array* a);
 int VA_sort(V_Array* a, funccmp cmp);
 void VA_qsort(V_Array* a, funccmp cmp, int inicio, int fin);
 
+/** Primitiva agregada **/
+/*Descipción: Imprime el vector ya ordenado y cuenta la cantidad de datos repetidos y los imprime en la misma linea, en este caso, cantidad de tweets
+Precondiciones: Existe array dinamico y esta ORDENADO.
+Postcondiciones: Imprime el dato y la cantidad de veces que se repite el dato.
+*/
+void VA_print_ordered(V_Array a);
+
 #endif
