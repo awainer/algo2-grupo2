@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "a_sintactico.h"
 
 
 
@@ -16,7 +17,7 @@ int TParser_Crear(TParser* p)
 }
 
 int TParser_PushChar(TParser* p, char c)
-{
+{   /*printf("%c\n",c);*/
     return TLexico_PushChar(&p->lex,c);
 
 }
@@ -39,11 +40,11 @@ int TParser_getUltimoError(TParser* p, int * codigo, char* mensaje)
     }
 }
 
-int TParser_setCallback (TParser *p, int evento, void* tda_contexto, int(*callback)(const void*, const void*))
+int TParser_setCallback (TParser *p, int evento, void* tda_contexto, int(*callback)( void*,  void*))
 {
     /*ts->arrayCallbacks[evento].cb=callback;
     ts->arrayCallbacks[evento].contexto=tda_contexto;*/
-   Tsintactico_setCallback(p->as,CB_COMIENZA_ARRAY,tda_contexto,callback);
+   Tsintactico_setCallback(&p->as,evento,tda_contexto,callback);
 
     return 0;
 }

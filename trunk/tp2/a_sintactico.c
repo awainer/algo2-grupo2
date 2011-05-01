@@ -8,7 +8,7 @@
 #include "Pila.h"
 #define TamanioDato sizeof(int)
 
-int Tsintactico_setCallback(TSintactico *ts, int evento, void* tda_contexto, int(*callback)( const void  *,const  void*) )
+int Tsintactico_setCallback(TSintactico *ts, int evento, void* tda_contexto, int(*callback)(  void  *,  void*) )
 {
    ts->arrayCallbacks[evento].cb=callback;
    ts->arrayCallbacks[evento].contexto=tda_contexto;
@@ -90,7 +90,7 @@ if (P_Vacia(as->pP))
     {
         as->estpila=ARRAY;
         as->estado=ARRAY;
-        P_Poner(&as->pP, (void*)&as->estpila);
+        P_Poner(&as->pP,&as->estpila);
         as->arrayCallbacks[CB_COMIENZA_ARRAY].cb(as->arrayCallbacks[CB_COMIENZA_ARRAY].contexto, (void*)nada);
         return 0;
     }
@@ -122,8 +122,8 @@ else
         {
             if (token->tipo==TOKEN_STRING)
             {
-                as->estado=CLAVE;
-                as->arrayCallbacks[CB_STRING].cb(as->arrayCallbacks[CB_STRING].contexto,(void*)token->dato );
+                as->estado=CLAVE; /*Cambio CB_STRING a CB_CLAVE, creo que es lo correcto. Ari. */
+                as->arrayCallbacks[CB_CLAVE].cb(as->arrayCallbacks[CB_CLAVE].contexto,(void*)token->dato );
                 return 0;
             }
             else if (token->tipo==TOKEN_OBJETO_TERMINA)
@@ -221,8 +221,8 @@ else
         {
             if (token->tipo==TOKEN_STRING)
             {
-                as->estado=CLAVE;
-                as->arrayCallbacks[CB_STRING].cb(as->arrayCallbacks[CB_STRING].contexto,(void*)token->dato );
+                as->estado=CLAVE; /*Cambio aca tambien. Ari */
+                as->arrayCallbacks[CB_CLAVE].cb(as->arrayCallbacks[CB_CLAVE].contexto,(void*)token->dato );
                 return 0;
             }
             else

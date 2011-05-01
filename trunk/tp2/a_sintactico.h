@@ -31,7 +31,7 @@ typedef enum
 
 typedef struct _tcallback{
          void* contexto;
-         int (*cb) (const void * tc, const void  * dato);
+         int (*cb) ( void * tc,  void  * dato);
 } tcallback;
 
 typedef struct tda_sintactico
@@ -96,7 +96,7 @@ Precondiciones: ts ha sido creado.
 Postcondiciones: se establece la callback a llamar ante la ocurrencia del evento "evento". Si ya se había definido la callback se reemplaza por esta
 nueva.
 */
-int TSintactico_setCallback (TSintactico *ts, int evento, void* tda_contexto, int(*callback)(const void*, int, const void*));
+int TSintactico_setCallback(TSintactico *ts, int evento, void* tda_contexto, int(*callback)(const void*, int, const void*));
 
 /*Descripción: Libera los recursos asociados del analizador sintactico.
 Precondiciones: El analizador sintactico ha sido creado.
@@ -104,6 +104,7 @@ Postcondiciones: Se liberan recursos asociados.*/
 
 int Tsintactico_Destruir(TSintactico *as );
 
+int Tsintactico_setCallback(TSintactico *ts, int evento, void* tda_contexto, int(*callback)(  void  *,  void*) );
 
 /*int Tsintactico_setCallback(TSintactico *ts, int evento, void* tda_contexto, void(*callback)(const void*, const void*));*/
 #endif
