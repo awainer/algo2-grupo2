@@ -65,5 +65,7 @@ nueva.
 int TParser_setCallback (TParser *p, int evento, void* tda_contexto, int(*callback)( void*,  void*));
 
 
+int TParser_destruir(TParser *p);
+
 #endif
 

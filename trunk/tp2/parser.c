@@ -48,3 +48,8 @@ int TParser_setCallback (TParser *p, int evento, void* tda_contexto, int(*callba
 
     return 0;
 }
+int TParser_destruir(TParser *p)
+{
+    Tsintactico_Destruir(&p->as);
+    return 0;
+}

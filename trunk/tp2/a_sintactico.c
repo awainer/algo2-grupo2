@@ -39,8 +39,11 @@ int TSintactico_Crear(TSintactico* as){
 int TSintacticoCasoValor(TSintactico * as,Token * token){
 char nada[2];
     switch (token->tipo){
-		case TOKEN_STRING:  as->estado=VALOR;
+		case TOKEN_STRING:
                             as->arrayCallbacks[CB_STRING].cb(as->arrayCallbacks[CB_STRING].contexto,(void*)token->dato );
+                            as->estado=VALOR;
+
+                            /*as->arrayCallbacks[CB_CLAVE].cb(as->arrayCallbacks[CB_CLAVE].contexto,(void*)token->dato );*/
                             return 0;
 		case TOKEN_NUMERO:  as->estado=VALOR;
                             as->arrayCallbacks[CB_NUMERO].cb(as->arrayCallbacks[CB_NUMERO].contexto,(void*)token->dato );
