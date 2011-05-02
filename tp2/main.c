@@ -23,13 +23,14 @@ int main(int argc, char * argv[])
     TCola colaTweets;
     Tconstructor miConstructor;
     V_Array a;
-    V_Array *pVArray;
+    /*V_Array *pVArray;*/
     funccmp fcomp;
     TParser miParser;
     FILE *  archivo;
     char    c;
     int    error=E_NONE,sizeDato;
     char * buffer;
+    int  i,cant_elementos ; /*para debug, borrar despues*/
 /*    int i;*/  /*aca empiezan las variables del array, por las dudas las separo*/
   /*  int elem;*/
 
@@ -70,19 +71,41 @@ int main(int argc, char * argv[])
 
 
 /*Esto es una prueba, escribe los screen_name de las cosas que va desencolando */
+    VA_create(&a, sizeof(TDiccionario*));
+    cant_elementos=0;
+    miDiccionario=(TDiccionario*)malloc(sizeof(TDiccionario));
+
     while ( !C_Vacia(colaTweets)) {
-        miDiccionario=(TDiccionario*)malloc(sizeof(TDiccionario));
-        TDiccionaro_Crear(miDiccionario);
         C_Sacar(&colaTweets,miDiccionario);
+
+        VA_add(&a,(void*)miDiccionario);
+        Tdiccionario_Destruir(miDiccionario);
+        cant_elementos++;
+        }
+        free(miDiccionario);
+        VA_destroy(&a);
+        /* examino un poco el VA a ver que tiene*/
+        /*VA_get_i(a,0,(void*)miDiccionario);
+        printf("%d\n",TDiccionario_sizeDato(miDiccionario,"user_screen_name"));
+        VA_get_i(a,4,(void*)miDiccionario);
+        printf("%d\n",TDiccionario_sizeDato(miDiccionario,"user_screen_name"));*/
+        printf("%d",cant_elementos);
+        /*for(i=0;i<cant_elementos;i++)
+        {
+            VA_get_i(a,i,(void*)miDiccionario);
+            printf("%d",TDiccionario_sizeDato(miDiccionario,"user_screen_name"));
+        }*/
+
+
+        /*
         sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
-        printf("%d\n",sizeDato);
         buffer=(char *)malloc(sizeDato);
         TDiccionario_obtener(miDiccionario,"user_screen_name",buffer);
         printf("%s\n",buffer);
         Tdiccionario_Destruir(miDiccionario);
         free(miDiccionario);
-        free(buffer);
-    }
+        free(buffer);*/
+
     /*esto es un test para ver que estoy sacando de la cola*/
     /*sizeDato=TDiccionario_sizeDato(miDiccionario,"id_str");
     if(sizeDato>0)
@@ -102,26 +125,26 @@ int main(int argc, char * argv[])
 
 
 
-   VA_create(&a, sizeof(int));
 
-    while ( !C_Vacia(colaTweets)) {
+
+/*    while ( !C_Vacia(colaTweets)) {
         C_Sacar(&colaTweets,&miDiccionario);
         sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name"); /*creo que es user_dato */
-            if( sizeDato>0 ) {
+  /*          if( sizeDato>0 ) {
             buffer=(char*)malloc(sizeDato);
             TDiccionario_obtener(miDiccionario,"user_screen_name",buffer);
             }
-        VA_add(&pVArray,buffer );
+        VA_add(&a,buffer );
         free(buffer);
         Tdiccionario_Destruir(miDiccionario);
         free(miDiccionario);
     }
-
-      if (!C_Vacia(colaTweets)){
-        VA_sort(&pVArray, fcomp); /* revisar como funciona este fcomp */
-        }
+*/
+  /*    if (!C_Vacia(colaTweets)){
+        VA_sort(&a, fcomp); /* revisar como funciona este fcomp */
+    /*    }*/
 /* a partir de aca el array deberia estar con datos y ordenado, invoco la primitiva VA_print_ordered para imprimir los datos  */
-VA_print_ordered(a);
+/*VA_print_ordered(a);*/
 
 
     /*Tdiccionario_Destruir(&miDiccionario);*/
