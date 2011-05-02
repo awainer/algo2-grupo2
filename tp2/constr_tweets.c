@@ -24,8 +24,9 @@ int Tconstructor_Destruir(void* tc){
     Tconstructor * aux;
     aux = (Tconstructor*)tc;
     free(aux->buffer_dict);
+    /*free(aux->buffer_dict);
     free(aux->buff_v);
-    free(aux->buff_k);
+    free(aux->buff_k);*/
     return 0;
 }
 
@@ -77,8 +78,8 @@ switch (aux->estado)
                   TDiccionaro_Crear(aux->buffer_dict);
 
                   break;
-    /*case TWEET  : aux->estado=USER;
-                  break;*/
+    case TWEET  : return 0;
+                  break;
     case SIN_INICIAR : return ERROR_CONTEXTO;
 }
 
@@ -110,10 +111,10 @@ switch (aux->estado)
                   break;
     case TWEET  : aux->estado=AFUERA; /* cuando termina un tweet coloco en la cola y creo un nuevo dict*/
                   C_Agregar(aux->colaDestino,aux->buffer_dict);
-                  aux->buffer_dict=(TDiccionario *)malloc(sizeof(TDiccionario));
+                  /*aux->buffer_dict=(TDiccionario *)malloc(sizeof(TDiccionario));
                   if (aux->buffer_dict==NULL)
                     return OOM;
-                  TDiccionaro_Crear(aux->buffer_dict);
+                  TDiccionaro_Crear(aux->buffer_dict);*/
                   break;
 
 }
@@ -139,6 +140,7 @@ if(aux->estado==SIN_INICIAR)
     if(aux->estado==TWEET)
     {
         aux->buff_k=(char *)malloc(strlen(dato)+1);
+        strcpy(aux->buff_k,dato);
     }
     else if (aux->estado==USER)
     { /*Las claves dentro del objeto user pasan a ser user_clave */

@@ -79,22 +79,27 @@ int main(int argc, char * argv[])
         C_Sacar(&colaTweets,miDiccionario);
 
         VA_add(&a,(void*)miDiccionario);
-        Tdiccionario_Destruir(miDiccionario);
+        /*Tdiccionario_Destruir(miDiccionario);*/
         cant_elementos++;
         }
-        free(miDiccionario);
-        VA_destroy(&a);
+
         /* examino un poco el VA a ver que tiene*/
         /*VA_get_i(a,0,(void*)miDiccionario);
         printf("%d\n",TDiccionario_sizeDato(miDiccionario,"user_screen_name"));
         VA_get_i(a,4,(void*)miDiccionario);
         printf("%d\n",TDiccionario_sizeDato(miDiccionario,"user_screen_name"));*/
-        printf("%d",cant_elementos);
-        /*for(i=0;i<cant_elementos;i++)
+        /*printf("%d",cant_elementos);*/
+        for(i=0;i<cant_elementos;i++)
         {
             VA_get_i(a,i,(void*)miDiccionario);
-            printf("%d",TDiccionario_sizeDato(miDiccionario,"user_screen_name"));
-        }*/
+            sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
+            buffer=(char *)malloc(sizeDato);
+            TDiccionario_obtener(miDiccionario,"user_screen_name",buffer);
+            printf("%s\n",buffer);
+            free(buffer);
+            Tdiccionario_Destruir(miDiccionario);
+            /*free(miDiccionario);*/
+        }
 
 
         /*
@@ -119,9 +124,11 @@ int main(int argc, char * argv[])
     /*fin test*/
     /*}*/
 
-
+    free(miDiccionario);
+    VA_destroy(&a);
     fclose(archivo);
-
+    Tconstructor_Destruir(&miConstructor);
+    TParser_destruir(&miParser);
 
 
 

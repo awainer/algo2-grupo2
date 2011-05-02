@@ -27,6 +27,19 @@
 }
 }
 ,
+{
+"id_str":"8561891496427520",
+"text":"saraza",
+"retweeted":false,
+"created_at":"Sat Nov 27 13:44:48 -0300 2010",
+"in_reply_to_status_id_str":"null",
+"in_reply_to_screen_name":"null",
+"source":"web",
+"user":{
+"screen_name":"otro fulano de tal",
+"lang":"en"
+}
+}
 ,
 {
 "id_str":"8561891496427520",
@@ -41,21 +54,7 @@
 "lang":"en"
 }
 }
-,,
-{
-"id_str":"8561891496427520",
-"text":"saraza",
-"retweeted":false,
-"created_at":"Sat Nov 27 13:44:48 -0300 2010",
-"in_reply_to_status_id_str":"null",
-"in_reply_to_screen_name":"null",
-"source":"web",
-"user":{
-"screen_name":"otro fulano de tal",
-"lang":"en"
-}
-}
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -69,7 +68,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -83,7 +82,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -97,7 +96,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -111,7 +110,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -125,7 +124,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -139,7 +138,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -153,7 +152,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -167,7 +166,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -181,7 +180,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -195,7 +194,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -209,7 +208,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -223,7 +222,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -237,7 +236,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -251,7 +250,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -265,7 +264,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -279,7 +278,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -293,7 +292,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -307,7 +306,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
@@ -321,7 +320,7 @@
 "lang":"en"
 }
 }
-,,
+,
 {
 "id_str":"8561891496427520",
 "text":"saraza",
