@@ -107,13 +107,13 @@ int main(int argc, char * argv[])
     while ( !C_Vacia(colaTweets)) {
         C_Sacar(&colaTweets,&miDiccionario);
         sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name"); /*creo que es user_dato */
-        if( sizeDato>0 ) {
-        buffer=(char*)malloc(sizeDato);
-        TDiccionario_obtener(miDiccionario,"user_screen_name",buffer);
-        free(buffer);
-        }
+            if( sizeDato>0 ) {
+            buffer=(char*)malloc(sizeDato);
+            TDiccionario_obtener(miDiccionario,"user_screen_name",buffer);
+            }
         VA_add(&pVArray,buffer );
-       Tdiccionario_Destruir(miDiccionario);
+        free(buffer);
+        Tdiccionario_Destruir(miDiccionario);
         free(miDiccionario);
     }
 
