@@ -23,7 +23,8 @@ int Tconstructor_Crear(void* tc) {
 int Tconstructor_Destruir(void* tc){
     Tconstructor * aux;
     aux = (Tconstructor*)tc;
-    free(aux->buffer_dict);
+    if(aux->estado==AFUERA)
+        free(aux->buffer_dict);
     /*free(aux->buffer_dict);
     free(aux->buff_v);
     free(aux->buff_k);*/
