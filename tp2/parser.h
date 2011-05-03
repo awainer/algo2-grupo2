@@ -66,6 +66,8 @@ int TParser_setCallback (TParser *p, int evento, void* tda_contexto, int(*callba
 
 
 int TParser_destruir(TParser *p);
+int comparar_strings(void* v1, void* v2);
+
 
 #endif
 
