@@ -23,13 +23,13 @@ int main(int argc, char * argv[])
     TCola colaTweets;
     Tconstructor miConstructor;
     V_Array a;
-    /*V_Array *pVArray;*/
-    funccmp fcomp;
+    /*V_Array *pVArray;
+    funccmp fcomp;*/
     TParser miParser;
     FILE *  archivo;
     char    c;
     int    error=E_NONE,sizeDato;
-    char * buffer;
+    char * buffer,*buffer2;
     int  i,cant_elementos ; /*para debug, borrar despues*/
 /*    int i;*/  /*aca empiezan las variables del array, por las dudas las separo*/
   /*  int elem;*/
@@ -90,6 +90,7 @@ int main(int argc, char * argv[])
         printf("%d\n",TDiccionario_sizeDato(miDiccionario,"user_screen_name"));*/
         /*printf("%d",cant_elementos);*/
         VA_sort(&a,comparar_strings);
+        printf("%d",cant_elementos);
         for(i=0;i<cant_elementos;i++)
         {
             VA_get_i(a,i,(void*)miDiccionario);
