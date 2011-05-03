@@ -89,6 +89,7 @@ int main(int argc, char * argv[])
         VA_get_i(a,4,(void*)miDiccionario);
         printf("%d\n",TDiccionario_sizeDato(miDiccionario,"user_screen_name"));*/
         /*printf("%d",cant_elementos);*/
+        VA_sort(&a,comparar_strings);
         for(i=0;i<cant_elementos;i++)
         {
             VA_get_i(a,i,(void*)miDiccionario);
@@ -98,31 +99,8 @@ int main(int argc, char * argv[])
             printf("%s\n",buffer);
             free(buffer);
             Tdiccionario_Destruir(miDiccionario);
-            /*free(miDiccionario);*/
         }
 
-
-        /*
-        sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
-        buffer=(char *)malloc(sizeDato);
-        TDiccionario_obtener(miDiccionario,"user_screen_name",buffer);
-        printf("%s\n",buffer);
-        Tdiccionario_Destruir(miDiccionario);
-        free(miDiccionario);
-        free(buffer);*/
-
-    /*esto es un test para ver que estoy sacando de la cola*/
-    /*sizeDato=TDiccionario_sizeDato(miDiccionario,"id_str");
-    if(sizeDato>0)
-    {
-    buffer=(char *)malloc(sizeDato+1);
-    TDiccionario_obtener(miDiccionario,"id_str",buffer);
-    printf("%s\n",buffer);
-    free(buffer);
-    Tdiccionario_Destruir(miDiccionario);
-    }
-    /*fin test*/
-    /*}*/
 
     free(miDiccionario);
     VA_destroy(&a);
@@ -130,33 +108,7 @@ int main(int argc, char * argv[])
     Tconstructor_Destruir(&miConstructor);
     TParser_destruir(&miParser);
 
-
-
-
-
-/*    while ( !C_Vacia(colaTweets)) {
-        C_Sacar(&colaTweets,&miDiccionario);
-        sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name"); /*creo que es user_dato */
-  /*          if( sizeDato>0 ) {
-            buffer=(char*)malloc(sizeDato);
-            TDiccionario_obtener(miDiccionario,"user_screen_name",buffer);
-            }
-        VA_add(&a,buffer );
-        free(buffer);
-        Tdiccionario_Destruir(miDiccionario);
-        free(miDiccionario);
-    }
-*/
-  /*    if (!C_Vacia(colaTweets)){
-        VA_sort(&a, fcomp); /* revisar como funciona este fcomp */
-    /*    }*/
-/* a partir de aca el array deberia estar con datos y ordenado, invoco la primitiva VA_print_ordered para imprimir los datos  */
-/*VA_print_ordered(a);*/
-
-
-    /*Tdiccionario_Destruir(&miDiccionario);*/
-
-   return 0;
+    return 0;
 
 }
 

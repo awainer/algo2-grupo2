@@ -76,10 +76,10 @@ switch (aux->estado)
     case AFUERA : aux->estado=TWEET;
                   aux->buffer_dict=(TDiccionario *)malloc(sizeof(TDiccionario));
                   TDiccionaro_Crear(aux->buffer_dict);
+                  break;
 
-                  break;
-    case TWEET  : return 0;
-                  break;
+    case TWEET  : break;
+
     case SIN_INICIAR : return ERROR_CONTEXTO;
 }
 
@@ -109,13 +109,17 @@ switch (aux->estado)
 {
     case USER   : aux->estado=TWEET;
                   break;
+
     case TWEET  : aux->estado=AFUERA; /* cuando termina un tweet coloco en la cola y creo un nuevo dict*/
                   C_Agregar(aux->colaDestino,aux->buffer_dict);
+                  free(aux->buffer_dict);
+
                   /*aux->buffer_dict=(TDiccionario *)malloc(sizeof(TDiccionario));
                   if (aux->buffer_dict==NULL)
                     return OOM;
                   TDiccionaro_Crear(aux->buffer_dict);*/
                   break;
+
 
 }
 return 0;
