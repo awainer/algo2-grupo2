@@ -18,7 +18,13 @@ int TParser_Crear(TParser* p)
 
 int TParser_PushChar(TParser* p, char c)
 {   /*printf("%c\n",c);*/
-    return TLexico_PushChar(&p->lex,c);
+    int e=0;
+
+    e=TLexico_PushChar(&p->lex,c);
+    if(e!=0)
+        {printf("error %d\n",e);
+        printf("error %d\n",c);}
+    return e;
 
 }
 
