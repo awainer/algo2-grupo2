@@ -167,7 +167,7 @@ void VA_qsort(V_Array* a, funccmp cmp, int inicio, int fin){
     VA_qsort(a, cmp, i, fin);
     VA_qsort(a, cmp, inicio, j-1);
 }
-
+/*
 void VA_print_ordered(V_Array a){
     int cant_elem_VArray = VA_count (a), recorredor_VArray = 0, contador_tweets_usuario;
     char* elemento_actual, *elemento_anterior;
@@ -189,4 +189,4 @@ void VA_print_ordered(V_Array a){
 
            recorredor_VArray++;
         }
-}
+}*/
