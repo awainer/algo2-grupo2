@@ -7,32 +7,50 @@
 #include "a_lexico.h"
 #include "parser.h"
 #include "dict.h"
-#include "var_array.h"
 #include "constr_tweets.h"
+#include "LsO.h"
+
+
+int comparar_dicts(void* v1, void* v2)
+{
+    TDiccionario *d1,*d2;
+    int aux;
+    char * buffer1, * buffer2;
+
+    d1=(TDiccionario*)v1;
+    d2=(TDiccionario*)v2;
+
+    aux=TDiccionario_sizeDato(d1,"user_screen_name");
+    buffer1=(char*)malloc(aux);
+    TDiccionario_obtener(d1,"user_screen_name",buffer1);
+    aux=TDiccionario_sizeDato(d2,"user_screen_name");
+    buffer2=(char*)malloc(aux);
+    TDiccionario_obtener(d2,"user_screen_name",buffer2);
+    aux=strcmp(buffer1,buffer2);
+    free(buffer1);
+    free(buffer2);
+    return aux;
+
+}
+
+
 
 int main(int argc, char * argv[])
 {
 
-  /*   TParser miParser;
-    FILE *  archivo;
-   char    c;
-    char    error_desc[50];
-    int     error=E_NONE;*/
 
     TDiccionario * miDiccionario=NULL;
     TCola colaTweets;
     Tconstructor miConstructor;
-    V_Array a;
-    /*V_Array *pVArray;
-    funccmp fcomp;*/
     TParser miParser;
+    TListaOrdenada miListaOrdenada;
     FILE *  archivo;
     char    c;
     int    error=E_NONE,sizeDato;
-    char * buffer,*buffer2;
-    int  i,cant_elementos ; /*para debug, borrar despues*/
-/*    int i;*/  /*aca empiezan las variables del array, por las dudas las separo*/
-  /*  int elem;*/
+
+    char * nuevo, * actual,*temp;
+
+    int  i,cant_elementos ;
 
 
     /*Inicializo el constructor con su cola*/
@@ -69,42 +87,42 @@ int main(int argc, char * argv[])
     }
 
 
+if(error==E_NONE)
+{
 
-/*Esto es una prueba, escribe los screen_name de las cosas que va desencolando */
-    VA_create(&a, sizeof(TDiccionario*));
-    cant_elementos=0;
     miDiccionario=(TDiccionario*)malloc(sizeof(TDiccionario));
-
+    LO_Crear(&miListaOrdenada,sizeof(TDiccionario),comparar_dicts);
     while ( !C_Vacia(colaTweets)) {
         C_Sacar(&colaTweets,miDiccionario);
+        LO_Insertar(&miListaOrdenada,miDiccionario);
+        Tdiccionario_Destruir(miDiccionario);
 
-        VA_add(&a,(void*)miDiccionario);
-        /*Tdiccionario_Destruir(miDiccionario);*/
-        cant_elementos++;
         }
 
-        /* examino un poco el VA a ver que tiene*/
-        /*VA_get_i(a,0,(void*)miDiccionario);
-        printf("%d\n",TDiccionario_sizeDato(miDiccionario,"user_screen_name"));
-        VA_get_i(a,4,(void*)miDiccionario);
-        printf("%d\n",TDiccionario_sizeDato(miDiccionario,"user_screen_name"));*/
-        /*printf("%d",cant_elementos);*/
-        VA_sort(&a,comparar_strings);
-        printf("%d",cant_elementos);
-        for(i=0;i<cant_elementos;i++)
-        {
-            VA_get_i(a,i,(void*)miDiccionario);
-            sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
-            buffer=(char *)malloc(sizeDato);
-            TDiccionario_obtener(miDiccionario,"user_screen_name",buffer);
-            printf("%s\n",buffer);
-            free(buffer);
-            Tdiccionario_Destruir(miDiccionario);
-        }
+    LO_Mover_Cte(&miListaOrdenada,L_Primero);
+    do{
+        LO_Elem_Cte(miListaOrdenada,miDiccionario);
+        sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
+        actual=(char *)malloc(sizeDato);
+        TDiccionario_obtener(miDiccionario,"user_screen_name",actual);
+        printf("%s\n",actual);
+        free(actual);
+        Tdiccionario_Destruir(miDiccionario);
 
 
-    free(miDiccionario);
-    VA_destroy(&a);
+        } while(LO_Mover_Cte(&miListaOrdenada,L_Siguiente));
+
+
+
+        free(miDiccionario);
+}
+
+
+
+    LO_Destruir(&miListaOrdenada);
+
+
+
     fclose(archivo);
     Tconstructor_Destruir(&miConstructor);
     TParser_destruir(&miParser);
