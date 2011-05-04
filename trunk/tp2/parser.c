@@ -61,26 +61,4 @@ int TParser_destruir(TParser *p)
 }
 
 
-int comparar_strings(void* v1, void* v2)
-{
-    /*return strcmp((char*)v1,(char*)v2);*/
-    char *s1,*s2;
-    int i=0;
 
-    s1=(char*)v1;
-    s2=(char*)v2;
-
-    while( (s1[i]==s2[i]) && (i<=strlen(s1)) && (i<=strlen(s2)) )
-    {
-        i++;
-    }
-
-    if(s1[i]>s2[i])
-    {
-        return 1;
-    }
-    else
-    {
-        return -1;
-    }
-}
