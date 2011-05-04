@@ -95,7 +95,7 @@ if(error==E_NONE)
     while ( !C_Vacia(colaTweets)) {
         C_Sacar(&colaTweets,miDiccionario);
         LO_Insertar(&miListaOrdenada,miDiccionario);
-        Tdiccionario_Destruir(miDiccionario);
+        /*Tdiccionario_Destruir(miDiccionario);*/
 
         }
 
