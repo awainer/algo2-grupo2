@@ -50,7 +50,7 @@ int main(int argc, char * argv[])
 
     char * nuevo, * actual,*temp;
 
-    int  i,cant_elementos ;
+    /*int  i,cant_elementos ;*/
 
 
     /*Inicializo el constructor con su cola*/
@@ -108,9 +108,9 @@ if(error==E_NONE)
         printf("%s\n",actual);
         free(actual);
         Tdiccionario_Destruir(miDiccionario);
+        LO_Borrar_Cte(&miListaOrdenada);
 
-
-        } while(LO_Mover_Cte(&miListaOrdenada,L_Siguiente));
+        } while(!LO_Vacia(miListaOrdenada));
 
 
 

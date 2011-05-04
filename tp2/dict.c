@@ -26,7 +26,7 @@ pre: diccionario creado
 post: devuelve RES_OK si el diccionario tiene una entrada para la clave dada, devuevle en aux un puntero a esa entrada
 en caso contrario devuelve ERR_NA y NULL en aux
 */
-int diccionario_existeValor(TDiccionario* td,char * clave,Definicion * aux)
+int diccionario_getValor(TDiccionario* td,char * clave,Definicion * aux)
 {
     int seguir;
 
@@ -39,7 +39,8 @@ int diccionario_existeValor(TDiccionario* td,char * clave,Definicion * aux)
     else
     {
         L_Mover_Cte(&td->elementos,L_Primero);
-        L_Elem_Cte(td->elementos,(void *)aux);
+        /*L_Elem_Cte(td->elementos,(void *)aux);*/
+        L_Elem_Cte(td->elementos,aux);
         if (!strcmp(aux->k,clave))
             {
                 /* primer elemento coincide*/
@@ -65,7 +66,44 @@ int diccionario_existeValor(TDiccionario* td,char * clave,Definicion * aux)
         return ERR_NA;
 }
 
+int diccionario_getSize(TDiccionario* td,char * clave)
+{
+    int seguir;
+    Definicion aux;
+        /*chequeo de Diccionario/lista vacia*/
+        if(L_Vacia(td->elementos))
+    {
 
+          return 0;
+    }
+    else
+    {
+        L_Mover_Cte(&td->elementos,L_Primero);
+        /*L_Elem_Cte(td->elementos,(void *)aux);*/
+        L_Elem_Cte(td->elementos,&aux);
+        if (!strcmp(aux.k,clave))
+            {
+                /* primer elemento coincide*/
+                return strlen(aux.v);
+            }
+        else
+         {
+           seguir=L_Mover_Cte(&td->elementos,L_Siguiente);
+           while( strcmp(aux.k,clave)  && seguir )
+                {
+                L_Elem_Cte(td->elementos,&aux);
+                seguir=L_Mover_Cte(&td->elementos,L_Siguiente);
+                }
+         }
+        return(strlen(aux.v));
+    /*if (!strcmp(aux.k,clave))
+        {
+
+            return RES_OK;
+        }*/
+    }
+
+}
 
 
 /*pre: El diccionario ha sido creado
@@ -93,7 +131,7 @@ int TDiccionario_colocar(TDiccionario* td, char* clave, char* valor)
 
 
 
-    if(diccionario_existeValor(td,clave,&aux)==0)
+    if(diccionario_getValor(td,clave,&aux)==0)
     {
     /*Si mi diccionario ya tiene una entrada para esta clave, la borro antes de insertar la nueva*/
     /*Creo que seria un poco mas rapido solo hacer free del valor y copiarlo, pero seria mucho mas desprolijo */
@@ -137,7 +175,7 @@ buffer = diccionario[clave]*/
 int TDiccionario_obtener(TDiccionario* td, char* clave, char* buffer)
 {
     Definicion aux;
-    diccionario_existeValor(td,clave,&aux); /*En este caso, no me importa el valor de retorno porque la precondicion dice que existe la entrada */
+    diccionario_getValor(td,clave,&aux); /*En este caso, no me importa el valor de retorno porque la precondicion dice que existe la entrada */
     strcpy(buffer,aux.v);
 
     return 0;
@@ -150,13 +188,13 @@ quepa el texto y obtenerlo con Tdiccionario_obtener. Si la clave no esta en el d
 0.*/
 int  TDiccionario_sizeDato(TDiccionario* td, char* clave)
 {
-    Definicion aux;
-    if(diccionario_existeValor(td,clave,&aux)==0)
+    /*if(diccionario_getValor(td,clave,&aux)==0)
     {
         return strlen(aux.v)+1;
     }
     else
-        return 0;
+        return 0;*/
+    return diccionario_getSize(td,clave)+1;
 }
 
 int compstr(const void *s1, const void *s2)
