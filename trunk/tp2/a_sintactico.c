@@ -40,37 +40,36 @@ int TSintacticoCasoValor(TSintactico * as,Token * token){
 char nada[2];
     switch (token->tipo){
 		case TOKEN_STRING:
-                            as->arrayCallbacks[CB_STRING].cb(as->arrayCallbacks[CB_STRING].contexto,(void*)token->dato );
-                            as->estado=VALOR;
 
-                            /*as->arrayCallbacks[CB_CLAVE].cb(as->arrayCallbacks[CB_CLAVE].contexto,(void*)token->dato );*/
-                            return 0;
+                            as->estado=VALOR;
+                            return as->arrayCallbacks[CB_STRING].cb(as->arrayCallbacks[CB_STRING].contexto,(void*)token->dato );
+                            /*return 0;*/
 		case TOKEN_NUMERO:  as->estado=VALOR;
-                            as->arrayCallbacks[CB_NUMERO].cb(as->arrayCallbacks[CB_NUMERO].contexto,(void*)token->dato );
-                            return 0;
+                            return as->arrayCallbacks[CB_NUMERO].cb(as->arrayCallbacks[CB_NUMERO].contexto,(void*)token->dato );
+                            /*return 0;*/
 
 
 		case TOKEN_OBJETO_EMPIEZA:  as->estpila=OBJETO;
                                     as->estado=OBJETO;
                                     P_Poner(&as->pP, (void*)&as->estpila);
-                                    as->arrayCallbacks[CB_COMIENZA_OBJETO].cb(as->arrayCallbacks[CB_COMIENZA_OBJETO].contexto, (void*)nada);
-                                    return 0;
+                                    return as->arrayCallbacks[CB_COMIENZA_OBJETO].cb(as->arrayCallbacks[CB_COMIENZA_OBJETO].contexto, (void*)nada);
+                                    /*return 0;*/
 
 		case TOKEN_ARRAY_EMPIEZA:   as->estpila=ARRAY;
                                     as->estado=ARRAY;
                                     P_Poner(&as->pP, (void*)&as->estpila);
-                                    as->arrayCallbacks[CB_COMIENZA_ARRAY].cb(as->arrayCallbacks[CB_COMIENZA_ARRAY].contexto,(void*)nada );
-                                    return 0;
+                                    return as->arrayCallbacks[CB_COMIENZA_ARRAY].cb(as->arrayCallbacks[CB_COMIENZA_ARRAY].contexto,(void*)nada );
+                                    /*return 0;*/
 		case TOKEN_TRUE:            as->estado=VALOR;
-                                    as->arrayCallbacks[CB_TRUE].cb(as->arrayCallbacks[CB_TRUE].contexto, (void*)nada);
-                                    return 0;
+                                    return as->arrayCallbacks[CB_TRUE].cb(as->arrayCallbacks[CB_TRUE].contexto, (void*)nada);
+                                    /*return 0;*/
 		case TOKEN_FALSE:           as->estado=VALOR;
-                                    as->arrayCallbacks[CB_FALSE].cb(as->arrayCallbacks[CB_FALSE].contexto, (void*)nada );
-                                    return 0;
+                                    return as->arrayCallbacks[CB_FALSE].cb(as->arrayCallbacks[CB_FALSE].contexto, (void*)nada );
+                                    /*return 0;*/
 
 		case TOKEN_NULL:            as->estado=VALOR;
-                                    as->arrayCallbacks[CB_NULL].cb(as->arrayCallbacks[CB_NULL].contexto, (void*)nada );
-                                    return 0;
+                                    return as->arrayCallbacks[CB_NULL].cb(as->arrayCallbacks[CB_NULL].contexto, (void*)nada );
+                                    /*return 0;*/
 		default : { strcpy(as->error_mensaje,"se esperaba un valor");
                 as->error_codigo=E_SINTACTICO;
                 return as->error_codigo; }
@@ -94,16 +93,16 @@ if (P_Vacia(as->pP))
         as->estpila=ARRAY;
         as->estado=ARRAY;
         P_Poner(&as->pP,&as->estpila);
-        as->arrayCallbacks[CB_COMIENZA_ARRAY].cb(as->arrayCallbacks[CB_COMIENZA_ARRAY].contexto, (void*)nada);
-        return 0;
+        return as->arrayCallbacks[CB_COMIENZA_ARRAY].cb(as->arrayCallbacks[CB_COMIENZA_ARRAY].contexto, (void*)nada);
+        /*return 0;*/
     }
     else if (token->tipo==TOKEN_OBJETO_EMPIEZA)
     {
         as->estpila=OBJETO;
         as->estado=OBJETO;
         P_Poner(&as->pP, (void*)&as->estpila);
-        as->arrayCallbacks[CB_COMIENZA_OBJETO].cb(as->arrayCallbacks[CB_COMIENZA_OBJETO].contexto, (void*)nada);
-        return 0;
+        return as->arrayCallbacks[CB_COMIENZA_OBJETO].cb(as->arrayCallbacks[CB_COMIENZA_OBJETO].contexto, (void*)nada);
+        /*return 0;*/
 
     }
     else
@@ -126,8 +125,8 @@ else
             if (token->tipo==TOKEN_STRING)
             {
                 as->estado=CLAVE; /*Cambio CB_STRING a CB_CLAVE, creo que es lo correcto. Ari. */
-                as->arrayCallbacks[CB_CLAVE].cb(as->arrayCallbacks[CB_CLAVE].contexto,(void*)token->dato );
-                return 0;
+                return as->arrayCallbacks[CB_CLAVE].cb(as->arrayCallbacks[CB_CLAVE].contexto,(void*)token->dato );
+                /*return 0;*/
             }
             else if (token->tipo==TOKEN_OBJETO_TERMINA)
             {
