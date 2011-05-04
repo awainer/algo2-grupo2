@@ -6,6 +6,7 @@
 typedef struct ListaOrdenada{
     TListaSimple elementos;
     int (*cmp)(void*,void*);
+    int tamanioDato;
 }TListaOrdenada;
 
 void LO_Crear(TListaOrdenada *pLs, int TamanioDato,int (*cmp)(void*,void*));

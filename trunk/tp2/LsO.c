@@ -5,6 +5,7 @@ void LO_Crear(TListaOrdenada *pLs, int TamanioDato,int (*cmp)(void*,void*))
 {
     L_Crear(&pLs->elementos,TamanioDato);
     /*printf("%d",L_Vacia(pLs->elementos));*/
+    pLs->tamanioDato=TamanioDato;
     pLs->cmp=cmp;
 }
 
@@ -40,35 +41,32 @@ void LO_Borrar_Cte(TListaOrdenada *pLs)
 int LO_Insertar(TListaOrdenada *pLs, void* E)
 { /*Aca es donde debe suceder la insercion ordenada*/
     void * aux_elem;
-    int seguir=TRUE;
+    if(LO_Vacia(*pLs)){
+        return L_Insertar_Cte(&pLs->elementos,L_Primero,E);
+    } else {
+        aux_elem = malloc(pLs->tamanioDato);
+        L_Mover_Cte(&pLs->elementos,L_Primero);
+        L_Elem_Cte(pLs->elementos,aux_elem);
+        while (  (pLs->cmp(aux_elem,E)<0) && (LO_Mover_Cte(pLs,L_Siguiente)) ){
+            L_Elem_Cte(pLs->elementos,aux_elem);
+        }
 
-    /*aux_elem = malloc(sizeof(E));
-    anterior = malloc(sizeof(E));*/
-
-
-    /*if(LO_Vacia(*pLs))
+     if(pLs->cmp(aux_elem,E)>0)
+     {
+        free(aux_elem);
+        return L_Insertar_Cte(&pLs->elementos,L_Anterior,E);
+     }
+     else
     {
-            L_Insertar_Cte(&pLs->elementos,L_Primero,E);
-            free(aux_elem);
-            return 0;
+        free(aux_elem);
+        return L_Insertar_Cte(&pLs->elementos,L_Siguiente,E);
+    }
 
     }
-    else
-    {
-      L_Mover_Cte(&pLs->elementos,L_Primero);
-      L_Elem_Cte(pLs->elementos,aux_elem);
-      while ( seguir &&  pLs->cmp(aux_elem,E) )
-      {
-      L_Elem_Cte(pLs->elementos,aux_elem);
-      seguir=LO_Mover_Cte(pLs,L_Siguiente);
-      }
-        L_Insertar_Cte(&pLs->elementos,L_Siguiente,E);
+    /*L_Insertar_Cte(&pLs->elementos,L_Siguiente,E);
+    return 0;*/
 
-    }
-    free(aux_elem);
-    return 0;
-*/
-L_Insertar_Cte(&pLs->elementos,L_Siguiente,E);
+
 }
 
 void LO_Destruir(TListaOrdenada * pLs)
