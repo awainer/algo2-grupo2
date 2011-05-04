@@ -82,7 +82,7 @@ int main(int argc, char * argv[])
  c=getc(archivo);
 
     while( (c!=EOF) && (error==E_NONE) )
-    {  /* printf("%c\n",c);*/
+    {
         error=TParser_PushChar(&miParser,c);
         c=getc(archivo);
     }
@@ -96,16 +96,10 @@ if(error==E_NONE)
     while ( !C_Vacia(colaTweets)) {
         C_Sacar(&colaTweets,miDiccionario);
         LO_Insertar(&miListaOrdenada,miDiccionario);
-        /*Tdiccionario_Destruir(miDiccionario);*/
-
         }
 
 
         LO_Mover_Cte(&miListaOrdenada,L_Primero);
-        /*LO_Elem_Cte(miListaOrdenada,miDiccionario);
-        sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
-        actual=(char *)malloc(sizeDato);
-        TDiccionario_obtener(miDiccionario,"user_screen_name",actual);*/
         flag=TRUE;
         while(!LO_Vacia(miListaOrdenada)&& flag)
         {
@@ -121,14 +115,10 @@ if(error==E_NONE)
         actual=(char *)malloc(sizeDato);
         TDiccionario_obtener(miDiccionario,"user_screen_name",nuevo);
         TDiccionario_obtener(miDiccionario,"user_screen_name",actual);
-        /*LO_Borrar_Cte(&miListaOrdenada);*/
-
-            flag=LO_Mover_Cte(&miListaOrdenada,L_Siguiente);
-            while((!LO_Vacia(miListaOrdenada)) && (!strcmp(actual,nuevo)) && (flag))
-            /*while((flag) && (!strcmp(actual,nuevo)))*/
+        flag=LO_Mover_Cte(&miListaOrdenada,L_Siguiente);
+        while((!LO_Vacia(miListaOrdenada)) && (!strcmp(actual,nuevo)) && (flag))
             {
                 i++;
-                /*LO_Mover_Cte(&miListaOrdenada,L_Siguiente);*/
                 LO_Elem_Cte(miListaOrdenada,miDiccionario);
                 sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
                 if(nuevo!=NULL)
@@ -136,8 +126,6 @@ if(error==E_NONE)
                 nuevo=(char *)malloc(sizeDato);
                 TDiccionario_obtener(miDiccionario,"user_screen_name",nuevo);
                 flag=LO_Mover_Cte(&miListaOrdenada,L_Siguiente);
-                /*Tdiccionario_Destruir(miDiccionario);*/
-                /*LO_Borrar_Cte(&miListaOrdenada);*/
             }
             if(i>=2)
                 printf("%s %d\n",actual,i);
@@ -145,14 +133,8 @@ if(error==E_NONE)
 
 
         }
-        if(nuevo!=NULL)
-            free(nuevo);
-        if(actual!=NULL)
-            free(actual);
 
 }
-
-
 
     LO_Mover_Cte(&miListaOrdenada,L_Primero);
     do{
@@ -164,6 +146,11 @@ if(error==E_NONE)
 
     LO_Destruir(&miListaOrdenada);
 
+
+        if(nuevo!=NULL)
+            free(nuevo);
+        if(actual!=NULL)
+            free(actual);
 
     free(miDiccionario);
     fclose(archivo);
