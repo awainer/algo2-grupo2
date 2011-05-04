@@ -44,11 +44,12 @@ int main(int argc, char * argv[])
     Tconstructor miConstructor;
     TParser miParser;
     TListaOrdenada miListaOrdenada;
+    int flag;
     FILE *  archivo;
     char    c;
-    int    error=E_NONE,sizeDato;
+    int    error=E_NONE,sizeDato,i=0;
 
-    char * nuevo, * actual,*temp;
+    char * nuevo=NULL, * actual=NULL;
 
     /*int  i,cant_elementos ;*/
 
@@ -99,30 +100,72 @@ if(error==E_NONE)
 
         }
 
+
+        LO_Mover_Cte(&miListaOrdenada,L_Primero);
+        /*LO_Elem_Cte(miListaOrdenada,miDiccionario);
+        sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
+        actual=(char *)malloc(sizeDato);
+        TDiccionario_obtener(miDiccionario,"user_screen_name",actual);*/
+        flag=TRUE;
+        while(!LO_Vacia(miListaOrdenada)&& flag)
+        {
+
+        i=0;
+        LO_Elem_Cte(miListaOrdenada,miDiccionario);
+        sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
+        if(nuevo!=NULL)
+            free(nuevo);
+        if(actual!=NULL)
+            free(actual);
+        nuevo=(char *)malloc(sizeDato);
+        actual=(char *)malloc(sizeDato);
+        TDiccionario_obtener(miDiccionario,"user_screen_name",nuevo);
+        TDiccionario_obtener(miDiccionario,"user_screen_name",actual);
+        /*LO_Borrar_Cte(&miListaOrdenada);*/
+
+            flag=LO_Mover_Cte(&miListaOrdenada,L_Siguiente);
+            while((!LO_Vacia(miListaOrdenada)) && (!strcmp(actual,nuevo)) && (flag))
+            /*while((flag) && (!strcmp(actual,nuevo)))*/
+            {
+                i++;
+                /*LO_Mover_Cte(&miListaOrdenada,L_Siguiente);*/
+                LO_Elem_Cte(miListaOrdenada,miDiccionario);
+                sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
+                if(nuevo!=NULL)
+                    free(nuevo);
+                nuevo=(char *)malloc(sizeDato);
+                TDiccionario_obtener(miDiccionario,"user_screen_name",nuevo);
+                flag=LO_Mover_Cte(&miListaOrdenada,L_Siguiente);
+                /*Tdiccionario_Destruir(miDiccionario);*/
+                /*LO_Borrar_Cte(&miListaOrdenada);*/
+            }
+            if(i>=2)
+                printf("%s %d\n",actual,i);
+
+
+
+        }
+        if(nuevo!=NULL)
+            free(nuevo);
+        if(actual!=NULL)
+            free(actual);
+
+}
+
+
+
     LO_Mover_Cte(&miListaOrdenada,L_Primero);
     do{
         LO_Elem_Cte(miListaOrdenada,miDiccionario);
-        sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
-        actual=(char *)malloc(sizeDato);
-        TDiccionario_obtener(miDiccionario,"user_screen_name",actual);
-        printf("%s\n",actual);
-        free(actual);
         Tdiccionario_Destruir(miDiccionario);
-        LO_Borrar_Cte(&miListaOrdenada);
 
-        } while(!LO_Vacia(miListaOrdenada));
-
-
-
-        free(miDiccionario);
-}
-
+    }while(LO_Mover_Cte(&miListaOrdenada,L_Siguiente));
 
 
     LO_Destruir(&miListaOrdenada);
 
 
-
+    free(miDiccionario);
     fclose(archivo);
     Tconstructor_Destruir(&miConstructor);
     TParser_destruir(&miParser);
