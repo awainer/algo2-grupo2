@@ -164,7 +164,7 @@ int Tdiccionario_Destruir(TDiccionario* td)
         free(auxdef.v);
         L_Borrar_Cte(&td->elementos);
        }
-
+        L_Destruir(&td->elementos);
     return 0;
 }
 

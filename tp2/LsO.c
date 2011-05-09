@@ -71,5 +71,5 @@ int LO_Insertar(TListaOrdenada *pLs, void* E)
 
 void LO_Destruir(TListaOrdenada * pLs)
 {
-    L_Vaciar(&pLs->elementos);
+    L_Destruir(&pLs->elementos);
 }
