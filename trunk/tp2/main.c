@@ -80,14 +80,18 @@ int main(int argc, char * argv[])
     }
 
  c=getc(archivo);
+{
+    int j=0;
 
     while( (c!=EOF) && (error==E_NONE) )
-    {
+    {   j++;
         error=TParser_PushChar(&miParser,c);
         c=getc(archivo);
+        printf("%d\n",j);
+
     }
 
-
+}
 if(error==E_NONE)
 {
     /*Saco de la cola y meto en la lista ordenada*/

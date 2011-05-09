@@ -112,3 +112,6 @@ int L_Insertar_Cte(TListaSimple *pLs, TMovimiento_Ls M, void* pE)
 	return TRUE;
 }
 
+void L_Destruir(TListaSimple *pLs){
+    L_Vaciar(pLs);
+}
