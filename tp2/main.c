@@ -90,7 +90,7 @@ int main(int argc, char * argv[])
 
 if(error==E_NONE)
 {
-
+    /*Saco de la cola y meto en la lista ordenada*/
     miDiccionario=(TDiccionario*)malloc(sizeof(TDiccionario));
     LO_Crear(&miListaOrdenada,sizeof(TDiccionario),comparar_dicts);
     while ( !C_Vacia(colaTweets)) {
@@ -98,42 +98,47 @@ if(error==E_NONE)
         LO_Insertar(&miListaOrdenada,miDiccionario);
         }
 
+if(!LO_Vacia(miListaOrdenada))
+{
 
         LO_Mover_Cte(&miListaOrdenada,L_Primero);
-        flag=TRUE;
-        while(!LO_Vacia(miListaOrdenada)&& flag)
-        {
-
-        i=0;
         LO_Elem_Cte(miListaOrdenada,miDiccionario);
         sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
-        if(nuevo!=NULL)
-            free(nuevo);
-        if(actual!=NULL)
-            free(actual);
-        nuevo=(char *)malloc(sizeDato);
+
         actual=(char *)malloc(sizeDato);
-        TDiccionario_obtener(miDiccionario,"user_screen_name",nuevo);
         TDiccionario_obtener(miDiccionario,"user_screen_name",actual);
-        flag=LO_Mover_Cte(&miListaOrdenada,L_Siguiente);
-        while((!LO_Vacia(miListaOrdenada)) && (!strcmp(actual,nuevo)) && (flag))
+        /*nuevo=(char *)malloc(sizeDato);
+        TDiccionario_obtener(miDiccionario,"user_screen_name",nuevo);*/
+
+            flag=TRUE;
+            while(flag)
             {
-                i++;
-                LO_Elem_Cte(miListaOrdenada,miDiccionario);
-                sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
-                if(nuevo!=NULL)
+                i=0;
+                /*free(actual);*/
+               if(nuevo!=NULL)
                     free(nuevo);
-                nuevo=(char *)malloc(sizeDato);
+                nuevo=(char *)malloc(strlen(actual)+1);
                 TDiccionario_obtener(miDiccionario,"user_screen_name",nuevo);
-                flag=LO_Mover_Cte(&miListaOrdenada,L_Siguiente);
+
+                while(flag && (!strcmp(actual,nuevo)))
+                {                        i++;
+
+                    flag=LO_Mover_Cte(&miListaOrdenada,L_Siguiente);
+                    if(flag)
+                    {
+                        free(actual);
+                        LO_Elem_Cte(miListaOrdenada,miDiccionario);
+                        sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
+                        actual=(char *)malloc(sizeDato);
+                        TDiccionario_obtener(miDiccionario,"user_screen_name",actual);
+                    }
+                }
+               if(i>=2)
+                    printf(" %s %d\n",nuevo,i);
+
             }
-            if(i>=2)
-                printf("%s %d\n",actual,i);
 
-
-
-        }
-
+}
 }
 
     LO_Mover_Cte(&miListaOrdenada,L_Primero);
