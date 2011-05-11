@@ -3,7 +3,7 @@
 
 
 
-#define MAX_DATO 256
+#define MAX_DATO 4096
 
 typedef enum{
     TOKEN_STRING,
