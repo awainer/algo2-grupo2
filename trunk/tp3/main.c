@@ -9,11 +9,41 @@
 #include "dict.h"
 #include "constr_tweets.h"
 #include "LsO.h"
+#include "tokenizer.h"
+/*sacar esto, esta para probar algo */
+#include <string.h>
 
-
-int comparar_dicts(void* v1, void* v2)
+int main(int argc, char * argv[])
 {
-    TDiccionario *d1,*d2;
+    TTokenizer miTokenizer;
+    TListaSimple  res;
+    char  msg[50];
+    char * term;
+
+    Ttokenizer_crear(&miTokenizer);
+
+    L_Crear(&res,sizeof(char*));
+    strcpy(msg,"hola mundo  y como, te va  sArAsA!!!");
+    Ttokenizer_analizar(&miTokenizer,msg,&res);
+    L_Mover_Cte(&res,L_Primero);
+
+    /*imprimo lo que tiene la lista de terminos*/
+    do
+    {
+
+        L_Elem_Cte(res,&term);
+        printf("%s\n",term);
+        free(term);
+    }while (L_Mover_Cte(&res,L_Siguiente));
+    /**/
+    L_Destruir(&res);
+    return 0;
+}
+
+
+  /* int comparar_dicts(void* v1, void* v2)
+{
+ TDiccionario *d1,*d2;
     int aux;
     char * buffer1, * buffer2;
 
@@ -51,11 +81,11 @@ int main(int argc, char * argv[])
 
     char * nuevo=NULL, * actual=NULL;
 
-    /*int  i,cant_elementos ;*/
+*/
 
 
     /*Inicializo el constructor con su cola*/
-    Tconstructor_Crear(&miConstructor);
+/*    Tconstructor_Crear(&miConstructor);
     C_Crear(&colaTweets,sizeof(TDiccionario));
     Tconstructor_setCola(&miConstructor,&colaTweets);
     TParser_Crear(&miParser);
@@ -94,8 +124,9 @@ int main(int argc, char * argv[])
 
 if(error==E_NONE)
 {
+*/
     /*Saco de la cola y meto en la lista ordenada*/
-    miDiccionario=(TDiccionario*)malloc(sizeof(TDiccionario));
+/*    miDiccionario=(TDiccionario*)malloc(sizeof(TDiccionario));
     LO_Crear(&miListaOrdenada,sizeof(TDiccionario),comparar_dicts);
     while ( !C_Vacia(colaTweets)) {
         C_Sacar(&colaTweets,miDiccionario);
@@ -111,14 +142,11 @@ if(!LO_Vacia(miListaOrdenada))
 
         actual=(char *)malloc(sizeDato);
         TDiccionario_obtener(miDiccionario,"user_screen_name",actual);
-        /*nuevo=(char *)malloc(sizeDato);
-        TDiccionario_obtener(miDiccionario,"user_screen_name",nuevo);*/
 
             flag=TRUE;
             while(flag)
             {
                 i=0;
-                /*free(actual);*/
                if(nuevo!=NULL)
                     free(nuevo);
                 nuevo=(char *)malloc(strlen(actual)+1);
@@ -166,7 +194,7 @@ if(!LO_Vacia(miListaOrdenada))
     Tconstructor_Destruir(&miConstructor);
     TParser_destruir(&miParser);
 
-    return 0;
+   return 0;
 
-}
+}*/
 
