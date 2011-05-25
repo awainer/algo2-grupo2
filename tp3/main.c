@@ -25,9 +25,10 @@ int main(int argc, char * argv[])
     L_Crear(&res,sizeof(char*));
     strcpy(msg,"hola mundo  y como, te va  sArAsA!!!");
     Ttokenizer_analizar(&miTokenizer,msg,&res);
-    L_Mover_Cte(&res,L_Primero);
 
     /*imprimo lo que tiene la lista de terminos*/
+    L_Mover_Cte(&res,L_Primero);
+
     do
     {
 
