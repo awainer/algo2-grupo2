@@ -17,8 +17,8 @@ typedef struct {
 }TNodo_Termino;
 
 typedef struct {
-    char * clave;
-    tweet_id    valor;
+    tweet_id * clave;
+    TDiccionario    valor;
 }TNodo_Tweet;
 
 typedef struct TIndice{

@@ -21,9 +21,9 @@ int TParser_PushChar(TParser* p, char c)
     int e=0;
 
     e=TLexico_PushChar(&p->lex,c);
-    if(e!=0)
+    /*if(e!=0)
         {printf("error %d\n",e);
-        printf("error %d\n",c);}
+        printf("error %d\n",c);}*/
     return e;
 
 }

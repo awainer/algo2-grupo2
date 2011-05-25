@@ -66,11 +66,14 @@ int comparar_dicts(void* v1, void* v2)
 }
 
 /*Funcion  para parsear un nuevo archivo */
-int agregar(char * archname, TParser miParser)
+int agregar(char * archname, TParser * miParser, TIndice * idx, TCola * cola)
 {
     char c;
     int error=E_NONE;
-    FILE * archivo=fopen(archname,"r");
+    FILE * archivo;
+    TDiccionario aux_dict;
+
+    archivo=fopen(archname,"r");
 
 
     if(archivo==NULL)
@@ -81,13 +84,28 @@ int agregar(char * archname, TParser miParser)
 
     c=getc(archivo);
     while( (c!=EOF) && (error==E_NONE) )
-    {
-        error=TParser_PushChar(&miParser,c);
+    {   /*printf("%c",c);*/
+        error=TParser_PushChar(miParser,c);
         c=getc(archivo);
 
+
     }
+
+
+    while ( !C_Vacia(*cola)) {
+        C_Sacar(cola,&aux_dict);
+        TIndice_agregar(idx,&aux_dict);
+    }
+
+
+
+
+
+
     return error;
 }
+
+
 
 int main(int argc, char * argv[])
 {
@@ -115,6 +133,7 @@ int main(int argc, char * argv[])
     /*Inicializo el constructor con su cola*/
 
     C_Crear(&colaTweets,sizeof(TDiccionario));
+    Tconstructor_Crear(&miConstructor);
     Tconstructor_setCola(&miConstructor,&colaTweets);
     TParser_Crear(&miParser);
 
@@ -135,7 +154,7 @@ int main(int argc, char * argv[])
     TIndice_crear(&miIndice,&miTokenizer);
     Tbuscador_crear(&miBuscador,&miTokenizer,&miIndice);
 
-
+    agregar("test.json",&miParser,&miIndice,&colaTweets);
 
 if(error==E_NONE)
 {
@@ -147,46 +166,6 @@ if(error==E_NONE)
         C_Sacar(&colaTweets,miDiccionario);
         LO_Insertar(&miListaOrdenada,miDiccionario);
         }
-
-if(!LO_Vacia(miListaOrdenada))
-{
-
-        LO_Mover_Cte(&miListaOrdenada,L_Primero);
-        LO_Elem_Cte(miListaOrdenada,miDiccionario);
-        sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
-
-        actual=(char *)malloc(sizeDato);
-        TDiccionario_obtener(miDiccionario,"user_screen_name",actual);
-
-            flag=TRUE;
-            while(flag)
-            {
-                i=0;
-               if(nuevo!=NULL)
-                    free(nuevo);
-                nuevo=(char *)malloc(strlen(actual)+1);
-                TDiccionario_obtener(miDiccionario,"user_screen_name",nuevo);
-
-                while(flag && (!strcmp(actual,nuevo)))
-                {                        i++;
-
-                    flag=LO_Mover_Cte(&miListaOrdenada,L_Siguiente);
-                    if(flag)
-                    {
-                        free(actual);
-                        LO_Elem_Cte(miListaOrdenada,miDiccionario);
-                        sizeDato=TDiccionario_sizeDato(miDiccionario,"user_screen_name");
-                        actual=(char *)malloc(sizeDato);
-                        TDiccionario_obtener(miDiccionario,"user_screen_name",actual);
-                    }
-                }
-               if(i>=2)
-                    printf(" %s %d\n",nuevo,i);
-
-            }
-
-}
-}
 
     LO_Mover_Cte(&miListaOrdenada,L_Primero);
     do{

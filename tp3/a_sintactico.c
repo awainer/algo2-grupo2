@@ -82,10 +82,13 @@ char nada[2];
 
 int TSintactico_PushToken(TSintactico* as, Token* token)
 {
-/*	printf("Recibo un token de tipo %d y dato %s\n",token->tipo,token->dato);*/
+
 
 /*si la pila esta vacia se ejecuta este if*/
 char nada[2];
+
+/*printf("Recibo un token de tipo %d y dato %s\n",token->tipo,token->dato);*/
+
 if (P_Vacia(as->pP))
 {
     if (token->tipo==TOKEN_ARRAY_EMPIEZA)
