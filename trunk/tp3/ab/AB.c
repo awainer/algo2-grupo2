@@ -141,9 +141,9 @@ int AB_Insertar(TAB *a,int mov,void *elem)
 		return FALSE;
 	}
 }
-	
+
 int AB_Vacio(TAB a)
-{	
+{
 	return (a.raiz == NULL);
 }
 
