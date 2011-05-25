@@ -1,4 +1,5 @@
 #include "indice.h"
+#include <stdio.h>
 
 int TIndice_crear(TIndice* ti, TTokenizer* ta)
 {
@@ -19,13 +20,14 @@ void obtener_id(TDiccionario* tw,tweet_id * id)
 {
     int s;
 
+
     s=TDiccionario_sizeDato(tw,"user_screen_name");
     id->user=(char*)malloc(s);
     TDiccionario_obtener(tw,"user_screen_name",id->user);
     s=TDiccionario_sizeDato(tw,"created_at");
     id->date=(char*)malloc(s);
-    TDiccionario_obtener(tw,"created_at",id->user);
-
+    TDiccionario_obtener(tw,"created_at",id->date);
+    printf("%s , %s\n",id->user,id->date);
 }
 
 /*pre: el índice fue creado
@@ -34,14 +36,35 @@ que esta en el campo “text” del Tweet*/
 int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
 {
     TDiccionario aux_dict;
-    tweet_id   id;
-    char *   text;
-    if(AB_Vacio(ti->tweets))
+    TNodo_Termino aux_nodo_termino;
+    TNodo_Tweet   aux_nodo_tweet;
+    TListaSimple  lista_terminos;
+    int s=0;
+    /*tweet_id   id;*/
+    char *   texto;
+
+
+    /* Esto tal vez deberia ir en algun constructor*/
+    TDiccionaro_Crear(&aux_nodo_tweet.valor);
+    /*aux_nodo_tweet.clave=NULL;*/
+
+    obtener_id(Tweet,aux_nodo_tweet.clave);
+
+    s=TDiccionario_sizeDato(Tweet,"text");
+    texto=malloc(s);
+    TDiccionario_obtener(Tweet,"text",texto);
+
+    Ttokenizer_analizar(ti->tk,texto,&lista_terminos);
+
+    if(AB_Vacio(ti->tweets)) /*tal vez deberiamos chequear que ambos arboles esten vacios...*/
     {
-        obtener_id(Tweet,&id);
+  /*    AB_MoverCte(ti->tweets,RAIZ);
+        AB_Insertar()
+        AB_MoverCte(ti->terminos,RAIZ);*/
+
     }
 
-
+    free(texto);
     return 0;
 }
 /*pre: el índice fue creado. Docs es una lista de TDiccionario* que
