@@ -6,6 +6,11 @@
 #include "dict.h"
 #include "lista.h"
 
+typedef struct{
+    char * user;
+    char * date;
+}tweet_id;
+
 typedef struct {
     char * clave;
     TListaSimple dato;
@@ -13,7 +18,7 @@ typedef struct {
 
 typedef struct {
     char * clave;
-    char * dato[2];
+    tweet_id    valor;
 }TNodo_Tweet;
 
 typedef struct TIndice{

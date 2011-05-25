@@ -10,12 +10,14 @@
 #include "constr_tweets.h"
 #include "LsO.h"
 #include "tokenizer.h"
+#include "indice.h"
+#include "buscador.h"
 /*sacar esto, esta para probar algo */
 #include <string.h>
 
-int main(int argc, char * argv[])
+/* int main(int argc, char * argv[])
 {
-    TTokenizer miTokenizer;
+   TTokenizer miTokenizer;
     TListaSimple  res;
     char  msg[50];
     char * term;
@@ -26,7 +28,7 @@ int main(int argc, char * argv[])
     strcpy(msg,"hola mundo  y como, te va  sArAsA!!!");
     Ttokenizer_analizar(&miTokenizer,msg,&res);
 
-    /*imprimo lo que tiene la lista de terminos*/
+
     L_Mover_Cte(&res,L_Primero);
 
     do
@@ -36,13 +38,12 @@ int main(int argc, char * argv[])
         printf("%s\n",term);
         free(term);
     }while (L_Mover_Cte(&res,L_Siguiente));
-    /**/
-    L_Destruir(&res);
+     L_Destruir(&res);
     return 0;
-}
+}*/
 
 
-  /* int comparar_dicts(void* v1, void* v2)
+int comparar_dicts(void* v1, void* v2)
 {
  TDiccionario *d1,*d2;
     int aux;
@@ -64,7 +65,29 @@ int main(int argc, char * argv[])
 
 }
 
+/*Funcion  para parsear un nuevo archivo */
+int agregar(char * archname, TParser miParser)
+{
+    char c;
+    int error=E_NONE;
+    FILE * archivo=fopen(archname,"r");
 
+
+    if(archivo==NULL)
+    {
+        printf("No puedo abrir el archivo\n");
+        return -1;
+    }
+
+    c=getc(archivo);
+    while( (c!=EOF) && (error==E_NONE) )
+    {
+        error=TParser_PushChar(&miParser,c);
+        c=getc(archivo);
+
+    }
+    return error;
+}
 
 int main(int argc, char * argv[])
 {
@@ -73,20 +96,24 @@ int main(int argc, char * argv[])
     TDiccionario * miDiccionario=NULL;
     TCola colaTweets;
     Tconstructor miConstructor;
-    TParser miParser;
-    TListaOrdenada miListaOrdenada;
-    int flag;
+    TParser     miParser;
+    TTokenizer  miTokenizer;
+    TIndice     miIndice;
+    Tbuscador   miBuscador;
+
+    /*TListaOrdenada miListaOrdenada;
+    int flag;*/
     FILE *  archivo;
     char    c;
     int    error=E_NONE,sizeDato,i=0;
 
-    char * nuevo=NULL, * actual=NULL;
+/*    char * nuevo=NULL, * actual=NULL;*/
 
-*/
+
 
 
     /*Inicializo el constructor con su cola*/
-/*    Tconstructor_Crear(&miConstructor);
+
     C_Crear(&colaTweets,sizeof(TDiccionario));
     Tconstructor_setCola(&miConstructor,&colaTweets);
     TParser_Crear(&miParser);
@@ -102,30 +129,17 @@ int main(int argc, char * argv[])
     TParser_setCallback(&miParser,CB_NUMERO,&miConstructor,Tconstructor_eventoNumero);
     TParser_setCallback(&miParser,CB_STRING,&miConstructor,Tconstructor_eventoString);
 
-    archivo=fopen(argv[1],"r");
+    /*Inicializo el buscador, indice y tokenizer */
 
-    if(archivo==NULL)
-    {
-        printf("No puedo abrir el archivo\n");
-        return -1;
-    }
+    Ttokenizer_crear(&miTokenizer);
+    TIndice_crear(&miIndice,&miTokenizer);
+    Tbuscador_crear(&miBuscador,&miTokenizer,&miIndice);
 
- c=getc(archivo);
-
-
-
-    while( (c!=EOF) && (error==E_NONE) )
-    {
-        error=TParser_PushChar(&miParser,c);
-        c=getc(archivo);
-
-
-    }
 
 
 if(error==E_NONE)
 {
-*/
+
     /*Saco de la cola y meto en la lista ordenada*/
 /*    miDiccionario=(TDiccionario*)malloc(sizeof(TDiccionario));
     LO_Crear(&miListaOrdenada,sizeof(TDiccionario),comparar_dicts);
@@ -194,8 +208,9 @@ if(!LO_Vacia(miListaOrdenada))
     fclose(archivo);
     Tconstructor_Destruir(&miConstructor);
     TParser_destruir(&miParser);
-
+*/
+    }
    return 0;
 
-}*/
+}
 
