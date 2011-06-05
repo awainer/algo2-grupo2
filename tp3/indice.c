@@ -22,10 +22,10 @@ void obtener_id(TDiccionario* tw,tweet_id * id)
 
 
     s=TDiccionario_sizeDato(tw,"user_screen_name");
-    id->user=(char*)malloc(s);
+ /*   id->user=(char*)malloc(s);*/
     TDiccionario_obtener(tw,"user_screen_name",id->user);
     s=TDiccionario_sizeDato(tw,"created_at");
-    id->date=(char*)malloc(s);
+    /*id->date=(char*)malloc(s);*/
     TDiccionario_obtener(tw,"created_at",id->date);
     printf("%s , %s\n",id->user,id->date);
 }
