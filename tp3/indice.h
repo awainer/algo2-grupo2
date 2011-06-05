@@ -1,7 +1,7 @@
 #ifndef INDICE_H_INCLUDED
 #define INDICE_H_INCLUDED
 
-#include "AB.h"
+#include "ABO.h"
 #include "tokenizer.h"
 #include "dict.h"
 #include "lista.h"
@@ -19,14 +19,14 @@ typedef struct {
 }TNodo_Termino;
 
 typedef struct {
-    tweet_id * clave;
+    tweet_id  clave;
     TDiccionario    valor;
 }TNodo_Tweet;
 
 typedef struct TIndice{
     TTokenizer * tk;
-    TAB terminos;
-    TAB tweets;
+    TABO terminos;
+    TABO tweets;
 
 }TIndice;
 
