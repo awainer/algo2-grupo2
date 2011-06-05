@@ -3,11 +3,23 @@
 
 int comparar_tweet_id(void * v1, void * v2)
 {
+    tweet_id  *t1,*t2;
+    int aux;
+
+    t1=v1;
+    t2=v2;
+    aux=strcmp(t1->user,t2->user);
+
+    if(aux!=0) return aux;
+    else{
+        return strcmp(t1->date,t2->date);
+        }
+
     return 0;
 }
 int comparar_termino(void * v1, void * v2)
 {
-    return 0;
+    return strcmp((char*)v1,(char*)v2);
 }
 
 int TIndice_crear(TIndice* ti, TTokenizer* ta)
@@ -21,7 +33,8 @@ int TIndice_crear(TIndice* ti, TTokenizer* ta)
 post: los recursos del índice fueron liberados*/
 int TIndice_destruir(TIndice* ti)
 {
-    return 0;
+        /*Esto tiene que recorrer los dos arboles recursivamente e ir destruyendo todo*/
+        return 0;
 }
 
 
@@ -54,16 +67,22 @@ int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
 
 
     /* Esto tal vez deberia ir en algun constructor*/
-    TDiccionaro_Crear(&aux_nodo_tweet.valor);
+    /*TDiccionaro_Crear(&aux_nodo_tweet.valor);*/
     /*aux_nodo_tweet.clave=NULL;*/
-
+    /*cargo el nodo tweet y lo inserto*/
     obtener_id(Tweet,&aux_nodo_tweet.clave);
+    aux_nodo_tweet.valor=Tweet;
+    ABO_Insertar(&ti->tweets,&aux_nodo_tweet);
 
     s=TDiccionario_sizeDato(Tweet,"text");
     texto=malloc(s);
     TDiccionario_obtener(Tweet,"text",texto);
     L_Crear(&lista_terminos,sizeof(char*));
     Ttokenizer_analizar(ti->tk,texto,&lista_terminos);
+
+    /*ACA hay que agregar codigo que busque si un termino esta, en ese caso agregue el tweet_id*/
+
+    L_Destruir(&lista_terminos);
 
     free(texto);
     return 0;
@@ -75,6 +94,7 @@ a TDiccionario que contienen el término. Si el termino no se
 encuentra en el índice, la lista se deja vacía.*/
 int TIndice_listarDocs(TIndice* ti, char* termino, TListaSimple * docs)
 {
+
     return 0;
 }
 /*pre: el índice fue creado

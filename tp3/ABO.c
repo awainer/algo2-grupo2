@@ -149,3 +149,7 @@ int ABO_Borrar(TABO* abo, void* elem){
 }
 
 
+int ABO_MoverCte(TABO * abo,int mov)
+{
+    return AB_MoverCte(&abo->a,mov);
+}

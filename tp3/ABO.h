@@ -38,4 +38,6 @@ int ABO_Actualizar(TABO* abo, void* elem);
 
 int ABO_Borrar(TABO* abo, void* elem);
 
+int ABO_MoverCte(TABO * abo,int mov);
+
 #endif /* ABO_H_ */

@@ -20,7 +20,7 @@ typedef struct {
 
 typedef struct {
     tweet_id  clave;
-    TDiccionario    valor;
+    TDiccionario  *  valor;
 }TNodo_Tweet;
 
 typedef struct TIndice{
