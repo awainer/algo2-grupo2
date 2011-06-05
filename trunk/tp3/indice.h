@@ -1,18 +1,20 @@
 #ifndef INDICE_H_INCLUDED
 #define INDICE_H_INCLUDED
 
-#include "ab/AB.h"
+#include "AB.h"
 #include "tokenizer.h"
 #include "dict.h"
 #include "lista.h"
 
+#define STRING_LEN 255
+
 typedef struct{
-    char * user;
-    char * date;
+    char  user[STRING_LEN];
+    char  date[STRING_LEN];
 }tweet_id;
 
 typedef struct {
-    char * clave;
+    char  clave[STRING_LEN];
     TListaSimple dato;
 }TNodo_Termino;
 
