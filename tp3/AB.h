@@ -8,6 +8,18 @@
 	#define DER 2
 	#define PAD 3
 	#define RAIZ 4
+
+	#if !defined(RES_OK)
+		#define RES_OK 0
+	#endif
+
+	#if !defined(RES_MOV_INVALIDO)
+		#define RES_MOV_INVALIDO -1
+	#endif
+
+	#if !defined(RES_ARBOL_VACIO)
+		#define RES_ARBOL_VACIO -4
+	#endif
 	
 	#if !defined(NULL)
 		#define NULL 0x0
@@ -47,5 +59,9 @@
 	
 	int AB_Insertar(TAB *a,int mov,void *elem);
 	
+	int AB_BorrarRama(TAB *a);
+
+	int AB_BorrarSubRama(TAB *a, int mov);
+
 #endif
 

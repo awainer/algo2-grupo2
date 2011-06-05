@@ -66,18 +66,13 @@ void VaciarSub(TNodoAB *pnodo)
 {
 	if (pnodo != NULL)
 	{
-		if ((pnodo->izq == NULL) && (pnodo->der == NULL))
-		{
-			free(pnodo->elem);
-			free(pnodo);
-		}
-		else
+		if (!((pnodo->izq == NULL) && (pnodo->der == NULL)))
 		{
 			VaciarSub(pnodo->izq);
 			VaciarSub(pnodo->der);
-			free(pnodo->elem);
-			free(pnodo);
 		}
+		free(pnodo->elem);
+		free(pnodo);
 	}
 }
 
@@ -126,8 +121,10 @@ int AB_Insertar(TAB *a,int mov,void *elem)
 				free(paux);
 				return inserto;
 			}
-			else
+			else{
 				a->cte = paux;
+				return TRUE;
+			}
 		}
 		else /* if (paux->elem) ->*/
 		{
@@ -141,9 +138,42 @@ int AB_Insertar(TAB *a,int mov,void *elem)
 		return FALSE;
 	}
 }
-
+	
 int AB_Vacio(TAB a)
-{
+{	
 	return (a.raiz == NULL);
 }
 
+
+int AB_BorrarRama(TAB *a){
+	if(a->raiz!=NULL){
+		TNodoAB* padre;
+		if(a->raiz!=a->cte){
+			padre = BuscarPadre(a->raiz, a->cte);
+			if(padre->izq==a->cte){
+				padre->izq = NULL;
+			} else {
+				padre->der = NULL;
+			}
+		} else {
+			padre = a->raiz = NULL;
+		}
+		VaciarSub(a->cte);
+		a->cte = padre;
+		return RES_OK;
+	}
+	return RES_ARBOL_VACIO;
+}
+
+int AB_BorrarSubRama(TAB *a, int mov){
+	if(mov==IZQ){
+		VaciarSub(a->cte->izq);
+		a->cte->izq = NULL;
+	} else if(mov==DER) {
+		VaciarSub(a->cte->der);
+		a->cte->der = NULL;
+	} else {
+		return RES_MOV_INVALIDO;
+	}
+	return RES_OK;
+}
