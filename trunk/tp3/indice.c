@@ -1,10 +1,19 @@
 #include "indice.h"
 #include <stdio.h>
 
+int comparar_tweet_id(void * v1, void * v2)
+{
+    return 0;
+}
+int comparar_termino(void * v1, void * v2)
+{
+    return 0;
+}
+
 int TIndice_crear(TIndice* ti, TTokenizer* ta)
 {
-    AB_Crear(&ti->terminos,sizeof(TNodo_Termino));
-    AB_Crear(&ti->tweets,sizeof(TNodo_Tweet));
+    ABO_Crear(&ti->terminos,comparar_termino,sizeof(TNodo_Termino));
+    ABO_Crear(&ti->tweets,comparar_tweet_id,sizeof(TNodo_Tweet));
     ti->tk=ta;
     return 0;
 }
@@ -35,8 +44,8 @@ post: se agregó un nuevo Tweet al índice El texto indexado es el
 que esta en el campo “text” del Tweet*/
 int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
 {
-    TDiccionario aux_dict;
-    TNodo_Termino aux_nodo_termino;
+/*    TDiccionario aux_dict;
+    TNodo_Termino aux_nodo_termino;*/
     TNodo_Tweet   aux_nodo_tweet;
     TListaSimple  lista_terminos;
     int s=0;
@@ -48,21 +57,13 @@ int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
     TDiccionaro_Crear(&aux_nodo_tweet.valor);
     /*aux_nodo_tweet.clave=NULL;*/
 
-    obtener_id(Tweet,aux_nodo_tweet.clave);
+    obtener_id(Tweet,&aux_nodo_tweet.clave);
 
     s=TDiccionario_sizeDato(Tweet,"text");
     texto=malloc(s);
     TDiccionario_obtener(Tweet,"text",texto);
-
+    L_Crear(&lista_terminos,sizeof(char*));
     Ttokenizer_analizar(ti->tk,texto,&lista_terminos);
-
-    if(AB_Vacio(ti->tweets)) /*tal vez deberiamos chequear que ambos arboles esten vacios...*/
-    {
-  /*    AB_MoverCte(ti->tweets,RAIZ);
-        AB_Insertar()
-        AB_MoverCte(ti->terminos,RAIZ);*/
-
-    }
 
     free(texto);
     return 0;
