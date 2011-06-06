@@ -22,6 +22,24 @@ int comparar_termino(void * v1, void * v2)
     return strcmp((char*)v1,(char*)v2);
 }
 
+int borrar_tweet(void * t)
+{
+    TNodo_Tweet * aux=t;
+    Tdiccionario_Destruir(aux->valor);
+    free(t);
+    return 0;
+}
+
+
+/*pre: el corriente esta en la raiz*/
+
+int borrar_arbol(TABO * arbol,int (*borrar_elem)(void *))
+{
+ /*aca va la magia recursiva*/
+ /*if((!ABO_MoverCte(arbol,IZQ))*/
+
+
+}
 int TIndice_crear(TIndice* ti, TTokenizer* ta)
 {
     ABO_Crear(&ti->terminos,comparar_termino,sizeof(TNodo_Termino));
@@ -34,6 +52,9 @@ post: los recursos del índice fueron liberados*/
 int TIndice_destruir(TIndice* ti)
 {
         /*Esto tiene que recorrer los dos arboles recursivamente e ir destruyendo todo*/
+        /*Recorro el arbol de tweets*/
+        ABO_MoverCte(&ti->tweets,RAIZ);
+        /*borrar_arbol_tweets()*/
         return 0;
 }
 
@@ -57,18 +78,13 @@ post: se agregó un nuevo Tweet al índice El texto indexado es el
 que esta en el campo “text” del Tweet*/
 int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
 {
-/*    TDiccionario aux_dict;
-    TNodo_Termino aux_nodo_termino;*/
     TNodo_Tweet   aux_nodo_tweet;
     TListaSimple  lista_terminos;
     int s=0;
     /*tweet_id   id;*/
     char *   texto;
+    char    buffer_termino[255];
 
-
-    /* Esto tal vez deberia ir en algun constructor*/
-    /*TDiccionaro_Crear(&aux_nodo_tweet.valor);*/
-    /*aux_nodo_tweet.clave=NULL;*/
     /*cargo el nodo tweet y lo inserto*/
     obtener_id(Tweet,&aux_nodo_tweet.clave);
     aux_nodo_tweet.valor=Tweet;
@@ -81,6 +97,16 @@ int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
     Ttokenizer_analizar(ti->tk,texto,&lista_terminos);
 
     /*ACA hay que agregar codigo que busque si un termino esta, en ese caso agregue el tweet_id*/
+    L_Mover_Cte(&lista_terminos,L_Primero);
+    do{
+        L_Elem_Cte(lista_terminos,buffer_termino);
+        if(ABO_)
+
+
+
+    }while(L_Mover_Cte(&lista_terminos,L_Siguiente))
+
+
 
     L_Destruir(&lista_terminos);
 
