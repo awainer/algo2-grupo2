@@ -40,7 +40,6 @@ int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
 {
     TListaSimple* terminosAux; /* Puntero donde se cargaran  los punteros TDiccionario que contengan el término. */
     terminosAux = (TListaSimple*) malloc(sizeof(TListaSimple));
-    int VACIO; /* Si la lista de tweets esta vacia devuelve 1, sino 0. */
     char * fraseAux;
 
     Ttokenizer_analizar(&tb->tk, frase, terminosAux);
