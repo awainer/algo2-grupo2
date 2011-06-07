@@ -2,6 +2,7 @@
 
 int Tbuscador_crear(Tbuscador* tb, TTokenizer* tt, TIndice* ti)
 {
+    Ttokenizer_crear(tt);
     tb->tk=tt;
     tb->ti=ti;
 
@@ -10,6 +11,7 @@ int Tbuscador_crear(Tbuscador* tb, TTokenizer* tt, TIndice* ti)
 
 int Tbuscador_destruir(Tbuscador* tb)
 {
+    Ttokenizer_destruir(tt);
     return 0;
 }
 
