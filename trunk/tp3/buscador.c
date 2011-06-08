@@ -1,5 +1,5 @@
 #include "buscador.h"
-
+#include "indice.h"
 int Tbuscador_crear(Tbuscador* tb, TTokenizer* tt, TIndice* ti)
 {
     Ttokenizer_crear(tt);
@@ -29,7 +29,7 @@ int Tbuscador_union(Tbuscador* tb, char* frase, TListaSimple * docs)
     L_Elem_Cte(terminos, fraseAux);
 
     while(!(fraseAux==NULL)){
-        Tindice_listarDocs(&tb->ti, fraseAux, docs);
+        TIndice_listarDocs(tb->ti, fraseAux, docs);
         L_Mover_Cte(&terminos, L_Siguiente);
         L_Elem_Cte(terminos,fraseAux);
     }
@@ -50,7 +50,7 @@ int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
     L_Elem_Cte(terminos, fraseAux);
 
     while(!(fraseAux==NULL)){
-        Tindice_listarDocs(&tb->ti, fraseAux, docs);
+        TIndice_listarDocs(tb->ti, fraseAux, docs);
         L_Mover_Cte(docs, L_Siguiente);
         L_Elem_Cte(docsAux, pDoc);
         if (!(pDoc==NULL)){
