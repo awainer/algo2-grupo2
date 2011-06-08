@@ -11,58 +11,62 @@ int Tbuscador_crear(Tbuscador* tb, TTokenizer* tt, TIndice* ti)
 
 int Tbuscador_destruir(Tbuscador* tb)
 {
-    Ttokenizer_destruir(&tb->tk);
+    Ttokenizer_destruir(tb->tk);
     return 0;
 }
 
 int Tbuscador_union(Tbuscador* tb, char* frase, TListaSimple * docs)
 {
-    TListaSimple *terminosAux; /* Puntero donde se cargaran  los punteros TDiccionario que contengan el término. */
-    TListaSimple tAux;
-    terminosAux = (TListaSimple*) malloc(sizeof(TListaSimple));
+    TListaSimple terminos;
+    char* fraseAux;
 
-    char * fraseAux;
+    L_Crear(&terminos, sizeof(char*));
 
-    Ttokenizer_analizar(&tb->tk, frase, terminosAux);
 
-    L_Mover_Cte(&terminosAux, L_Primero);
-    L_Elem_Cte(tAux, fraseAux);
+    Ttokenizer_analizar(tb->tk, frase, &terminos);
+
+    L_Mover_Cte(&terminos, L_Primero);
+    L_Elem_Cte(terminos, fraseAux);
 
     while(!(fraseAux==NULL)){
         Tindice_listarDocs(&tb->ti, fraseAux, docs);
-        L_Mover_Cte(&terminosAux, L_Siguiente);
-        L_Elem_Cte(tAux,fraseAux);
+        L_Mover_Cte(&terminos, L_Siguiente);
+        L_Elem_Cte(terminos,fraseAux);
     }
 
-    free(terminosAux);
-
+    L_Destruir(&terminos);
     return 0;
 }
 
 int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
 {
-    TListaSimple* terminosAux; /* Puntero donde se cargaran  los punteros TDiccionario que contengan el término. */
-    TListaSimple tAux;
-    terminosAux = (TListaSimple*) malloc(sizeof(TListaSimple));
-    char * fraseAux;
+    TListaSimple terminos, docsAux;
+    char *fraseAux, *pDoc;
 
-    Ttokenizer_analizar(&tb->tk, frase, terminosAux);
+    L_Crear(&terminos, sizeof(char*));
+    Ttokenizer_analizar(tb->tk, frase, &terminos);
 
-    L_Mover_Cte(&terminosAux, L_Primero);
-    L_Elem_Cte(tAux, fraseAux);
+    L_Mover_Cte(&terminos, L_Primero);
+    L_Elem_Cte(terminos, fraseAux);
 
     while(!(fraseAux==NULL)){
         Tindice_listarDocs(&tb->ti, fraseAux, docs);
-        if (!((L_Mover_Cte(&docs, L_Siguiente)==NULL))){
-            L_Mover_Cte(&terminosAux, L_Siguiente);
-            L_Elem_Cte(tAux,fraseAux);
-        }else if ((L_Mover_Cte(&docs, L_Siguiente))==NULL){
-            L_Mover_Cte(&docs, L_Primero);
+        L_Mover_Cte(docs, L_Siguiente);
+        L_Elem_Cte(docsAux, pDoc);
+        if (!(pDoc==NULL)){
+            L_Mover_Cte(&terminos, L_Siguiente);
+            L_Elem_Cte(terminos,fraseAux);
+        }else if (pDoc==NULL){
+            L_Mover_Cte(docs, L_Primero);
+            L_Elem_Cte(docsAux, pDoc);
             /* Como no se cumplen con TODAS las palabras de la frase, vacio la lista docs */
-            while (!(L_Mover_Cte(&docs, L_Siguiente)==NULL))
-                L_Borrar_Cte(&docs);
+            while (!(pDoc==NULL)){
+                L_Borrar_Cte(&docsAux);
+                L_Mover_Cte(docs, L_Siguiente);
+                L_Elem_Cte(docsAux, pDoc);
+            }
             }
     }
-    free(terminosAux);
+    L_Destruir(&terminos);
     return 0;
 }
