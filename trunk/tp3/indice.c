@@ -38,7 +38,7 @@ int borrar_arbol(TABO * arbol,int (*borrar_elem)(void *))
  /*aca va la magia recursiva*/
  /*if((!ABO_MoverCte(arbol,IZQ))*/
 
-
+return 0;
 }
 int TIndice_crear(TIndice* ti, TTokenizer* ta)
 {
@@ -62,15 +62,10 @@ int TIndice_destruir(TIndice* ti)
 void obtener_id(TDiccionario* tw,tweet_id * id)
 {
     int s;
-
-
     s=TDiccionario_sizeDato(tw,"user_screen_name");
- /*   id->user=(char*)malloc(s);*/
     TDiccionario_obtener(tw,"user_screen_name",id->user);
     s=TDiccionario_sizeDato(tw,"created_at");
-    /*id->date=(char*)malloc(s);*/
     TDiccionario_obtener(tw,"created_at",id->date);
-    printf("%s , %s\n",id->user,id->date);
 }
 
 /*pre: el índice fue creado
@@ -79,32 +74,50 @@ que esta en el campo “text” del Tweet*/
 int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
 {
     TNodo_Tweet   aux_nodo_tweet;
+    TNodo_Termino aux_nodo_termino;
     TListaSimple  lista_terminos;
     int s=0;
-    /*tweet_id   id;*/
     char *   texto;
-    char    buffer_termino[255];
+    char buffer_termino[255];
 
     /*cargo el nodo tweet y lo inserto*/
     obtener_id(Tweet,&aux_nodo_tweet.clave);
     aux_nodo_tweet.valor=Tweet;
     ABO_Insertar(&ti->tweets,&aux_nodo_tweet);
+    /*ahora empiezo con los terminos*/
 
     s=TDiccionario_sizeDato(Tweet,"text");
     texto=malloc(s);
     TDiccionario_obtener(Tweet,"text",texto);
     L_Crear(&lista_terminos,sizeof(char*));
+
+
+
     Ttokenizer_analizar(ti->tk,texto,&lista_terminos);
-
-    /*ACA hay que agregar codigo que busque si un termino esta, en ese caso agregue el tweet_id*/
     L_Mover_Cte(&lista_terminos,L_Primero);
-    do{
-        L_Elem_Cte(lista_terminos,buffer_termino);
-        if(ABO_)
 
+    do
+    {
 
+        /*L_Elem_Cte(lista_terminos,&buffer_termino);*/
+        L_Elem_Cte(lista_terminos,&aux_nodo_termino.clave);
+        /*printf("%s\n",buffer_termino);*/
+        if(!ABO_Obtener(&ti->terminos,aux_nodo_termino.clave))
+        {
+            printf("termino repetido %s\n",aux_nodo_termino.clave);
+            L_Insertar_Cte(&aux_nodo_termino.dato,L_Siguiente,&aux_nodo_tweet.clave);
+        }
+        else
+        {
+            printf("nuevo termino %s\n",aux_nodo_termino.clave);
+            /*Preparo el dato que voy a insertar*/
+            /*strcpy(aux_nodo_termino.clave,aux_nodo_termino.clave);*/
+            L_Crear(&aux_nodo_termino.dato,sizeof(tweet_id));
+            L_Insertar_Cte(&aux_nodo_termino.dato,L_Siguiente,&aux_nodo_tweet.clave); /*este es el tweet_id del tw que venimos procesando*/
+            ABO_Insertar(&ti->terminos,&aux_nodo_termino);
+        }
 
-    }while(L_Mover_Cte(&lista_terminos,L_Siguiente))
+    }while (L_Mover_Cte(&lista_terminos,L_Siguiente));
 
 
 
