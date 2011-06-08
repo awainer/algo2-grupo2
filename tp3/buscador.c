@@ -43,6 +43,7 @@ int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
     int check;
     char *fraseAux, *pDoc;
 
+    docs = &docsAux;
     L_Crear(&terminos, sizeof(char*));
     Ttokenizer_analizar(tb->tk, frase, &terminos);
 
@@ -50,19 +51,20 @@ int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
     L_Elem_Cte(terminos, fraseAux);
 
     while(!(fraseAux==NULL)){
-        check = TIndice_listarDocs(tb->ti, fraseAux, docs);
+        check = TIndice_listarDocs(tb->ti, fraseAux, &docsAux);
         if (!(check == FALSE)){
             L_Mover_Cte(&terminos, L_Siguiente);
             L_Elem_Cte(terminos,fraseAux);
         }else {
-            L_Mover_Cte(docs, L_Primero);
+            L_Mover_Cte(&docsAux, L_Primero);
             L_Elem_Cte(docsAux, pDoc);
             /* Como no se cumplen con TODAS las palabras de la frase, vacio la lista docs */
             while (!(pDoc==NULL)){
-                L_Borrar_Cte(docs);
-                L_Mover_Cte(docs, L_Siguiente);
+                L_Borrar_Cte(&docsAux);
+                L_Mover_Cte(&docsAux, L_Siguiente);
                 L_Elem_Cte(docsAux, pDoc);
             }
+            return 0;
             }
     }
 
