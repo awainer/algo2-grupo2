@@ -99,19 +99,17 @@ int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
     do
     {
 
-        /*L_Elem_Cte(lista_terminos,&buffer_termino);*/
         L_Elem_Cte(lista_terminos,&aux_nodo_termino.clave);
-        /*printf("%s\n",buffer_termino);*/
         if(!ABO_Obtener(&ti->terminos,aux_nodo_termino.clave))
         {
-            printf("termino repetido %s\n",aux_nodo_termino.clave);
+          /*  printf("termino repetido %s\n",aux_nodo_termino.clave);*/
             L_Insertar_Cte(&aux_nodo_termino.dato,L_Siguiente,&aux_nodo_tweet.clave);
+            ABO_Actualizar(&ti->terminos,&aux_nodo_termino);
         }
         else
         {
-            printf("nuevo termino %s\n",aux_nodo_termino.clave);
+            /*printf("nuevo termino %s\n",aux_nodo_termino.clave);*/
             /*Preparo el dato que voy a insertar*/
-            /*strcpy(aux_nodo_termino.clave,aux_nodo_termino.clave);*/
             L_Crear(&aux_nodo_termino.dato,sizeof(tweet_id));
             L_Insertar_Cte(&aux_nodo_termino.dato,L_Siguiente,&aux_nodo_tweet.clave); /*este es el tweet_id del tw que venimos procesando*/
             ABO_Insertar(&ti->terminos,&aux_nodo_termino);

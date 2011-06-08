@@ -34,6 +34,25 @@ int buscarElem(TABO* abo, void* elem, int* mov){
 	}
 }
 
+int recorrer(TABO* abo,int (*procesar)(void*,void*), int  mov)
+{
+    void * aux;
+    int resMov;
+
+    resMov=AB_MoverCte(&abo->a,mov);
+    if(!resMov)
+    {
+      aux=malloc(abo->tamanio);
+      AB_ElemCte(abo->a,aux);
+      procesar(aux,NULL);
+    }
+
+    recorrer(abo,procesar,IZQ);
+    recorrer(abo,procesar,DER);
+    return 0;
+}
+
+
 int aboBorrarCorriente(TABO* abo);
 
 int replaceOrDelete(TABO* ca, void* elem, int movBase, int movAlt){

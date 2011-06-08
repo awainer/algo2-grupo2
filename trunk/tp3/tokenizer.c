@@ -53,8 +53,8 @@ int Ttokenizer_analizar(TTokenizer* tt, char* frase, TListaSimple * terminos)
     int offset_mayusculas= 'a' - 'A';
     int largo=strlen(frase)-1;
     int i,idx;
-    char  buffer_palabra[51]; /*completamente arbitrario*/
-    char * buffer2;
+    char  buffer_palabra[128]; /*completamente arbitrario*/
+   /* char * buffer2;*/
 
 
     idx=0;
@@ -82,11 +82,11 @@ int Ttokenizer_analizar(TTokenizer* tt, char* frase, TListaSimple * terminos)
                 { /*cualquier otra cosa es un separador*/
                 if((idx>0) && !esSeparador(tt,buffer_palabra))
                 {
-/*                    printf("%s\n",buffer_palabra);*/
-                    /*buffer2=(char*)malloc(idx);*/
-                    buffer2=(char*)malloc(strlen(buffer_palabra)+1);
-                    strcpy(buffer2,buffer_palabra);
-                    L_Insertar_Cte(terminos,L_Siguiente,buffer2);
+
+                    /*buffer2=(char*)malloc(strlen(buffer_palabra)+1);
+                    strcpy(buffer2,buffer_palabra);*/
+                    L_Insertar_Cte(terminos,L_Siguiente,buffer_palabra);
+                    /*printf("%s\n",buffer_palabra);*/
                 }
 
 
