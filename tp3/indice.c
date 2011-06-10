@@ -22,7 +22,7 @@ int comparar_termino(void * v1, void * v2)
     return strcmp((char*)v1,(char*)v2);
 }
 
-int borrar_tweet(void * t)
+int borrar_tweet(void * t,void * v2)
 {
     TNodo_Tweet * aux=t;
     Tdiccionario_Destruir(aux->valor);
@@ -33,13 +33,7 @@ int borrar_tweet(void * t)
 
 /*pre: el corriente esta en la raiz*/
 
-int borrar_arbol(TABO * arbol,int (*borrar_elem)(void *))
-{
- /*aca va la magia recursiva*/
- /*if((!ABO_MoverCte(arbol,IZQ))*/
 
-return 0;
-}
 int TIndice_crear(TIndice* ti, TTokenizer* ta)
 {
     ABO_Crear(&ti->terminos,comparar_termino,sizeof(TNodo_Termino));
@@ -50,10 +44,10 @@ int TIndice_crear(TIndice* ti, TTokenizer* ta)
 /*pre: el índice fue creado
 post: los recursos del índice fueron liberados*/
 int TIndice_destruir(TIndice* ti)
-{
+{       ABO_ProcesarInOrden(&ti->tweets,borrar_tweet,NULL);
         /*Esto tiene que recorrer los dos arboles recursivamente e ir destruyendo todo*/
         /*Recorro el arbol de tweets*/
-        ABO_MoverCte(&ti->tweets,RAIZ);
+
         /*borrar_arbol_tweets()*/
         return 0;
 }
@@ -124,6 +118,14 @@ int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
     free(texto);
     return 0;
 }
+
+
+int imprimirIDs(void * v1, void * v2)
+{
+    tweet_id * aux;
+    printf("%s %s\n",aux->date,aux->user);
+    return 0;
+}
 /*pre: el índice fue creado. Docs es una lista de TDiccionario* que
 se cargará con Tweets.
 post: carga en la lista “docs” pasada como parámetro, los punteros
@@ -131,6 +133,7 @@ a TDiccionario que contienen el término. Si el termino no se
 encuentra en el índice, la lista se deja vacía.*/
 int TIndice_listarDocs(TIndice* ti, char* termino, TListaSimple * docs)
 {
+    /*aboRecorrer(&ti->tweets,imprimirCOND,RAIZ,NULL);*/
 
     return 0;
 }
@@ -139,6 +142,10 @@ post: elimina el Tweet identificado por el usuario y fecha pasados
 como parámetros.*/
 int TIndice_eliminarTweet(TIndice* ti, char* usuario, char* fecha)
 {
+    TNodo_Tweet aux;
+    strcpy(aux.clave.date,fecha);
+    strcpy(aux.clave.user,usuario);
+    /*ABO_*/
     return 0;
 }
 /*pre: el índice fue creado
