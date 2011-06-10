@@ -34,24 +34,91 @@ int buscarElem(TABO* abo, void* elem, int* mov){
 	}
 }
 
-int recorrer(TABO* abo,int (*procesar)(void*,void*), int  mov)
-{
-    void * aux;
-    int resMov;
-
-    resMov=AB_MoverCte(&abo->a,mov);
-    if(!resMov)
-    {
-      aux=malloc(abo->tamanio);
-      AB_ElemCte(abo->a,aux);
-      procesar(aux,NULL);
-    }
-
-    recorrer(abo,procesar,IZQ);
-    recorrer(abo,procesar,DER);
-    return 0;
+int elegirResultadoParaRecorrido(int resProcess, int resIzq, int resDer){
+	if(resProcess!=RES_OK){
+		return resProcess;
+	}
+	if(resIzq!=RES_OK){
+		return resIzq;
+	}
+	if(resDer!=RES_OK){
+		return resDer;
+	}
+	return RES_OK;
 }
 
+int procesadoInternoAbo(TABO abo, aboProcessFunctionPtr process, void *args){
+	int resProcess = 0;
+	void *elem = malloc(abo.tamanio);
+	if(!elem) return RES_OUT_OF_MEMORY;
+	AB_ElemCte(abo.a, elem);
+	resProcess = process(elem, args);
+	AB_ModifCte(&abo.a, elem);
+	free(elem);
+	return resProcess;
+}
+
+int privateAboRecorridoInOrden(TABO abo, aboProcessFunctionPtr process, void* args, int mov){
+	int resIzq, resDer, resProcess;
+	if(AB_MoverCte(&abo.a, mov)){
+		resIzq = privateAboRecorridoInOrden(abo, process, args, IZQ);
+		resProcess = procesadoInternoAbo(abo, process, args);
+		resDer = privateAboRecorridoInOrden(abo, process, args, DER);
+		return elegirResultadoParaRecorrido(resProcess, resIzq, resDer);
+	}
+	return RES_OK;
+}
+
+int privateAboRecorridoPreOrden(TABO abo, aboProcessFunctionPtr process, void* args, int mov){
+	int resIzq, resDer, resProcess;
+	if(AB_MoverCte(&abo.a, mov)){
+		resProcess = procesadoInternoAbo(abo, process, args);
+		resIzq = privateAboRecorridoInOrden(abo, process, args, IZQ);
+		resDer = privateAboRecorridoInOrden(abo, process, args, DER);
+		return elegirResultadoParaRecorrido(resProcess, resIzq, resDer);
+	}
+	return RES_OK;
+}
+
+int privateAboRecorridoPosOrden(TABO abo, aboProcessFunctionPtr process, void* args, int mov){
+	int resIzq, resDer, resProcess;
+	if(AB_MoverCte(&abo.a, mov)){
+		resIzq = privateAboRecorridoInOrden(abo, process, args, IZQ);
+		resDer = privateAboRecorridoInOrden(abo, process, args, DER);
+		resProcess = procesadoInternoAbo(abo, process, args);
+		return elegirResultadoParaRecorrido(resProcess, resIzq, resDer);
+	}
+	return RES_OK;
+}
+
+int privateAboRecorridoEnRangoInOrden(TABO abo, aboProcessFunctionPtr process, void* args, int mov, void* desde, void* hasta){
+	int resIzq, resDer, resProcess, resCmpDsd, resCmpHst;
+	if(AB_MoverCte(&abo.a, mov)){
+		void* elem = malloc(abo.tamanio);
+		if(!elem) return RES_OUT_OF_MEMORY;
+		AB_ElemCte(abo.a, elem);
+		resCmpDsd = abo.fcmp(elem, desde);
+		resCmpHst = abo.fcmp(elem, hasta);
+
+		resIzq = resDer = resProcess = RES_OK;
+
+		if(resCmpDsd >= 0){
+			resIzq = privateAboRecorridoEnRangoInOrden(abo, process, args, IZQ, desde, hasta);
+		}
+
+		if(resCmpDsd >= 0 && resCmpHst <= 0){
+			resProcess = process(elem, args);
+			AB_ModifCte(&abo.a, elem);
+			free(elem);
+		}
+
+		if(resCmpHst <= 0){
+			resDer = privateAboRecorridoEnRangoInOrden(abo, process, args, DER, desde, hasta);
+		}
+		return elegirResultadoParaRecorrido(resProcess, resIzq, resDer);
+	}
+	return RES_OK;
+}
 
 int aboBorrarCorriente(TABO* abo);
 
@@ -111,6 +178,10 @@ int aboBorrarCorriente(TABO* abo){
 	return RES_OK;
 }
 
+/******************************************************************************/
+/*	PRIMITIVAS                                                                */
+/******************************************************************************/
+
 int ABO_Crear(TABO* abo, taboCmp paf, int tam){
 	abo->fcmp = paf;
 	abo->tamanio = tam;
@@ -167,8 +238,18 @@ int ABO_Borrar(TABO* abo, void* elem){
 	return RES_OK;
 }
 
+int ABO_ProcesarInOrden(TABO* a, aboProcessFunctionPtr process, void* args){
+	return privateAboRecorridoInOrden(*a, process, args, RAIZ);
+}
 
-int ABO_MoverCte(TABO * abo,int mov)
-{
-    return AB_MoverCte(&abo->a,mov);
+int ABO_ProcesarPreOrden(TABO* a, aboProcessFunctionPtr process, void* args){
+	return privateAboRecorridoInOrden(*a, process, args, RAIZ);
+}
+
+int ABO_ProcesarPosOrden(TABO* a, aboProcessFunctionPtr process, void* args){
+	return privateAboRecorridoInOrden(*a, process, args, RAIZ);
+}
+
+int ABO_ProcesarEnRangoInOrden(TABO* a, aboProcessFunctionPtr process, void* args, void* desde, void* hasta){
+	return privateAboRecorridoEnRangoInOrden(*a, process, args, RAIZ, desde, hasta);
 }
