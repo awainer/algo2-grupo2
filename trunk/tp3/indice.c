@@ -34,7 +34,32 @@ int borrar_tweet(void * t,void * v2)
     return 0;
 }
 
+int comparar_usuario(void * v1, void *v2){
+    TNodo_Tweet * nodo = v1;
+    if ((strcmp(&nodo->clave.user, v2) == NULL))
+    return TRUE;
+    else  return FALSE;
+}
 
+int ABOrecorrerCompararUsuario(TABO* abo, int(*procesar)(void*,void*), void* usuario, int mov){
+    TNodo_Tweet nodo_Tweet_aux;
+    char *datoAux;
+    int comparo, resMov;
+
+    resMov=AB_MoverCte(&abo->a, mov);
+    AB_ElemCte(abo->a, datoAux);
+    comparo = procesar(datoAux, usuario);
+    if (!resmov){
+        return ABOrecorrerCompararBorrar(abo, comparar_usuario, usuario, PAD);
+        } else if (comparo == FALSE){
+        ABOrecorrerCompararBorrar(abo, comparar_usuario, usuario, IZQ);
+        ABOrecorrerCompararBorrar(abo, comparar_usuario, usuario, DER);
+        return 0;
+        }else if (comparo == TRUE){
+
+        }
+
+}
 /*pre: el corriente esta en la raiz*/
 
 
@@ -159,6 +184,8 @@ int TIndice_eliminarTweet(TIndice* ti, char* usuario, char* fecha)
 post: elimina todos los Tweets del usuario pasado como parámetro.*/
 int TIndice_eliminarUsuario(TIndice* ti, char* usuario)
 {
+
+
     return 0;
 }
 /*pre: el índice fue creado

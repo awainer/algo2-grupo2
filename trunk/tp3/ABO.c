@@ -23,10 +23,11 @@ int ABOrecorrer(TABO* abo,int (*procesar)(void*,void*), int  mov)
     }
 
     ABOrecorrer(abo,procesar,IZQ);
-
     ABOrecorrer(abo,procesar,DER);
     return 0;
 }
+
+
 
 int buscarElem(TABO* abo, void* elem, int* mov){
 	void* currElem;
