@@ -19,10 +19,11 @@ int ABOrecorrer(TABO* abo,int (*procesar)(void*,void*), int  mov)
       AB_ElemCte(abo->a,aux);
       procesar(aux,NULL);
       free(aux);
-      return 0;
+      return AB_MoverCte(&abo->a,PAD);
     }
 
     ABOrecorrer(abo,procesar,IZQ);
+
     ABOrecorrer(abo,procesar,DER);
     return 0;
 }
