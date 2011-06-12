@@ -85,6 +85,7 @@ int Ttokenizer_analizar(TTokenizer* tt, char* frase, TListaSimple * terminos)
 
                     /*buffer2=(char*)malloc(strlen(buffer_palabra)+1);
                     strcpy(buffer2,buffer_palabra);*/
+
                     L_Insertar_Cte(terminos,L_Siguiente,buffer_palabra);
                     /*printf("%s\n",buffer_palabra);*/
                 }

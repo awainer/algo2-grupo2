@@ -7,6 +7,26 @@
 
 #include "ABO.h"
 
+int ABOrecorrer(TABO* abo,int (*procesar)(void*,void*), int  mov)
+{
+    void * aux;
+    int resMov;
+    printf("%d\n",mov);
+    resMov=AB_MoverCte(&abo->a,mov);
+    if(!resMov)
+    {
+      aux=malloc(abo->tamanio);
+      AB_ElemCte(abo->a,aux);
+      procesar(aux,NULL);
+      free(aux);
+      return 0;
+    }
+
+    ABOrecorrer(abo,procesar,IZQ);
+    ABOrecorrer(abo,procesar,DER);
+    return 0;
+}
+
 int buscarElem(TABO* abo, void* elem, int* mov){
 	void* currElem;
 	int resMov, resCmp;

@@ -155,7 +155,8 @@ int main(int argc, char * argv[])
     Tbuscador_crear(&miBuscador,&miTokenizer,&miIndice);
 
     agregar("test.json",&miParser,&miIndice,&colaTweets);
-    TIndice_destruir(&miIndice);
+    TIndice_eliminarTweet(&miIndice,"sta","sasas");
+    /*TIndice_destruir(&miIndice);*/
     /*TIndice_eliminarTweet(&miIndice,"sarasa","asasasa");*/
 
 if(error==E_NONE)
