@@ -66,9 +66,10 @@ int comparar_dicts(void* v1, void* v2)
 }
 
 /*Funcion  para parsear un nuevo archivo */
-int agregar(char * archname, TParser * miParser, TIndice * idx, TCola * cola)
+int agregar(char * archname, TParser * miParser, TIndice * idx)
 {
     char c;
+    TCola cola;
     int error=E_NONE;
     FILE * archivo;
     TDiccionario aux_dict;
@@ -92,19 +93,13 @@ int agregar(char * archname, TParser * miParser, TIndice * idx, TCola * cola)
     }
 
 
-    while ( !C_Vacia(*cola)) {
-        C_Sacar(cola,&aux_dict);
+    while ( !C_Vacia(cola)) {
+        C_Sacar(&cola,&aux_dict);
         TIndice_agregar(idx,&aux_dict);
     }
-
-
-
-
-
-
     return error;
 }
-
+ typedef enum { AGREGAR, AND, OR, ELIMINART, ELIMINARU} T_COMANDO;
 
 
 int main(int argc, char * argv[])
@@ -119,16 +114,27 @@ int main(int argc, char * argv[])
     TIndice     miIndice;
     Tbuscador   miBuscador;
 
-    /*TListaOrdenada miListaOrdenada;
-    int flag;*/
     FILE *  archivo;
     char    c;
     int    error=E_NONE,sizeDato,i=0;
 
-/*    char * nuevo=NULL, * actual=NULL;*/
+    char    comando[STRING_LEN];
+    TListaSimple    args;
+    int     fincom,comandos_registrados=0;
+    char * comandos[5];
+    char   nombre_archivo[255];
 
 
-
+    comandos[AGREGAR]="agregar";
+    comandos_registrados++;
+    comandos[AND]="and";
+    comandos_registrados++;
+    comandos[OR]="or";
+    comandos_registrados++;
+    comandos[ELIMINART]="eliminart";
+    comandos_registrados++;
+    comandos[ELIMINARU]="eliminaru";
+    comandos_registrados++;
 
     /*Inicializo el constructor con su cola*/
 
@@ -154,44 +160,49 @@ int main(int argc, char * argv[])
     TIndice_crear(&miIndice,&miTokenizer);
     Tbuscador_crear(&miBuscador,&miTokenizer,&miIndice);
 
-    agregar("test.json",&miParser,&miIndice,&colaTweets);
-    TIndice_eliminarTweet(&miIndice,"sta","sasas");
+    L_Crear(&args,STRING_LEN);
+    while(strcmp(comando,"salir")!=0)
+    {
+     printf("-->\n");
+     gets(comando);
+
+     Ttokenizer_analizar(&miTokenizer,comando,&args);
+     if(!L_Vacia(args))
+     {
+         L_Mover_Cte(&args,L_Primero);
+         L_Elem_Cte(args,&comando);
+         printf("%s\n",comando);
+         /* aca va la magia */
+        i=0;
+        while( (strcmp( comando,comandos[i] )) && (i < comandos_registrados) )
+            i++;
+
+                switch(i)
+                {
+                    case AGREGAR :  L_Mover_Cte(&args,L_Siguiente);
+                                    L_Elem_Cte(args,nombre_archivo);
+                                    agregar(nombre_archivo,&miParser,&miIndice);
+                                    break;
+                    case AND    :   break;
+                    case OR     :   break;
+                    case ELIMINART : break;
+                    case ELIMINARU : break;
+                    default :   printf("Comando no reconocido\n");
+                                break;
+                }
+
+
+        printf("%d\n",i);
+         L_Vaciar(&args);
+     }
+
+    }
+
+   /* agregar("test.json",&miParser,&miIndice,&colaTweets);
+    TIndice_eliminarTweet(&miIndice,"sta","sasas");*/
     /*TIndice_destruir(&miIndice);*/
     /*TIndice_eliminarTweet(&miIndice,"sarasa","asasasa");*/
 
-if(error==E_NONE)
-{
-
-    /*Saco de la cola y meto en la lista ordenada*/
-/*    miDiccionario=(TDiccionario*)malloc(sizeof(TDiccionario));
-    LO_Crear(&miListaOrdenada,sizeof(TDiccionario),comparar_dicts);
-    while ( !C_Vacia(colaTweets)) {
-        C_Sacar(&colaTweets,miDiccionario);
-        LO_Insertar(&miListaOrdenada,miDiccionario);
-        }
-
-    LO_Mover_Cte(&miListaOrdenada,L_Primero);
-    do{
-        LO_Elem_Cte(miListaOrdenada,miDiccionario);
-        Tdiccionario_Destruir(miDiccionario);
-
-    }while(LO_Mover_Cte(&miListaOrdenada,L_Siguiente));
-
-
-    LO_Destruir(&miListaOrdenada);
-
-
-        if(nuevo!=NULL)
-            free(nuevo);
-        if(actual!=NULL)
-            free(actual);
-
-    free(miDiccionario);
-    fclose(archivo);
-    Tconstructor_Destruir(&miConstructor);
-    TParser_destruir(&miParser);
-*/
-    }
    return 0;
 
 }
