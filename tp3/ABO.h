@@ -61,4 +61,5 @@ int ABO_ProcesarPosOrden(TABO* a, aboProcessFunctionPtr process, void* args);
 
 int ABO_ProcesarEnRangoInOrden(TABO* a, aboProcessFunctionPtr process, void* args, void* desde, void* hasta);
 
+int ABOrecorrer(TABO* abo,int (*procesar)(void*,void*), int  mov);
 #endif /* ABO_H_ */

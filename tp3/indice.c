@@ -19,14 +19,18 @@ int comparar_tweet_id(void * v1, void * v2)
 }
 int comparar_termino(void * v1, void * v2)
 {
-    return strcmp((char*)v1,(char*)v2);
+    TNodo_Termino * n1, *n2;
+    n1=v1;
+    n2=v2;
+    /*printf("comparo terminos %s %s %d \n",n1->clave,n2->clave,strlen(n1->clave));*/
+    return strcmp(n1->clave,n2->clave);
+    /*return 0;*/
 }
 
 int borrar_tweet(void * t,void * v2)
 {
-    TNodo_Tweet * aux=t;
-    Tdiccionario_Destruir(aux->valor);
-    free(t);
+    TNodo_Tweet * nodo=t;
+    printf("X %s\n",nodo->clave.user);
     return 0;
 }
 
@@ -44,7 +48,7 @@ int TIndice_crear(TIndice* ti, TTokenizer* ta)
 /*pre: el índice fue creado
 post: los recursos del índice fueron liberados*/
 int TIndice_destruir(TIndice* ti)
-{       ABO_ProcesarInOrden(&ti->tweets,borrar_tweet,NULL);
+{     /*  ABO_ProcesarInOrden(&ti->tweets,borrar_tweet,NULL);*/
         /*Esto tiene que recorrer los dos arboles recursivamente e ir destruyendo todo*/
         /*Recorro el arbol de tweets*/
 
@@ -76,24 +80,29 @@ int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
 
     /*cargo el nodo tweet y lo inserto*/
     obtener_id(Tweet,&aux_nodo_tweet.clave);
-    aux_nodo_tweet.valor=Tweet;
+    aux_nodo_tweet.valor=*Tweet;
+    printf("inserto %s\n",aux_nodo_tweet.clave.user);
     ABO_Insertar(&ti->tweets,&aux_nodo_tweet);
     /*ahora empiezo con los terminos*/
 
     s=TDiccionario_sizeDato(Tweet,"text");
     texto=malloc(s);
     TDiccionario_obtener(Tweet,"text",texto);
-    L_Crear(&lista_terminos,sizeof(char*));
 
-
-
+    L_Crear(&lista_terminos,STRING_LEN);
     Ttokenizer_analizar(ti->tk,texto,&lista_terminos);
+
+
+
     L_Mover_Cte(&lista_terminos,L_Primero);
 
     do
     {
 
+
+
         L_Elem_Cte(lista_terminos,&aux_nodo_termino.clave);
+        /*printf("%s\n",aux_nodo_termino.clave);*/
         if(!ABO_Obtener(&ti->terminos,aux_nodo_termino.clave))
         {
           /*  printf("termino repetido %s\n",aux_nodo_termino.clave);*/
@@ -142,10 +151,7 @@ post: elimina el Tweet identificado por el usuario y fecha pasados
 como parámetros.*/
 int TIndice_eliminarTweet(TIndice* ti, char* usuario, char* fecha)
 {
-    TNodo_Tweet aux;
-    strcpy(aux.clave.date,fecha);
-    strcpy(aux.clave.user,usuario);
-    /*ABO_*/
+    ABOrecorrer(&ti->tweets,borrar_tweet,RAIZ);
     return 0;
 }
 /*pre: el índice fue creado
