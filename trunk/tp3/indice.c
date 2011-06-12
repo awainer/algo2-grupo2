@@ -30,7 +30,7 @@ int comparar_termino(void * v1, void * v2)
 int borrar_tweet(void * t,void * v2)
 {
     TNodo_Tweet * nodo=t;
-    printf("X %s\n",nodo->clave.user);
+    printf("X %s %s \n",nodo->clave.user, nodo->clave.date);
     return 0;
 }
 
@@ -151,7 +151,8 @@ post: elimina el Tweet identificado por el usuario y fecha pasados
 como parámetros.*/
 int TIndice_eliminarTweet(TIndice* ti, char* usuario, char* fecha)
 {
-    ABOrecorrer(&ti->tweets,borrar_tweet,RAIZ);
+    /*ABOrecorrer(&ti->tweets,borrar_tweet,RAIZ);*/
+    ABO_ProcesarPreOrden(&ti->tweets,borrar_tweet,NULL);
     return 0;
 }
 /*pre: el índice fue creado

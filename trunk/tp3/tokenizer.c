@@ -16,14 +16,13 @@ int Ttokenizer_crear(TTokenizer* tt)
     tt->numero_separadores++;
     strcpy(tt->separadores[3],"u");
     tt->numero_separadores++;
-    strcpy(tt->separadores[4],"and");
+    strcpy(tt->separadores[4],"si");
     tt->numero_separadores++;
-    strcpy(tt->separadores[5],"or");
+    strcpy(tt->separadores[5],"no");
     tt->numero_separadores++;
-    strcpy(tt->separadores[6],"si");
+  /*  strcpy(tt->separadores[4],"and");
     tt->numero_separadores++;
-    strcpy(tt->separadores[7],"no");
-    tt->numero_separadores++;
+    strcpy(tt->separadores[5],"or");*/
 
     return 0;
 }
