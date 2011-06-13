@@ -49,11 +49,11 @@ int ABOrecorrerCompararUsuario(TABO* abo, int(*procesar)(void*,void*), void* usu
     resMov=AB_MoverCte(&abo->a, mov);
     AB_ElemCte(abo->a, datoAux);
     comparo = procesar(datoAux, usuario);
-    if (!resmov){
-        return ABOrecorrerCompararBorrar(abo, comparar_usuario, usuario, PAD);
+    if (!resMov){
+        return ABOrecorrerCompararUsuario(abo, comparar_usuario, usuario, PAD);
         } else if (comparo == FALSE){
-        ABOrecorrerCompararBorrar(abo, comparar_usuario, usuario, IZQ);
-        ABOrecorrerCompararBorrar(abo, comparar_usuario, usuario, DER);
+        ABOrecorrerCompararUsuario(abo, comparar_usuario, usuario, IZQ);
+        ABOrecorrerCompararUsuario(abo, comparar_usuario, usuario, DER);
         return 0;
         }else if (comparo == TRUE){
 
@@ -73,8 +73,9 @@ int TIndice_crear(TIndice* ti, TTokenizer* ta)
 /*pre: el índice fue creado
 post: los recursos del índice fueron liberados*/
 int TIndice_destruir(TIndice* ti)
-{     /*  ABO_ProcesarInOrden(&ti->tweets,borrar_tweet,NULL);*/
+ {
         /*Esto tiene que recorrer los dos arboles recursivamente e ir destruyendo todo*/
+
         /*Recorro el arbol de tweets*/
 
         /*borrar_arbol_tweets()*/
@@ -116,7 +117,6 @@ int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
 
     L_Crear(&lista_terminos,STRING_LEN);
     Ttokenizer_analizar(ti->tk,texto,&lista_terminos);
-
 
 
     L_Mover_Cte(&lista_terminos,L_Primero);
@@ -194,5 +194,14 @@ Los Tweets que contiene después de optimizar deben ser los mismos
 que antes de optimizar. Ver notas de implementación.*/
 int TIndice_optimizar(TIndice* ti)
 {
+    TNodo_Tweet tweetAux;
+    TNodo_Termino terminoAux;
+
+    /*Descarto el arbol de terminos. */
+
+    ABO_Destruir(&ti->terminos);
+    /*Hago recorrido completo del arbol de tweets, analizando por cada uno nuevamente con el tokenizer y volviendo a cargar los terminos de cada uno en el arbol de terminos */
+
+
     return 0;
 }

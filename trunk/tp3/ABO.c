@@ -142,7 +142,6 @@ int privateAboRecorridoEnRangoInOrden(TABO abo, aboProcessFunctionPtr process, v
 	return RES_OK;
 }
 
-int aboBorrarCorriente(TABO* abo);
 
 int replaceOrDelete(TABO* ca, void* elem, int movBase, int movAlt){
 	int resMov;
