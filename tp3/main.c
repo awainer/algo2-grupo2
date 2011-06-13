@@ -106,7 +106,7 @@ int main(int argc, char * argv[])
 {
 
 
-    TDiccionario * miDiccionario=NULL;
+    /*TDiccionario * miDiccionario=NULL;*/
     TCola colaTweets;
     Tconstructor miConstructor;
     TParser     miParser;
@@ -114,15 +114,19 @@ int main(int argc, char * argv[])
     TIndice     miIndice;
     Tbuscador   miBuscador;
 
-    FILE *  archivo;
-    char    c;
-    int    error=E_NONE,sizeDato,i=0;
+   /* FILE *  archivo;*/
+   /* char    c;*/
+    int    i=0,j,k=0;
 
     char    comando[STRING_LEN];
-    TListaSimple    args;
-    int     fincom,comandos_registrados=0;
+    TListaSimple    resultados;
+    int     comandos_registrados=0;
     char * comandos[5];
-    char   nombre_archivo[255];
+    char   * buffer_comandos[5];
+/*    char   nombre_archivo[255];*/
+    char    frase[STRING_LEN];
+    tweet_id   buffer_res_tid;
+
 
 
     comandos[AGREGAR]="agregar";
@@ -160,42 +164,85 @@ int main(int argc, char * argv[])
     TIndice_crear(&miIndice,&miTokenizer);
     Tbuscador_crear(&miBuscador,&miTokenizer,&miIndice);
 
-    L_Crear(&args,STRING_LEN);
+
+
     while(strcmp(comando,"salir")!=0)
     {
-     printf("-->\n");
+     printf("-->");
      gets(comando);
-
-     Ttokenizer_analizar(&miTokenizer,comando,&args);
-     if(!L_Vacia(args))
+     i=0;
+     buffer_comandos[i]=strtok(comando," ");
+     while (buffer_comandos[i])
      {
-         L_Mover_Cte(&args,L_Primero);
-         L_Elem_Cte(args,&comando);
-         printf("%s\n",comando);
-         /* aca va la magia */
-        i=0;
-        while( (strcmp( comando,comandos[i] )) && (i < comandos_registrados) )
-            i++;
+        /* printf("%s\n",buffer_comandos[i]);*/
+         i++;
+         buffer_comandos[i]=strtok(NULL," ");
+     }
+     frase[0]=0;
+     k=0;
+     for(j=1;j<i;j++)
+     {
+         strcat(frase,buffer_comandos[j]);
+         strcat(frase," ");
+     }
+     /*printf("%s",frase);*/
+     i=0;
+     if(buffer_comandos[0])
+     {
 
+
+      while( (comandos[i]) && (strcmp( buffer_comandos[0],comandos[i] )) )
+                i++;
+
+                L_Vaciar(&resultados);
                 switch(i)
                 {
-                    case AGREGAR :  L_Mover_Cte(&args,L_Siguiente);
+                    case AGREGAR :  /*L_Mover_Cte(&args,L_Siguiente);
                                     L_Elem_Cte(args,nombre_archivo);
-                                    agregar(nombre_archivo,&miParser,&miIndice);
+                                    agregar(nombre_archivo,&miParser,&miIndice);*/
+
+                                    agregar(buffer_comandos[1],&miParser,&miIndice);
                                     break;
-                    case AND    :   break;
-                    case OR     :   break;
-                    case ELIMINART : break;
-                    case ELIMINARU : break;
+                    case AND    :   L_Crear(&resultados,sizeof(tweet_id));
+                                    Tbuscador_union(&miBuscador,frase,&resultados);
+                                    if(!L_Vacia(resultados))
+                                    {   L_Mover_Cte(&resultados,L_Primero);
+                                        do{
+                                            L_Elem_Cte(resultados,&buffer_res_tid);
+                                            printf("%s",buffer_res_tid.user);
+
+                                        }while(L_Mover_Cte(&resultados,L_Siguiente));
+
+                                    }
+                                    L_Destruir(&resultados);
+                                    break;
+
+                    case OR     :
+
+
+                                    break;
+                    case ELIMINART : /*TODO*/
+
+                                    break;
+                    case ELIMINARU :
+                                    TIndice_eliminarUsuario(&miIndice,buffer_comandos[1]);
+                                    break;
+
                     default :   printf("Comando no reconocido\n");
                                 break;
+
+
+
                 }
 
 
-        printf("%d\n",i);
-         L_Vaciar(&args);
+       /* printf("%d\n",i);*/
+/*         L_Vaciar(&args);*/
      }
-
+    }
+    L_Vaciar(&resultados);
+    L_Destruir(&resultados);
+   return 0;
     }
 
    /* agregar("test.json",&miParser,&miIndice,&colaTweets);
@@ -203,7 +250,7 @@ int main(int argc, char * argv[])
     /*TIndice_destruir(&miIndice);*/
     /*TIndice_eliminarTweet(&miIndice,"sarasa","asasasa");*/
 
-   return 0;
 
-}
+
+
 
