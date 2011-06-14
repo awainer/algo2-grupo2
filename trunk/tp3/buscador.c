@@ -2,7 +2,7 @@
 #include "indice.h"
 int Tbuscador_crear(Tbuscador* tb, TTokenizer* tt, TIndice* ti)
 {
-    Ttokenizer_crear(tt);
+
     tb->tk=tt;
     tb->ti=ti;
 
@@ -11,29 +11,31 @@ int Tbuscador_crear(Tbuscador* tb, TTokenizer* tt, TIndice* ti)
 
 int Tbuscador_destruir(Tbuscador* tb)
 {
-    Ttokenizer_destruir(tb->tk);
+
     return 0;
 }
 
 int Tbuscador_union(Tbuscador* tb, char* frase, TListaSimple * docs)
 {
-    TListaSimple terminos;
+    TListaSimple terminos, docsAux;
     char* fraseAux;
 
+    docs = &docsAux;
     L_Crear(&terminos, sizeof(char*));
 
     Ttokenizer_analizar(tb->tk, frase, &terminos);
+    if (!(L_Vacia(docsAux))){
+        L_Mover_Cte(&terminos, L_Primero);
+        L_Elem_Cte(terminos, fraseAux);
 
-    L_Mover_Cte(&terminos, L_Primero);
-    L_Elem_Cte(terminos, fraseAux);
-
-    while(!(fraseAux==NULL)){
-        TIndice_listarDocs(tb->ti, fraseAux, docs);
-        L_Mover_Cte(&terminos, L_Siguiente);
-        L_Elem_Cte(terminos,fraseAux);
-    }
-
+        while(!(fraseAux==NULL)){
+            TIndice_listarDocs(tb->ti, fraseAux, docs);
+            L_Mover_Cte(&terminos, L_Siguiente);
+            L_Elem_Cte(terminos,fraseAux);
+        }
+        }
     L_Destruir(&terminos);
+
     return 0;
 }
 
@@ -44,6 +46,7 @@ int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
     char *fraseAux, *pDoc;
 
     docs = &docsAux;
+
     L_Crear(&terminos, sizeof(char*));
     Ttokenizer_analizar(tb->tk, frase, &terminos);
 
@@ -52,7 +55,7 @@ int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
 
     while(!(fraseAux==NULL)){
         check = TIndice_listarDocs(tb->ti, fraseAux, &docsAux);
-        if (!(check == FALSE)){
+        if (check == TRUE){
             L_Mover_Cte(&terminos, L_Siguiente);
             L_Elem_Cte(terminos,fraseAux);
         }else {
