@@ -27,40 +27,28 @@ int comparar_termino(void * v1, void * v2)
     /*return 0;*/
 }
 
-int borrar_tweet(void * t,void * v2)
+int borrar_tweet_por_fecha(void * t,void * v2)
 {
     TNodo_Tweet * nodo=t;
     printf("X %s %s \n",nodo->clave.user, nodo->clave.date);
     return 0;
 }
 
-int comparar_usuario(void * v1, void *v2){
-    TNodo_Tweet * nodo = v1;
-    if ((strcmp(&nodo->clave.user, v2) == NULL))
+int comparar_usuario_y_borrarlo(void *v1, void *v2){
+    TABO *arbolTweets;
+    TNodo_Tweet *n1;
+    char* usuario = v2;
+    arbolTweets = v2+1;
+    n1 = v1;
+    if ((strcmp(&n1->clave.user, usuario) == NULL)){
+        Tdiccionario_Destruir(&n1->valor);
+        ABO_Borrar(&arbolTweets->a, n1);
     return TRUE;
+    }
     else  return FALSE;
 }
 
-int ABOrecorrerCompararUsuario(TABO* abo, int(*procesar)(void*,void*), void* usuario, int mov){
-    TNodo_Tweet nodo_Tweet_aux;
-    char *datoAux;
-    int comparo, resMov;
 
-    resMov=AB_MoverCte(&abo->a, mov);
-    AB_ElemCte(abo->a, datoAux);
-    comparo = procesar(datoAux, usuario);
-    if (!resMov){
-        return ABOrecorrerCompararUsuario(abo, comparar_usuario, usuario, PAD);
-        } else if (comparo == FALSE){
-        ABOrecorrerCompararUsuario(abo, comparar_usuario, usuario, IZQ);
-        ABOrecorrerCompararUsuario(abo, comparar_usuario, usuario, DER);
-        return 0;
-        }else if (comparo == TRUE){
-
-        }
-
-}
-/*pre: el corriente esta en la raiz*/
 
 
 int TIndice_crear(TIndice* ti, TTokenizer* ta)
@@ -167,7 +155,25 @@ a TDiccionario que contienen el término. Si el termino no se
 encuentra en el índice, la lista se deja vacía.*/
 int TIndice_listarDocs(TIndice* ti, char* termino, TListaSimple * docs)
 {
-    /*aboRecorrer(&ti->tweets,imprimirCOND,RAIZ,NULL);*/
+
+    TNodo_Termino aux_ntermino;
+    TNodo_Tweet   aux_ntweet;
+
+
+
+    strcpy(aux_ntermino.clave,termino);
+    ABO_Obtener(&ti->terminos,&aux_ntermino);
+
+    if(!L_Vacia(aux_ntermino.dato))
+    {
+        L_Mover_Cte(&aux_ntermino.dato,L_Primero);
+        do{
+            L_Elem_Cte(aux_ntermino.dato,&aux_ntweet);
+            ABO_Obtener(&ti->tweets,&aux_ntweet);
+            L_Insertar_Cte(docs,L_Siguiente,&aux_ntweet.valor);
+           }while (L_Mover_Cte(&aux_ntermino.dato,L_Siguiente));
+
+    }
 
     return 0;
 }
@@ -176,15 +182,30 @@ post: elimina el Tweet identificado por el usuario y fecha pasados
 como parámetros.*/
 int TIndice_eliminarTweet(TIndice* ti, char* usuario, char* fecha)
 {
-    /*ABOrecorrer(&ti->tweets,borrar_tweet,RAIZ);*/
-    ABO_ProcesarPreOrden(&ti->tweets,borrar_tweet,NULL);
+
+    TNodo_Tweet aux2;
+
+    strcpy(aux2.clave.date,fecha);
+    strcpy(aux2.clave.user,usuario);
+    if(ABO_Obtener(&ti->tweets,&aux2))
+    {
+        Tdiccionario_Destruir(&aux2.valor);
+        ABO_Borrar(&ti->tweets,&aux2);
+    }
+
+
     return 0;
 }
 /*pre: el índice fue creado
 post: elimina todos los Tweets del usuario pasado como parámetro.*/
 int TIndice_eliminarUsuario(TIndice* ti, char* usuario)
 {
+    /* Argumento es un array de dos punteros a cualquier cosa; en la primera posicion hay un puntero a char* usuario y en la segunda a arbol de tweets. */
+    void * argumento[2];
 
+    argumento[0]=usuario;
+    argumento[1]=&ti->tweets;
+    ABO_ProcesarPosOrden(&ti->tweets, comparar_usuario_y_borrarlo, argumento);
 
     return 0;
 }
