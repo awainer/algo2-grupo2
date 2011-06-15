@@ -17,11 +17,11 @@ int Tbuscador_destruir(Tbuscador* tb)
 
 int Tbuscador_union(Tbuscador* tb, char* frase, TListaSimple * docs)
 {
-    TListaSimple terminos, docsAux;
-    char* fraseAux;
+    TListaSimple terminos;
+    char fraseAux[STRING_LEN];
 
     /*Creo lista donde se van a cargar las frases tokenizadas */
-    L_Crear(&terminos, sizeof(char*));
+    L_Crear(&terminos, STRING_LEN);
 
     Ttokenizer_analizar(tb->tk, frase, &terminos);
 
