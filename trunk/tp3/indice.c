@@ -34,8 +34,8 @@ int optimizo_arbol_terminos (void* v1, void * v2)
     TNodo_Tweet *aux_nodo_tweet;
     TIndice *ti;
 
-    aux_nodo_tweet = &v1;
-    ti = &v2;
+    aux_nodo_tweet = v1;
+    ti = v2;
 
     L_Crear(&lista_terminos, STRING_LEN);
     Ttokenizer_analizar(&ti->tk,aux_nodo_tweet->clave.user,&lista_terminos);
@@ -232,13 +232,16 @@ int TIndice_listarDocs(TIndice* ti, char* termino, TListaSimple * docs)
 
 
     strcpy(aux_ntermino.clave,termino);
-    ABO_Obtener(&ti->terminos,&aux_ntermino);
 
-    if(!L_Vacia(aux_ntermino.dato))
+
+
+    /*if(!L_Vacia(aux_ntermino.dato))*/
+    if(ABO_Obtener(&ti->terminos,&aux_ntermino) == RES_OK)
     {
         L_Mover_Cte(&aux_ntermino.dato,L_Primero);
         do{
-            L_Elem_Cte(aux_ntermino.dato,&aux_ntweet);
+            /*L_Elem_Cte(aux_ntermino.dato,&aux_ntweet);*/
+            L_Elem_Cte(aux_ntermino.dato,&aux_ntweet.clave);
             ABO_Obtener(&ti->tweets,&aux_ntweet);
             L_Insertar_Cte(docs,L_Siguiente,&aux_ntweet.valor);
            }while (L_Mover_Cte(&aux_ntermino.dato,L_Siguiente));
