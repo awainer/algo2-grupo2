@@ -26,6 +26,70 @@ int comparar_termino(void * v1, void * v2)
     return strcmp(n1->clave,n2->clave);
     /*return 0;*/
 }
+/*optimizo_arbol_terminos tiene como funcion insertar los datos que se le estan agregando. */
+int optimizo_arbol_terminos (void* v1, void * v2)
+{
+    TListaSimple lista_terminos;
+    TNodo_Termino aux_nodo_termino;
+    TNodo_Tweet *aux_nodo_tweet;
+    TIndice *ti;
+
+    aux_nodo_tweet = &v1;
+    ti = &v2;
+
+    L_Crear(&lista_terminos, STRING_LEN);
+    Ttokenizer_analizar(&ti->tk,aux_nodo_tweet->clave.user,&lista_terminos);
+    L_Mover_Cte(&lista_terminos,L_Primero);
+
+    do
+    {
+        L_Elem_Cte(lista_terminos,&aux_nodo_termino.clave);
+        if(!ABO_Obtener(&ti->terminos,aux_nodo_termino.clave))
+        {
+          /*  printf("termino repetido %s\n",aux_nodo_termino.clave);*/
+            L_Insertar_Cte(&aux_nodo_termino.dato,L_Siguiente,&aux_nodo_tweet->clave);
+            ABO_Actualizar(&ti->terminos,&aux_nodo_termino);
+        }
+        else
+        {
+            /*Preparo el dato que voy a insertar*/
+            L_Crear(&aux_nodo_termino.dato,sizeof(tweet_id));
+            L_Insertar_Cte(&aux_nodo_termino.dato,L_Siguiente,&aux_nodo_tweet->clave); /*este es el tweet_id del tw que venimos procesando*/
+            ABO_Insertar(&ti->terminos,&aux_nodo_termino);
+        }
+
+    }while (L_Mover_Cte(&lista_terminos,L_Siguiente));
+
+
+
+    L_Destruir(&lista_terminos);
+
+    return 0;
+}
+
+int borrar_arbol_terminos(void *v1, void*v2)
+{
+    TABO *arbolTerminos;
+    TNodo_Termino * n1;
+
+    arbolTerminos = v2;
+    n1 = &v1;
+
+    ABO_Borrar(&arbolTerminos->a, n1);
+
+    return 0;
+}
+int borrar_arbol_tweets (void *v1, void *v2)
+{
+    TABO *arbolTweets;
+    TNodo_Tweet *n1;
+
+    arbolTweets = v2;
+    n1 = &v1;
+    Tdiccionario_Destruir(&n1->valor);
+    ABO_Borrar(&arbolTweets->a, n1);
+    return 0;
+}
 
 int borrar_tweet_por_fecha(void * t,void * v2)
 {
@@ -65,11 +129,14 @@ int TIndice_crear(TIndice* ti, TTokenizer* ta)
 post: los recursos del índice fueron liberados*/
 int TIndice_destruir(TIndice* ti)
  {
-        /*Esto tiene que recorrer los dos arboles recursivamente e ir destruyendo todo*/
-
-        /*Recorro el arbol de tweets*/
-
-        /*borrar_arbol_tweets()*/
+        /*Recorro el arbol de tweets borrando todo.*/
+        ABO_ProcesarPosOrden(&ti->tweets, borrar_arbol_tweets, &ti->tweets);
+        /*Recorro el arbol de terminos borrando todo.*/
+        ABO_ProcesarPosOrden(&ti->terminos,borrar_arbol_terminos, &ti->terminos);
+        /*Arbol de tweets y arbol de terminos borrados. */
+        /*Una vez vaciados los arboles, los destruyo. */
+        ABO_Destruir(&ti->tweets);
+        ABO_Destruir(&ti->terminos);
         return 0;
 }
 
@@ -222,10 +289,9 @@ int TIndice_optimizar(TIndice* ti)
     TNodo_Termino terminoAux;
 
     /*Descarto el arbol de terminos. */
-
-    ABO_Destruir(&ti->terminos);
+    ABO_ProcesarPosOrden(&ti->terminos, borrar_arbol_terminos, &ti->terminos);
     /*Hago recorrido completo del arbol de tweets, analizando por cada uno nuevamente con el tokenizer y volviendo a cargar los terminos de cada uno en el arbol de terminos */
-
+    ABO_ProcesarPosOrden(&ti->tweets, optimizo_arbol_terminos, ti);
 
     return 0;
 }

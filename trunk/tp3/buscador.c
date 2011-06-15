@@ -20,15 +20,17 @@ int Tbuscador_union(Tbuscador* tb, char* frase, TListaSimple * docs)
     TListaSimple terminos, docsAux;
     char* fraseAux;
 
-    docs = &docsAux;
+    /*Creo lista donde se van a cargar las frases tokenizadas */
     L_Crear(&terminos, sizeof(char*));
 
     Ttokenizer_analizar(tb->tk, frase, &terminos);
-    if (!(L_Vacia(docsAux))){
+
+    if (!(L_Vacia(terminos))){
         L_Mover_Cte(&terminos, L_Primero);
         L_Elem_Cte(terminos, fraseAux);
 
         while(!(fraseAux==NULL)){
+            /*Introduzco en la lista docs los terminos invocando la funcion TIndice_listarDocs */
             TIndice_listarDocs(tb->ti, fraseAux, docs);
             L_Mover_Cte(&terminos, L_Siguiente);
             L_Elem_Cte(terminos,fraseAux);
@@ -41,11 +43,9 @@ int Tbuscador_union(Tbuscador* tb, char* frase, TListaSimple * docs)
 
 int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
 {
-    TListaSimple terminos, docsAux;
+    TListaSimple terminos;
     int check;
-    char *fraseAux, *pDoc;
-
-    docs = &docsAux;
+    char *fraseAux;
 
     L_Crear(&terminos, sizeof(char*));
     Ttokenizer_analizar(tb->tk, frase, &terminos);
@@ -54,19 +54,14 @@ int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
     L_Elem_Cte(terminos, fraseAux);
 
     while(!(fraseAux==NULL)){
-        check = TIndice_listarDocs(tb->ti, fraseAux, &docsAux);
+        /*Si existen terminos, se cargan en la lista docs. Sino, vacio la lista ya que no cumple con alguna palabra y salgo de la primitiva. */
+        check = TIndice_listarDocs(tb->ti, fraseAux, docs);
         if (check == TRUE){
             L_Mover_Cte(&terminos, L_Siguiente);
             L_Elem_Cte(terminos,fraseAux);
         }else {
-            L_Mover_Cte(&docsAux, L_Primero);
-            L_Elem_Cte(docsAux, pDoc);
-            /* Como no se cumplen con TODAS las palabras de la frase, vacio la lista docs */
-            while (!(pDoc==NULL)){
-                L_Borrar_Cte(&docsAux);
-                L_Mover_Cte(&docsAux, L_Siguiente);
-                L_Elem_Cte(docsAux, pDoc);
-            }
+            L_Vaciar(docs);
+            /* Como no se cumplen con TODAS las palabras de la frase, vacio la lista docs y salgo de la funcion. */
             return 0;
             }
     }
