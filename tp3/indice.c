@@ -38,7 +38,7 @@ int optimizo_arbol_terminos (void* v1, void * v2)
     ti = v2;
 
     L_Crear(&lista_terminos, STRING_LEN);
-    Ttokenizer_analizar(&ti->tk,aux_nodo_tweet->clave.user,&lista_terminos);
+    Ttokenizer_analizar(ti->tk,aux_nodo_tweet->clave.user,&lista_terminos);
     L_Mover_Cte(&lista_terminos,L_Primero);
 
     do
@@ -73,9 +73,9 @@ int borrar_arbol_terminos(void *v1, void*v2)
     TNodo_Termino * n1;
 
     arbolTerminos = v2;
-    n1 = &v1;
+    n1 = v1;
 
-    ABO_Borrar(&arbolTerminos->a, n1);
+    ABO_Borrar(arbolTerminos, n1);
 
     return 0;
 }
@@ -85,9 +85,9 @@ int borrar_arbol_tweets (void *v1, void *v2)
     TNodo_Tweet *n1;
 
     arbolTweets = v2;
-    n1 = &v1;
+    n1 = v1;
     Tdiccionario_Destruir(&n1->valor);
-    ABO_Borrar(&arbolTweets->a, n1);
+    ABO_Borrar(arbolTweets, n1);
     return 0;
 }
 
@@ -106,13 +106,13 @@ int comparar_usuario_y_borrarlo(void *v1, void *v2){
     arbolTweets=aux[0];
     usuario=aux[1];
 
-
-    if ((strcmp(&n1->clave.user, usuario) == NULL)){
+/*
+    if ((strcmp(ar*)n1->clave.user, usuario) == NULL)){
         Tdiccionario_Destruir(&n1->valor);
         ABO_Borrar(&arbolTweets->a, n1);
     return TRUE;
     }
-    else  return FALSE;
+    else  return FALSE;*/
 }
 
 
