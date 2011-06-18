@@ -15,33 +15,6 @@
 /*sacar esto, esta para probar algo */
 #include <string.h>
 
-/* int main(int argc, char * argv[])
-{
-   TTokenizer miTokenizer;
-    TListaSimple  res;
-    char  msg[50];
-    char * term;
-
-    Ttokenizer_crear(&miTokenizer);
-
-    L_Crear(&res,sizeof(char*));
-    strcpy(msg,"hola mundo  y como, te va  sArAsA!!!");
-    Ttokenizer_analizar(&miTokenizer,msg,&res);
-
-
-    L_Mover_Cte(&res,L_Primero);
-
-    do
-    {
-
-        L_Elem_Cte(res,&term);
-        printf("%s\n",term);
-        free(term);
-    }while (L_Mover_Cte(&res,L_Siguiente));
-     L_Destruir(&res);
-    return 0;
-}*/
-
 
 int comparar_dicts(void* v1, void* v2)
 {
@@ -66,10 +39,10 @@ int comparar_dicts(void* v1, void* v2)
 }
 
 /*Funcion  para parsear un nuevo archivo */
-int agregar(char * archname, TParser * miParser, TIndice * idx)
+int agregar(char * archname, TParser * miParser, TIndice * idx,TCola * cola)
 {
     char c;
-    TCola cola;
+    /*TCola cola;*/
     int error=E_NONE;
     FILE * archivo;
     TDiccionario aux_dict;
@@ -88,17 +61,16 @@ int agregar(char * archname, TParser * miParser, TIndice * idx)
     {   /*printf("%c",c);*/
         error=TParser_PushChar(miParser,c);
         c=getc(archivo);
-
-
     }
 
 
-    while ( !C_Vacia(cola)) {
-        C_Sacar(&cola,&aux_dict);
+    while ( !C_Vacia(*cola)) {
+        C_Sacar(cola,&aux_dict);
         TIndice_agregar(idx,&aux_dict);
     }
     return error;
 }
+
  typedef enum { AGREGAR, AND, OR, ELIMINART, ELIMINARU} T_COMANDO;
 
 
@@ -113,15 +85,17 @@ int main(int argc, char * argv[])
     TTokenizer  miTokenizer;
     TIndice     miIndice;
     Tbuscador   miBuscador;
+    TDiccionario buffer_dict;
 
    /* FILE *  archivo;*/
    /* char    c;*/
-    int    i=0,j,k=0;
+    int    i=0,j,k=0,s;
 
     char    comando[STRING_LEN];
     TListaSimple    resultados;
     int     comandos_registrados=0;
     char * comandos[5];
+    char * txt_resultado_busqueda;
     char   * buffer_comandos[5];
 /*    char   nombre_archivo[255];*/
     char    frase[STRING_LEN];
@@ -185,6 +159,8 @@ int main(int argc, char * argv[])
          strcat(frase,buffer_comandos[j]);
          strcat(frase," ");
      }
+     strcat(frase,"\0");
+
      /*printf("%s",frase);*/
      i=0;
      if(buffer_comandos[0])
@@ -194,23 +170,22 @@ int main(int argc, char * argv[])
       while( (comandos[i]) && (strcmp( buffer_comandos[0],comandos[i] )) )
                 i++;
 
-                L_Vaciar(&resultados);
+                /*L_Vaciar(&resultados);*/
                 switch(i)
                 {
-                    case AGREGAR :  /*L_Mover_Cte(&args,L_Siguiente);
-                                    L_Elem_Cte(args,nombre_archivo);
-                                    agregar(nombre_archivo,&miParser,&miIndice);*/
-
-                                    agregar(buffer_comandos[1],&miParser,&miIndice);
+                    case AGREGAR :  agregar(buffer_comandos[1],&miParser,&miIndice,&colaTweets);
                                     break;
-                    case AND    :   L_Crear(&resultados,sizeof(tweet_id));
+                    case AND    :   /*L_Crear(&resultados,sizeof(tweet_id));*/
+                                    L_Crear(&resultados,sizeof(TNodo_Tweet));
                                     Tbuscador_union(&miBuscador,frase,&resultados);
                                     if(!L_Vacia(resultados))
                                     {   L_Mover_Cte(&resultados,L_Primero);
                                         do{
-                                            L_Elem_Cte(resultados,&buffer_res_tid);
-                                            printf("%s",buffer_res_tid.user);
-
+                                            L_Elem_Cte(resultados,&buffer_dict);
+                                            s=TDiccionario_sizeDato(&buffer_dict,"text");
+                                            txt_resultado_busqueda=(char*)malloc(s);
+                                            TDiccionario_obtener(&buffer_dict,"text",txt_resultado_busqueda);
+                                            printf("%s\n",txt_resultado_busqueda);
                                         }while(L_Mover_Cte(&resultados,L_Siguiente));
 
                                     }
@@ -231,15 +206,9 @@ int main(int argc, char * argv[])
                     default :   printf("Comando no reconocido\n");
                                 break;
 
-
-
                 }
-
-
-       /* printf("%d\n",i);*/
-/*         L_Vaciar(&args);*/
-     }
-    }
+     } /*hubo comandos*/
+    }/*fin while*/
     L_Vaciar(&resultados);
     L_Destruir(&resultados);
    return 0;
