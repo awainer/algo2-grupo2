@@ -71,7 +71,7 @@ int agregar(char * archname, TParser * miParser, TIndice * idx,TCola * cola)
     return error;
 }
 
- typedef enum { AGREGAR, AND, OR, ELIMINART, ELIMINARU} T_COMANDO;
+ typedef enum { AGREGAR, AND, OR, ELIMINART, ELIMINARU, SALIR} T_COMANDO;
 
 
 int main(int argc, char * argv[])
@@ -112,6 +112,8 @@ int main(int argc, char * argv[])
     comandos[ELIMINART]="eliminart";
     comandos_registrados++;
     comandos[ELIMINARU]="eliminaru";
+    comandos_registrados++;
+    comandos[SALIR]="salir";
     comandos_registrados++;
 
     /*Inicializo el constructor con su cola*/
@@ -189,13 +191,35 @@ int main(int argc, char * argv[])
                                         }while(L_Mover_Cte(&resultados,L_Siguiente));
 
                                     }
+                                    else
+                                    {
+                                        printf("Sin resultados\n");
+                                    }
                                     L_Destruir(&resultados);
                                     break;
 
-                    case OR     :
+                    case OR     :   L_Crear(&resultados,sizeof(TNodo_Tweet));
+                                    Tbuscador_interseccion(&miBuscador,frase,&resultados);
+                                    if(!L_Vacia(resultados))
+                                    {   L_Mover_Cte(&resultados,L_Primero);
+                                        do{
+                                            L_Elem_Cte(resultados,&buffer_dict);
+                                            s=TDiccionario_sizeDato(&buffer_dict,"text");
+                                            txt_resultado_busqueda=(char*)malloc(s);
+                                            TDiccionario_obtener(&buffer_dict,"text",txt_resultado_busqueda);
+                                            printf("%s\n",txt_resultado_busqueda);
+                                        }while(L_Mover_Cte(&resultados,L_Siguiente));
 
-
+                                    }
+                                    else
+                                    {
+                                        printf("Sin resultados\n");
+                                    }
+                                    L_Destruir(&resultados);
                                     break;
+
+
+
                     case ELIMINART : /*TODO*/
 
                                     break;
@@ -203,6 +227,7 @@ int main(int argc, char * argv[])
                                     TIndice_eliminarUsuario(&miIndice,buffer_comandos[1]);
                                     break;
 
+                    case SALIR : break;
                     default :   printf("Comando no reconocido\n");
                                 break;
 

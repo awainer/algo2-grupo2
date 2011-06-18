@@ -17,6 +17,7 @@ void P_Vaciar(TPila *pP)
 	TNodoPila *pSig=pP->Tope;
 	while (pSig)
 	{
+
 		pSig = pP->Tope->Siguiente;
 		free(pP->Tope->Elem);
 		free(pP->Tope);

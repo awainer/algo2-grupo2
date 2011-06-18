@@ -216,7 +216,7 @@ else
             {
                 strcpy(as->error_mensaje,"se esperaba una coma, un fin de obj o fin de array");
                 as->error_codigo=E_SINTACTICO;
-                Tsintactico_Destruir(as);
+/*                Tsintactico_Destruir(as);*/
                 return as->error_codigo;
             }
 
