@@ -164,9 +164,21 @@ int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
 
     /*cargo el nodo tweet y lo inserto*/
     obtener_id(Tweet,&aux_nodo_tweet.clave);
-    aux_nodo_tweet.valor=*Tweet;
-    printf("inserto %s\n",aux_nodo_tweet.clave.user);
-    ABO_Insertar(&ti->tweets,&aux_nodo_tweet);
+    /*aux_nodo_tweet.valor=*Tweet;*/
+    memcpy(&aux_nodo_tweet.valor,Tweet,sizeof(TDiccionario));
+
+
+
+    if (ABO_Obtener(&ti->tweets,&aux_nodo_tweet) == 0)
+        {
+            printf("Error: Tweet repetido: %s, %s\n",aux_nodo_tweet.clave.user, aux_nodo_tweet.clave.date);
+            return 1;
+        }
+    else
+        {
+            printf("inserto %s, %s\n",aux_nodo_tweet.clave.user, aux_nodo_tweet.clave.date);
+            ABO_Insertar(&ti->tweets,&aux_nodo_tweet);
+        }
     /*ahora empiezo con los terminos*/
 
     s=TDiccionario_sizeDato(Tweet,"text");
@@ -232,8 +244,6 @@ int TIndice_listarDocs(TIndice* ti, char* termino, TListaSimple * docs)
 
 
     strcpy(aux_ntermino.clave,termino);
-
-
 
     /*if(!L_Vacia(aux_ntermino.dato))*/
     if(ABO_Obtener(&ti->terminos,&aux_ntermino) == RES_OK)

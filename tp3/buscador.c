@@ -17,7 +17,7 @@ int Tbuscador_destruir(Tbuscador* tb)
 
 int Tbuscador_union(Tbuscador* tb, char* frase, TListaSimple * docs)
 {
-    TListaSimple terminos;
+    TListaSimple    terminos;
     char fraseAux[STRING_LEN];
 
     /*Creo lista donde se van a cargar las frases tokenizadas */
@@ -25,17 +25,23 @@ int Tbuscador_union(Tbuscador* tb, char* frase, TListaSimple * docs)
 
     Ttokenizer_analizar(tb->tk, frase, &terminos);
 
-    if (!(L_Vacia(terminos))){
-        L_Mover_Cte(&terminos, L_Primero);
-        L_Elem_Cte(terminos, fraseAux);
+    if ((L_Vacia(terminos))){
+                return 0;
+    }
 
-        while(!(fraseAux==NULL)){
-            /*Introduzco en la lista docs los terminos invocando la funcion TIndice_listarDocs */
-            TIndice_listarDocs(tb->ti, fraseAux, docs);
+     L_Mover_Cte(&terminos, L_Primero);
+     do{
+      L_Elem_Cte(terminos, fraseAux);
+      TIndice_listarDocs(tb->ti, fraseAux, docs);
+       } while (L_Mover_Cte(&terminos,L_Siguiente));
+       /* while(!(fraseAux==NULL)){
+         /*   TIndice_listarDocs(tb->ti, fraseAux, docs);
             L_Mover_Cte(&terminos, L_Siguiente);
             L_Elem_Cte(terminos,fraseAux);
-        }
-        }
+        }*/
+
+
+
     L_Destruir(&terminos);
 
     return 0;

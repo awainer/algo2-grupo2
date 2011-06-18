@@ -1,6 +1,6 @@
 
 #define OOM -1
-
+#define STRING_LEN 256
 #include "tokenizer.h"
 #include <string.h>
 #include <stdio.h>
@@ -8,17 +8,17 @@
 int Ttokenizer_crear(TTokenizer* tt)
 {
     tt->numero_separadores=0;
-    strcpy(tt->separadores[0],"e");
+    strcpy(tt->separadores[tt->numero_separadores],"e");
     tt->numero_separadores++;
-    strcpy(tt->separadores[1],"y");
+    strcpy(tt->separadores[tt->numero_separadores],"y");
     tt->numero_separadores++;
-    strcpy(tt->separadores[2],"o");
+    strcpy(tt->separadores[tt->numero_separadores],"o");
     tt->numero_separadores++;
-    strcpy(tt->separadores[3],"u");
+    strcpy(tt->separadores[tt->numero_separadores],"u");
     tt->numero_separadores++;
-    strcpy(tt->separadores[4],"si");
+    strcpy(tt->separadores[tt->numero_separadores],"si");
     tt->numero_separadores++;
-    strcpy(tt->separadores[5],"no");
+    strcpy(tt->separadores[tt->numero_separadores],"no");
     tt->numero_separadores++;
   /*  strcpy(tt->separadores[4],"and");
     tt->numero_separadores++;
@@ -52,7 +52,7 @@ int Ttokenizer_analizar(TTokenizer* tt, char* frase, TListaSimple * terminos)
     int offset_mayusculas= 'a' - 'A';
     int largo=strlen(frase)-1;
     int i,idx;
-    char  buffer_palabra[128]; /*completamente arbitrario*/
+    char  buffer_palabra[STRING_LEN]; /*completamente arbitrario*/
    /* char * buffer2;*/
 
 
