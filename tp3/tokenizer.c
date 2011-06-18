@@ -8,6 +8,8 @@
 int Ttokenizer_crear(TTokenizer* tt)
 {
     tt->numero_separadores=0;
+    strcpy(tt->separadores[tt->numero_separadores],"a");
+    tt->numero_separadores++;
     strcpy(tt->separadores[tt->numero_separadores],"e");
     tt->numero_separadores++;
     strcpy(tt->separadores[tt->numero_separadores],"y");
