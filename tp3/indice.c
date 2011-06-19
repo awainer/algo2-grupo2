@@ -169,7 +169,7 @@ int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
 
 
 
-    if (ABO_Obtener(&ti->tweets,&aux_nodo_tweet) == 0)
+    if (ABO_Obtener(&ti->tweets,&aux_nodo_tweet) == RES_OK)
         {
             printf("Error: Tweet repetido: %s, %s\n",aux_nodo_tweet.clave.user, aux_nodo_tweet.clave.date);
             return 1;
@@ -190,27 +190,36 @@ int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
 
 
     L_Mover_Cte(&lista_terminos,L_Primero);
-
-    do
+    do /*itero por la lista de terminos tokenizada*/
     {
-
-
-
         L_Elem_Cte(lista_terminos,&aux_nodo_termino.clave);
         /*printf("%s\n",aux_nodo_termino.clave);*/
-        if(!ABO_Obtener(&ti->terminos,aux_nodo_termino.clave))
+        if(ABO_Obtener(&ti->terminos,&aux_nodo_termino)==RES_OK)
         {
-          /*  printf("termino repetido %s\n",aux_nodo_termino.clave);*/
             L_Insertar_Cte(&aux_nodo_termino.dato,L_Siguiente,&aux_nodo_tweet.clave);
             ABO_Actualizar(&ti->terminos,&aux_nodo_termino);
+            /*debug*/
+            /*{
+            tweet_id tid;
+            printf("termino repetido %s\n",aux_nodo_termino.clave);
+            ABO_Obtener(&ti->terminos,&aux_nodo_termino);
+            L_Mover_Cte(&aux_nodo_termino.dato,L_Primero);
+            do
+            {
+                L_Elem_Cte(aux_nodo_termino.dato,&tid);
+                printf("%s, %s\n",tid.date, tid.user );
+            } while(L_Mover_Cte(&aux_nodo_termino.dato,L_Siguiente));
+            }*//*fin debug*/
+
         }
         else
         {
             /*printf("nuevo termino %s\n",aux_nodo_termino.clave);*/
             /*Preparo el dato que voy a insertar*/
             L_Crear(&aux_nodo_termino.dato,sizeof(tweet_id));
-            L_Insertar_Cte(&aux_nodo_termino.dato,L_Siguiente,&aux_nodo_tweet.clave); /*este es el tweet_id del tw que venimos procesando*/
+            L_Insertar_Cte(&aux_nodo_termino.dato,L_Primero,&aux_nodo_tweet.clave); /*este es el tweet_id del tw que venimos procesando*/
             ABO_Insertar(&ti->terminos,&aux_nodo_termino);
+
         }
 
     }while (L_Mover_Cte(&lista_terminos,L_Siguiente));
