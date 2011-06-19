@@ -31,21 +31,29 @@ int Tbuscador_union(Tbuscador* tb, char* frase, TListaSimple * docs)
 
      L_Mover_Cte(&terminos, L_Primero);
      do{
-      L_Elem_Cte(terminos, fraseAux);
-      TIndice_listarDocs(tb->ti, fraseAux, docs);
+            L_Elem_Cte(terminos, fraseAux);
+            TIndice_listarDocs(tb->ti, fraseAux, docs);
        } while (L_Mover_Cte(&terminos,L_Siguiente));
-       /* while(!(fraseAux==NULL)){
-         /*   TIndice_listarDocs(tb->ti, fraseAux, docs);
-            L_Mover_Cte(&terminos, L_Siguiente);
-            L_Elem_Cte(terminos,fraseAux);
-        }*/
 
-
-
-    L_Destruir(&terminos);
+     L_Destruir(&terminos);
 
     return 0;
 }
+
+/*void ls_interseccion(TListaSimple * l1, TListaSimple * l2, TListaSimple * dest, int (*fcmp)(void*,void*),int tam)
+{
+    int f=TRUE;
+    L_Mover_Cte(l1,L_Primero);
+    do{
+        do{
+
+
+
+        }
+
+    }while(L_Mover_Cte(l1,L_Siguiente))
+
+}*/
 
 int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
 {

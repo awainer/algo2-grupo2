@@ -144,6 +144,7 @@ int main(int argc, char * argv[])
 
     while(strcmp(comando,"salir")!=0)
     {
+     buffer_comandos[0]=0;
      printf("-->");
      gets(comando);
      i=0;
@@ -164,7 +165,9 @@ int main(int argc, char * argv[])
      strcat(frase,"\0");
 
      /*printf("%s",frase);*/
+     buffer_comandos[j+1]=0;
      i=0;
+
      if(buffer_comandos[0])
      {
 
@@ -184,7 +187,7 @@ int main(int argc, char * argv[])
                                     {   L_Mover_Cte(&resultados,L_Primero);
                                         do{
                                             L_Elem_Cte(resultados,&buffer_dict);
-                                            s=TDiccionario_sizeDato(&buffer_dict,"text");
+                                            s=TDiccionario_sizeDato(&buffer_dict,"text"); /*en esta linea esta el problema???*/
                                             txt_resultado_busqueda=(char*)malloc(s);
                                             TDiccionario_obtener(&buffer_dict,"text",txt_resultado_busqueda);
                                             printf("%s\n",txt_resultado_busqueda);
@@ -198,7 +201,7 @@ int main(int argc, char * argv[])
                                     L_Destruir(&resultados);
                                     break;
 
-                    case OR     :   L_Crear(&resultados,sizeof(TNodo_Tweet));
+                    case OR     :  /* L_Crear(&resultados,sizeof(TNodo_Tweet));
                                     Tbuscador_interseccion(&miBuscador,frase,&resultados);
                                     if(!L_Vacia(resultados))
                                     {   L_Mover_Cte(&resultados,L_Primero);
@@ -215,7 +218,7 @@ int main(int argc, char * argv[])
                                     {
                                         printf("Sin resultados\n");
                                     }
-                                    L_Destruir(&resultados);
+                                    L_Destruir(&resultados);*/
                                     break;
 
 
@@ -233,6 +236,23 @@ int main(int argc, char * argv[])
 
                 }
      } /*hubo comandos*/
+
+
+     /*codigo para debug*/
+     /*   {
+            TNodo_Termino tnt;
+            strcpy(tnt.clave,"rugby");
+            ABO_Obtener(&miIndice.terminos,&tnt);
+            L_Mover_Cte(&tnt.dato,L_Primero);
+            do{
+                L_Elem_Cte(tnt.dato,&buffer_res_tid);
+                printf(" res %s %s\n",buffer_res_tid.date, buffer_res_tid.user);
+
+
+            }while(L_Mover_Cte(&tnt.dato,L_Siguiente));
+        }
+*/
+     /*fin codigo para debug */
     }/*fin while*/
     L_Vaciar(&resultados);
     L_Destruir(&resultados);
