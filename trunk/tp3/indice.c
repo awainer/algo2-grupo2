@@ -99,16 +99,17 @@ int borrar_tweet_por_fecha(void * t,void * v2)
 }
 
 int comparar_usuario_y_borrarlo(void *v1, void *v2){
-    TABO *arbolTweets;
-    TNodo_Tweet *n1;
+
+    TNodo_Tweet *n1=(TNodo_Tweet*)v1;
     void ** aux=v2;
     char * usuario=(char*)aux[0];
+    TABO *arbolTweets=(TABO*)aux[1];
 
     printf("recibo %s\n",(char*)aux[0]);
 
-    if ((strcmp(n1->clave.user, usuario) == NULL)){
+    if ((strcmp(n1->clave.user, usuario) == 0)){
         Tdiccionario_Destruir(&n1->valor);
-        ABO_Borrar(&arbolTweets->a, n1);
+        ABO_Borrar(arbolTweets, n1);
         return TRUE;
     }
     else  return FALSE;
