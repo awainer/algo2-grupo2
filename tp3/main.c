@@ -201,7 +201,7 @@ int main(int argc, char * argv[])
                                     L_Destruir(&resultados);
                                     break;
 
-                    case OR     :  /* L_Crear(&resultados,sizeof(TNodo_Tweet));
+                    case OR     :   L_Crear(&resultados,sizeof(TNodo_Tweet));
                                     Tbuscador_interseccion(&miBuscador,frase,&resultados);
                                     if(!L_Vacia(resultados))
                                     {   L_Mover_Cte(&resultados,L_Primero);
@@ -218,15 +218,22 @@ int main(int argc, char * argv[])
                                     {
                                         printf("Sin resultados\n");
                                     }
-                                    L_Destruir(&resultados);*/
+                                    L_Destruir(&resultados);
                                     break;
 
 
 
                     case ELIMINART : /*TODO*/
+                                     /*buffer_comandos[0]=strtok(comando," ");
+                                     buffer_comandos[1]=strtok(NULL,",");
+                                     buffer_comandos[2]=strtok(NULL,",");*/
+
+                                     printf("Elimito el tweet del usuario %s y fecha %s\n",buffer_comandos[1],buffer_comandos[2]);
+
 
                                     break;
                     case ELIMINARU :
+                                    printf("Elimito los tweets de  %s\n",buffer_comandos[1]);
                                     TIndice_eliminarUsuario(&miIndice,buffer_comandos[1]);
                                     break;
 
