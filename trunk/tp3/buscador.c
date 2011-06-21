@@ -77,15 +77,13 @@ int contiene(TDiccionario d, TListaSimple ls, TTokenizer * tk)
 
         do{
             L_Elem_Cte(tokens,aux2);
-            if(strcmp(aux1,aux2)==0)
+            if((strcmp(aux1,aux2)==0) && (!L_Mover_Cte(&ls,L_Siguiente)))
                 cont=TRUE;
         } while ((L_Mover_Cte(&tokens,L_Siguiente)) && (!cont) );
-
-    }while((L_Mover_Cte(&ls,L_Siguiente)) &&  (!cont) );
-
-    /*}while((L_Mover_Cte(&ls,L_Siguiente)) &&  (!cont) );*/
+    }while(L_Mover_Cte(&ls,L_Siguiente) &&  (!cont) );
 
     free(text);
+    L_Destruir(&tokens);
     return cont;
 }
 
@@ -108,6 +106,10 @@ int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
             L_Elem_Cte(terminos, fraseAux);
             TIndice_listarDocs(tb->ti, fraseAux, docs);
        } while (L_Mover_Cte(&terminos,L_Siguiente));
+
+    if (L_Vacia(*docs)){
+                return 0;
+    }
 
 
      L_Mover_Cte(docs, L_Primero);

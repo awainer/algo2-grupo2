@@ -102,17 +102,16 @@ int comparar_usuario_y_borrarlo(void *v1, void *v2){
     TABO *arbolTweets;
     TNodo_Tweet *n1;
     void ** aux=v2;
+    char * usuario=(char*)aux[0];
 
-/*    printf("recibo %s",(char*)v2[0]);*/
+    printf("recibo %s\n",(char*)aux[0]);
 
-
-/*
-    if ((strcmp(ar*)n1->clave.user, usuario) == NULL)){
+    if ((strcmp(n1->clave.user, usuario) == NULL)){
         Tdiccionario_Destruir(&n1->valor);
         ABO_Borrar(&arbolTweets->a, n1);
-    return TRUE;
+        return TRUE;
     }
-    else  return FALSE;*/
+    else  return FALSE;
 }
 
 
@@ -160,7 +159,7 @@ int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
     TListaSimple  lista_terminos;
     int s=0;
     char *   texto;
-    char buffer_termino[255];
+/*    char buffer_termino[255];*/
 
     /*cargo el nodo tweet y lo inserto*/
     obtener_id(Tweet,&aux_nodo_tweet.clave);
@@ -307,8 +306,8 @@ Los Tweets que contiene después de optimizar deben ser los mismos
 que antes de optimizar. Ver notas de implementación.*/
 int TIndice_optimizar(TIndice* ti)
 {
-    TNodo_Tweet tweetAux;
-    TNodo_Termino terminoAux;
+    /*TNodo_Tweet tweetAux;
+    TNodo_Termino terminoAux;*/
 
     /*Descarto el arbol de terminos. */
     ABO_ProcesarPosOrden(&ti->terminos, borrar_arbol_terminos, &ti->terminos);

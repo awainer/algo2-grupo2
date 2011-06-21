@@ -99,7 +99,7 @@ int main(int argc, char * argv[])
     char   * buffer_comandos[5];
 /*    char   nombre_archivo[255];*/
     char    frase[STRING_LEN];
-    tweet_id   buffer_res_tid;
+/*    tweet_id   buffer_res_tid;*/
 
 
 
