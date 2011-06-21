@@ -102,9 +102,9 @@ int comparar_usuario_y_borrarlo(void *v1, void *v2){
     TABO *arbolTweets;
     TNodo_Tweet *n1;
     void ** aux=v2;
-    char * usuario;
-    arbolTweets=aux[0];
-    usuario=aux[1];
+
+    printf("recibo %s",(char*)v2[0])
+
 
 /*
     if ((strcmp(ar*)n1->clave.user, usuario) == NULL)){

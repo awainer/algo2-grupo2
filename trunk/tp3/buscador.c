@@ -55,30 +55,67 @@ int Tbuscador_union(Tbuscador* tb, char* frase, TListaSimple * docs)
 
 }*/
 
+int contiene(TDiccionario d, TListaSimple ls, TTokenizer * tk)
+{
+    int s;
+    char * text;
+    TListaSimple tokens;
+    int cont=FALSE;
+    char  aux1[STRING_LEN],aux2[STRING_LEN];
+
+    s = TDiccionario_sizeDato(&d,"text");
+    text = (char*) malloc(s);
+    TDiccionario_obtener(&d,"text",text);
+    L_Crear(&tokens,sizeof(char[STRING_LEN]));
+    Ttokenizer_analizar(tk,text,&tokens);
+
+    L_Mover_Cte(&ls,L_Primero);
+    do {
+        L_Elem_Cte(ls,aux1);
+        L_Mover_Cte(&tokens,L_Primero);
+
+        do{
+            L_Elem_Cte(tokens,aux2);
+            if(!strcmp(aux1,aux2))
+                cont=TRUE;
+        } while ((L_Mover_Cte(&tokens,L_Siguiente)) && (!cont) );
+
+
+    }while((L_Mover_Cte(&ls,L_Siguiente)) &&  (!cont) );
+
+    return cont;
+}
+
 int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
 {
-    TListaSimple terminos;
-    int check;
-    char *fraseAux;
+    TListaSimple    terminos;
+    char fraseAux[STRING_LEN];
+    TDiccionario    dict_aux;
+    /*Creo lista donde se van a cargar las frases tokenizadas */
+    L_Crear(&terminos, sizeof(char[STRING_LEN]));
 
-    L_Crear(&terminos, sizeof(char*));
     Ttokenizer_analizar(tb->tk, frase, &terminos);
 
-    L_Mover_Cte(&terminos, L_Primero);
-    L_Elem_Cte(terminos, fraseAux);
-
-    while(!(fraseAux==NULL)){
-        /*Si existen terminos, se cargan en la lista docs. Sino, vacio la lista ya que no cumple con alguna palabra y salgo de la primitiva. */
-        check = TIndice_listarDocs(tb->ti, fraseAux, docs);
-        if (check == TRUE){
-            L_Mover_Cte(&terminos, L_Siguiente);
-            L_Elem_Cte(terminos,fraseAux);
-        }else {
-            L_Vaciar(docs);
-            /* Como no se cumplen con TODAS las palabras de la frase, vacio la lista docs y salgo de la funcion. */
-            return 0;
-            }
+    if ((L_Vacia(terminos))){
+                return 0;
     }
+
+     L_Mover_Cte(&terminos, L_Primero);
+     do{
+            L_Elem_Cte(terminos, fraseAux);
+            TIndice_listarDocs(tb->ti, fraseAux, docs);
+       } while (L_Mover_Cte(&terminos,L_Siguiente));
+
+
+     L_Mover_Cte(docs, L_Primero);
+     do {
+            L_Elem_Cte(*docs,&dict_aux);
+
+            if(!contiene(dict_aux,terminos,tb->tk ))
+                L_Borrar_Cte(docs);
+
+       }while( L_Mover_Cte(docs, L_Siguiente));
+
 
     L_Destruir(&terminos);
     return 0;
