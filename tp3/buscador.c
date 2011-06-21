@@ -69,20 +69,23 @@ int contiene(TDiccionario d, TListaSimple ls, TTokenizer * tk)
     L_Crear(&tokens,sizeof(char[STRING_LEN]));
     Ttokenizer_analizar(tk,text,&tokens);
 
+    /*aux1 son los tokens que busco, aux2 son los tokens del string tokenizado*/
     L_Mover_Cte(&ls,L_Primero);
+    L_Mover_Cte(&tokens,L_Primero);
     do {
         L_Elem_Cte(ls,aux1);
-        L_Mover_Cte(&tokens,L_Primero);
 
         do{
             L_Elem_Cte(tokens,aux2);
-            if(!strcmp(aux1,aux2))
+            if(strcmp(aux1,aux2)==0)
                 cont=TRUE;
         } while ((L_Mover_Cte(&tokens,L_Siguiente)) && (!cont) );
 
-
     }while((L_Mover_Cte(&ls,L_Siguiente)) &&  (!cont) );
 
+    /*}while((L_Mover_Cte(&ls,L_Siguiente)) &&  (!cont) );*/
+
+    free(text);
     return cont;
 }
 
