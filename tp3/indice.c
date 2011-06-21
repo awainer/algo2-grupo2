@@ -103,7 +103,7 @@ int comparar_usuario_y_borrarlo(void *v1, void *v2){
     TNodo_Tweet *n1;
     void ** aux=v2;
 
-    printf("recibo %s",(char*)v2[0])
+/*    printf("recibo %s",(char*)v2[0]);*/
 
 
 /*

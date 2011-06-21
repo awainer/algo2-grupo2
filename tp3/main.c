@@ -181,7 +181,7 @@ int main(int argc, char * argv[])
                     case AGREGAR :  agregar(buffer_comandos[1],&miParser,&miIndice,&colaTweets);
                                     break;
                     case AND    :   /*L_Crear(&resultados,sizeof(tweet_id));*/
-                                    L_Crear(&resultados,sizeof(TNodo_Tweet));
+                                    L_Crear(&resultados,sizeof(TDiccionario));
                                     Tbuscador_union(&miBuscador,frase,&resultados);
                                     if(!L_Vacia(resultados))
                                     {   L_Mover_Cte(&resultados,L_Primero);
