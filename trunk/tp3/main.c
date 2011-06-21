@@ -180,14 +180,13 @@ int main(int argc, char * argv[])
                 {
                     case AGREGAR :  agregar(buffer_comandos[1],&miParser,&miIndice,&colaTweets);
                                     break;
-                    case AND    :   /*L_Crear(&resultados,sizeof(tweet_id));*/
-                                    L_Crear(&resultados,sizeof(TDiccionario));
+                    case OR    :    L_Crear(&resultados,sizeof(TDiccionario));
                                     Tbuscador_union(&miBuscador,frase,&resultados);
                                     if(!L_Vacia(resultados))
                                     {   L_Mover_Cte(&resultados,L_Primero);
                                         do{
                                             L_Elem_Cte(resultados,&buffer_dict);
-                                            s=TDiccionario_sizeDato(&buffer_dict,"text"); /*en esta linea esta el problema???*/
+                                            s=TDiccionario_sizeDato(&buffer_dict,"text");
                                             txt_resultado_busqueda=(char*)malloc(s);
                                             TDiccionario_obtener(&buffer_dict,"text",txt_resultado_busqueda);
                                             printf("%s\n",txt_resultado_busqueda);
@@ -201,7 +200,7 @@ int main(int argc, char * argv[])
                                     L_Destruir(&resultados);
                                     break;
 
-                    case OR     :   L_Crear(&resultados,sizeof(TNodo_Tweet));
+                    case AND     :  L_Crear(&resultados,sizeof(TDiccionario));
                                     Tbuscador_interseccion(&miBuscador,frase,&resultados);
                                     if(!L_Vacia(resultados))
                                     {   L_Mover_Cte(&resultados,L_Primero);
