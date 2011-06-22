@@ -222,13 +222,13 @@ int main(int argc, char * argv[])
 
 
 
-                    case ELIMINART : /*TODO*/
-                                     /*buffer_comandos[0]=strtok(comando," ");
+                    case ELIMINART : /**FIXME/Esto aun no funciona como deberia**/
+                                     buffer_comandos[0]=strtok(comando," ");
                                      buffer_comandos[1]=strtok(NULL,",");
-                                     buffer_comandos[2]=strtok(NULL,",");*/
+                                     buffer_comandos[2]=strtok(NULL,",");
 
                                      printf("Elimito el tweet del usuario %s y fecha %s\n",buffer_comandos[1],buffer_comandos[2]);
-
+                                    TIndice_eliminarTweet(&miIndice,buffer_comandos[1],buffer_comandos[2]);
 
                                     break;
                     case ELIMINARU :
