@@ -60,14 +60,19 @@ int contiene(TDiccionario d, TListaSimple ls, TTokenizer * tk)
     int s;
     char * text;
     TListaSimple tokens;
-    int cont=FALSE;
+/*    int cont=FALSE;*/
     char  aux1[STRING_LEN],aux2[STRING_LEN];
-
+    int cant_tokens=0,tokens_encontrados=0;
     s = TDiccionario_sizeDato(&d,"text");
     text = (char*) malloc(s);
     TDiccionario_obtener(&d,"text",text);
     L_Crear(&tokens,sizeof(char[STRING_LEN]));
     Ttokenizer_analizar(tk,text,&tokens);
+
+    L_Mover_Cte(&ls,L_Primero);
+
+    do{ cant_tokens++;} while(L_Mover_Cte(&ls,L_Siguiente));
+
 
     /*aux1 son los tokens que busco, aux2 son los tokens del string tokenizado*/
     L_Mover_Cte(&ls,L_Primero);
@@ -77,14 +82,20 @@ int contiene(TDiccionario d, TListaSimple ls, TTokenizer * tk)
 
         do{
             L_Elem_Cte(tokens,aux2);
-            if((strcmp(aux1,aux2)==0) && (!L_Mover_Cte(&ls,L_Siguiente)))
-                cont=TRUE;
-        } while ((L_Mover_Cte(&tokens,L_Siguiente)) && (!cont) );
-    }while(L_Mover_Cte(&ls,L_Siguiente) &&  (!cont) );
+            /*if((strcmp(aux1,aux2)==0) && (!L_Mover_Cte(&ls,L_Siguiente)))*/
+            if((strcmp(aux1,aux2)==0))
+                tokens_encontrados++;
+        } while ((L_Mover_Cte(&tokens,L_Siguiente)) && (tokens_encontrados<cant_tokens) );
+    }while(L_Mover_Cte(&ls,L_Siguiente) &&  (tokens_encontrados<cant_tokens) );
+
 
     free(text);
     L_Destruir(&tokens);
-    return cont;
+    if(cant_tokens==tokens_encontrados)
+        return TRUE;
+    else
+        return FALSE;
+
 }
 
 int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
