@@ -105,7 +105,7 @@ int comparar_usuario_y_borrarlo(void *v1, void *v2){
     char * usuario=(char*)aux[0];
     TABO *arbolTweets=(TABO*)aux[1];
 
-    printf("recibo %s\n",(char*)aux[0]);
+    /*printf("recibo %s\n",(char*)aux[0]);*/
 
     if ((strcmp(n1->clave.user, usuario) == 0)){
         Tdiccionario_Destruir(&n1->valor);
@@ -171,12 +171,12 @@ int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
 
     if (ABO_Obtener(&ti->tweets,&aux_nodo_tweet) == RES_OK)
         {
-            printf("Error: Tweet repetido: %s, %s\n",aux_nodo_tweet.clave.user, aux_nodo_tweet.clave.date);
+            printf("Error: Tweet repetido: %s,%s\n",aux_nodo_tweet.clave.user, aux_nodo_tweet.clave.date);
             return 1;
         }
     else
         {
-            printf("inserto %s, %s\n",aux_nodo_tweet.clave.user, aux_nodo_tweet.clave.date);
+            printf("inserto %s,%s\n",aux_nodo_tweet.clave.user, aux_nodo_tweet.clave.date);
             ABO_Insertar(&ti->tweets,&aux_nodo_tweet);
         }
     /*ahora empiezo con los terminos*/
@@ -276,10 +276,14 @@ int TIndice_eliminarTweet(TIndice* ti, char* usuario, char* fecha)
 {
 
     TNodo_Tweet aux2;
+    /*printf("%d",aux2.clave.date[strlen(aux2.clave.date)]);*/
 
     strcpy(aux2.clave.date,fecha);
+    /*Esto es para trimear el espacio que llega al final*/
+    aux2.clave.date[strlen(aux2.clave.date)-1]=0;
+
     strcpy(aux2.clave.user,usuario);
-    if(ABO_Obtener(&ti->tweets,&aux2))
+    if(ABO_Obtener(&ti->tweets,&aux2)==RES_OK)
     {
         Tdiccionario_Destruir(&aux2.valor);
         ABO_Borrar(&ti->tweets,&aux2);

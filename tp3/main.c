@@ -96,7 +96,7 @@ int main(int argc, char * argv[])
     int     comandos_registrados=0;
     char * comandos[5];
     char * txt_resultado_busqueda;
-    char   * buffer_comandos[5];
+    char   * buffer_comandos[20];
 /*    char   nombre_archivo[255];*/
     char    frase[STRING_LEN];
 /*    tweet_id   buffer_res_tid;*/
@@ -148,7 +148,7 @@ int main(int argc, char * argv[])
      printf("-->");
      gets(comando);
      i=0;
-     buffer_comandos[i]=strtok(comando," ");
+        buffer_comandos[i]=strtok(comando," ");
      while (buffer_comandos[i])
      {
         /* printf("%s\n",buffer_comandos[i]);*/
@@ -164,7 +164,6 @@ int main(int argc, char * argv[])
      }
      strcat(frase,"\0");
 
-     /*printf("%s",frase);*/
      buffer_comandos[j+1]=0;
      i=0;
 
@@ -222,14 +221,12 @@ int main(int argc, char * argv[])
 
 
 
-                    case ELIMINART : /**FIXME/Esto aun no funciona como deberia**/
-                                     buffer_comandos[0]=strtok(comando," ");
+                    case ELIMINART : buffer_comandos[0]=strtok(frase,",");
                                      buffer_comandos[1]=strtok(NULL,",");
-                                     buffer_comandos[2]=strtok(NULL,",");
-
-                                     printf("Elimito el tweet del usuario %s y fecha %s\n",buffer_comandos[1],buffer_comandos[2]);
-                                    TIndice_eliminarTweet(&miIndice,buffer_comandos[1],buffer_comandos[2]);
-
+                                     /*buffer_comandos[2]=strtok(NULL,",");*/
+                                    printf("Elimito el tweet del usuario %s y fecha %s\n",buffer_comandos[0],buffer_comandos[1]);
+                                    TIndice_eliminarTweet(&miIndice,buffer_comandos[0],buffer_comandos[1]);
+                                    buffer_comandos[0]=0; buffer_comandos[1]=0;
                                     break;
                     case ELIMINARU :
                                     printf("Elimito los tweets de  %s\n",buffer_comandos[1]);
