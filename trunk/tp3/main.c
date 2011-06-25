@@ -15,7 +15,7 @@
 /*sacar esto, esta para probar algo */
 #include <string.h>
 
-
+/*
 int comparar_dicts(void* v1, void* v2)
 {
  TDiccionario *d1,*d2;
@@ -37,7 +37,7 @@ int comparar_dicts(void* v1, void* v2)
     return aux;
 
 }
-
+*/
 /*Funcion  para parsear un nuevo archivo */
 int agregar(char * archname, TParser * miParser, TIndice * idx,TCola * cola)
 {
@@ -233,7 +233,11 @@ int main(int argc, char * argv[])
                                     TIndice_eliminarUsuario(&miIndice,buffer_comandos[1]);
                                     break;
 
-                    case SALIR : break;
+                    case SALIR : TParser_destruir(&miParser);
+                                 Tbuscador_destruir(&miBuscador);
+                                 return 0;
+                                 break;
+
                     default :   printf("Comando no reconocido\n");
                                 break;
 

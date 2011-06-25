@@ -107,5 +107,8 @@
 
 	void L_Destruir(TListaSimple *pLs);
 
+	void L_DeduplicarContiguos(TListaSimple * ls, int (*cmp)(void*,void*));
+
+
 #endif
 
