@@ -112,6 +112,30 @@ int L_Insertar_Cte(TListaSimple *pLs, TMovimiento_Ls M, void* pE)
 	return TRUE;
 }
 
+
+void L_DeduplicarContiguos(TListaSimple * ls, int (*cmp)(void*,void*))
+{
+    TNodoListaSimple * cte = ls->Primero;
+    TNodoListaSimple * aux;
+
+    if(ls->Primero->Siguiente==NULL) /*hay un solo elemento*/
+        return ;
+
+    while(cte)
+    {
+        if(!cmp(cte->Elem,cte->Siguiente->Elem))
+           {
+               aux=cte->Siguiente->Siguiente;
+               free(cte->Siguiente->Elem);
+               free(cte->Siguiente);
+
+           }
+                   cte->Siguiente=aux;
+                   cte=cte->Siguiente;
+
+    }
+}
+
 void L_Destruir(TListaSimple *pLs){
     L_Vaciar(pLs);
 }

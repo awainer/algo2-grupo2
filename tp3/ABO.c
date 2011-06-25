@@ -121,6 +121,8 @@ int privateAboRecorridoEnRangoInOrden(TABO abo, aboProcessFunctionPtr process, v
 }
 
 
+int aboBorrarCorriente(TABO* abo);
+
 int replaceOrDelete(TABO* ca, void* elem, int movBase, int movAlt){
 	int resMov;
 	TAB abAux;
