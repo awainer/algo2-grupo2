@@ -40,20 +40,6 @@ int Tbuscador_union(Tbuscador* tb, char* frase, TListaSimple * docs)
     return 0;
 }
 
-/*void ls_interseccion(TListaSimple * l1, TListaSimple * l2, TListaSimple * dest, int (*fcmp)(void*,void*),int tam)
-{
-    int f=TRUE;
-    L_Mover_Cte(l1,L_Primero);
-    do{
-        do{
-
-
-
-        }
-
-    }while(L_Mover_Cte(l1,L_Siguiente))
-
-}*/
 
 int comparar_dicts(void* v1, void* v2)
 {
@@ -130,6 +116,7 @@ int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
     TListaSimple    terminos,ls_aux;
     char fraseAux[STRING_LEN];
     TDiccionario    dict_aux;
+    int     cant_terminos=0;
     /*Creo lista donde se van a cargar las frases tokenizadas */
     L_Crear(&terminos, sizeof(char[STRING_LEN]));
     L_Crear(&ls_aux, sizeof(TDiccionario));
@@ -143,13 +130,14 @@ int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
      do{
             L_Elem_Cte(terminos, fraseAux);
             TIndice_listarDocs(tb->ti, fraseAux, &ls_aux);
+            cant_terminos++;
        } while (L_Mover_Cte(&terminos,L_Siguiente));
 
     if (L_Vacia(ls_aux)){
                 return 0;
     }
 
-
+    /*printf("Terminos %d\n",cant_terminos);*/
      L_Mover_Cte(&ls_aux, L_Primero);
      do {
             L_Elem_Cte(ls_aux,&dict_aux);
@@ -159,13 +147,8 @@ int Tbuscador_interseccion(Tbuscador* tb, char* frase, TListaSimple * docs)
                 /*L_Borrar_Cte(docs);*/
 
        }while( L_Mover_Cte(&ls_aux, L_Siguiente));
-    L_DeduplicarContiguos(docs,comparar_dicts);
-  /*  L_Mover_Cte(docs,L_Primero);
-    if(L_Mover_Cte(docs,L_Siguiente))
-    {
-       L_DeduplicarContiguos(docs,comparar_dicts);
-    }*/
-
+    if(cant_terminos>1)
+        L_DeduplicarContiguos(docs,comparar_dicts);
 
     L_Destruir(&terminos);
     return 0;

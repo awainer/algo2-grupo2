@@ -236,6 +236,7 @@ int main(int argc, char * argv[])
                     case SALIR : TParser_destruir(&miParser);
                                  Tbuscador_destruir(&miBuscador);
                                  return 0;
+
                                  break;
 
                     default :   printf("Comando no reconocido\n");
@@ -260,10 +261,10 @@ int main(int argc, char * argv[])
         }
 */
      /*fin codigo para debug */
+
     }/*fin while*/
-    L_Vaciar(&resultados);
-    L_Destruir(&resultados);
-   return 0;
+
+
     }
 
    /* agregar("test.json",&miParser,&miIndice,&colaTweets);
