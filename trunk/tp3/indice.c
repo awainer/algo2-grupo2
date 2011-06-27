@@ -26,44 +26,23 @@ int comparar_termino(void * v1, void * v2)
     return strcmp(n1->clave,n2->clave);
     /*return 0;*/
 }
-/*optimizo_arbol_terminos tiene como funcion insertar los datos que se le estan agregando. */
 int optimizo_arbol_terminos (void* v1, void * v2)
 {
-    TListaSimple lista_terminos;
-    TNodo_Termino aux_nodo_termino;
-    TNodo_Tweet *aux_nodo_tweet;
-    TIndice *ti;
+    TNodo_Termino * nt=(TNodo_Termino*)v1;
+    TNodo_Tweet ntw;
+    TIndice * idx=(TIndice*)v2;
 
-    aux_nodo_tweet = v1;
-    ti = v2;
 
-    L_Crear(&lista_terminos, STRING_LEN);
-    Ttokenizer_analizar(ti->tk,aux_nodo_tweet->clave.user,&lista_terminos);
-    L_Mover_Cte(&lista_terminos,L_Primero);
-
+    L_Mover_Cte(&nt->dato,L_Primero);
     do
     {
-        L_Elem_Cte(lista_terminos,&aux_nodo_termino.clave);
-        if(!ABO_Obtener(&ti->terminos,aux_nodo_termino.clave))
+        L_Elem_Cte(nt->dato,&ntw.clave);
+        if(ABO_Obtener(&idx->tweets,&ntw)!= RES_OK)
         {
-          /*  printf("termino repetido %s\n",aux_nodo_termino.clave);*/
-            L_Insertar_Cte(&aux_nodo_termino.dato,L_Siguiente,&aux_nodo_tweet->clave);
-            ABO_Actualizar(&ti->terminos,&aux_nodo_termino);
-        }
-        else
-        {
-            /*Preparo el dato que voy a insertar*/
-            L_Crear(&aux_nodo_termino.dato,sizeof(tweet_id));
-            L_Insertar_Cte(&aux_nodo_termino.dato,L_Siguiente,&aux_nodo_tweet->clave); /*este es el tweet_id del tw que venimos procesando*/
-            ABO_Insertar(&ti->terminos,&aux_nodo_termino);
+            L_Borrar_Cte(&nt->dato);
         }
 
-    }while (L_Mover_Cte(&lista_terminos,L_Siguiente));
-
-
-
-    L_Destruir(&lista_terminos);
-
+    }while(L_Mover_Cte(&nt->dato,L_Siguiente));
     return 0;
 }
 
@@ -105,7 +84,7 @@ int comparar_usuario_y_borrarlo(void *v1, void *v2){
     char * usuario=(char*)aux[0];
     TABO *arbolTweets=(TABO*)aux[1];
 
-    /*printf("recibo %s\n",(char*)aux[0]);*/
+    printf("recibo %s\n",(char*)aux[0]);
 
     if ((strcmp(n1->clave.user, usuario) == 0)){
         Tdiccionario_Destruir(&n1->valor);
@@ -171,12 +150,12 @@ int TIndice_agregar(TIndice* ti, TDiccionario* Tweet)
 
     if (ABO_Obtener(&ti->tweets,&aux_nodo_tweet) == RES_OK)
         {
-            printf("Error: Tweet repetido: %s,%s\n",aux_nodo_tweet.clave.user, aux_nodo_tweet.clave.date);
+            printf("Error: Tweet repetido: %s, %s\n",aux_nodo_tweet.clave.user, aux_nodo_tweet.clave.date);
             return 1;
         }
     else
         {
-            printf("inserto %s,%s\n",aux_nodo_tweet.clave.user, aux_nodo_tweet.clave.date);
+            printf("inserto %s, %s\n",aux_nodo_tweet.clave.user, aux_nodo_tweet.clave.date);
             ABO_Insertar(&ti->tweets,&aux_nodo_tweet);
         }
     /*ahora empiezo con los terminos*/
@@ -276,14 +255,10 @@ int TIndice_eliminarTweet(TIndice* ti, char* usuario, char* fecha)
 {
 
     TNodo_Tweet aux2;
-    /*printf("%d",aux2.clave.date[strlen(aux2.clave.date)]);*/
 
     strcpy(aux2.clave.date,fecha);
-    /*Esto es para trimear el espacio que llega al final*/
-    aux2.clave.date[strlen(aux2.clave.date)-1]=0;
-
     strcpy(aux2.clave.user,usuario);
-    if(ABO_Obtener(&ti->tweets,&aux2)==RES_OK)
+    if(ABO_Obtener(&ti->tweets,&aux2))
     {
         Tdiccionario_Destruir(&aux2.valor);
         ABO_Borrar(&ti->tweets,&aux2);
@@ -311,13 +286,5 @@ Los Tweets que contiene después de optimizar deben ser los mismos
 que antes de optimizar. Ver notas de implementación.*/
 int TIndice_optimizar(TIndice* ti)
 {
-    /*TNodo_Tweet tweetAux;
-    TNodo_Termino terminoAux;*/
-
-    /*Descarto el arbol de terminos. */
-    ABO_ProcesarPosOrden(&ti->terminos, borrar_arbol_terminos, &ti->terminos);
-    /*Hago recorrido completo del arbol de tweets, analizando por cada uno nuevamente con el tokenizer y volviendo a cargar los terminos de cada uno en el arbol de terminos */
-    ABO_ProcesarPosOrden(&ti->tweets, optimizo_arbol_terminos, ti);
-
-    return 0;
+   return ABO_ProcesarPosOrden(&ti->terminos, optimizo_arbol_terminos, ti);
 }

@@ -243,36 +243,9 @@ int main(int argc, char * argv[])
                                 break;
 
                 }
-     } /*hubo comandos*/
 
-
-     /*codigo para debug*/
-     /*   {
-            TNodo_Termino tnt;
-            strcpy(tnt.clave,"rugby");
-            ABO_Obtener(&miIndice.terminos,&tnt);
-            L_Mover_Cte(&tnt.dato,L_Primero);
-            do{
-                L_Elem_Cte(tnt.dato,&buffer_res_tid);
-                printf(" res %s %s\n",buffer_res_tid.date, buffer_res_tid.user);
-
-
-            }while(L_Mover_Cte(&tnt.dato,L_Siguiente));
-        }
-*/
-     /*fin codigo para debug */
-
+     }
     }/*fin while*/
 
-
+    return 0;
     }
-
-   /* agregar("test.json",&miParser,&miIndice,&colaTweets);
-    TIndice_eliminarTweet(&miIndice,"sta","sasas");*/
-    /*TIndice_destruir(&miIndice);*/
-    /*TIndice_eliminarTweet(&miIndice,"sarasa","asasasa");*/
-
-
-
-
-
