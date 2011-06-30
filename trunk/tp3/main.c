@@ -71,7 +71,7 @@ int agregar(char * archname, TParser * miParser, TIndice * idx,TCola * cola)
     return error;
 }
 
- typedef enum { AGREGAR, AND, OR, ELIMINART, ELIMINARU, SALIR} T_COMANDO;
+ typedef enum { AGREGAR, AND, OR, ELIMINART, ELIMINARU,SALIR, OPTIMIZAR} T_COMANDO;
 
 
 int main(int argc, char * argv[])
@@ -114,6 +114,8 @@ int main(int argc, char * argv[])
     comandos[ELIMINARU]="eliminaru";
     comandos_registrados++;
     comandos[SALIR]="salir";
+    comandos_registrados++;
+    comandos[OPTIMIZAR]="optimizar";
     comandos_registrados++;
 
     /*Inicializo el constructor con su cola*/
@@ -238,7 +240,8 @@ int main(int argc, char * argv[])
                                  return 0;
 
                                  break;
-
+                    case OPTIMIZAR : TIndice_optimizar(&miIndice);
+                                    break;
                     default :   printf("Comando no reconocido\n");
                                 break;
 
